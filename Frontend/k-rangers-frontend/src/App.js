@@ -1,12 +1,14 @@
-import React from 'react';
+import logo from './logo.svg';
+import { Route, Routes } from "react-router-dom";
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <h1>K-Rangers-Frontend 🚀</h1>
-      
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<div>Home</div>} />
+      </Routes>
+    </>
   );
 }
 
