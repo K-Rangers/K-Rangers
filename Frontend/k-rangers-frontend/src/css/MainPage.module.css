@@ -1,0 +1,15 @@
+.app {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f6f7fb;
+}
+
+.phone {
+  width: 100%;
+  min-width: 375px;   /* iPhone SE 기준 */
+  max-width: 430px;   /* iPhone 14/15/16 Pro Max 기준 */
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #ffffff;
+}
