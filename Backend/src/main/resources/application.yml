@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: K-Rangers-Backend
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4.1-nano-2025-04-14
+kakao:
+  api:
+    key: ${KAKAO_API_KEY}
+    url: "https://dapi.kakao.com/v2/local/search/address.json"
