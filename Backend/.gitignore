@@ -1,12 +1,9 @@
-# Gradle
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# IDE specific files
-### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
@@ -15,10 +12,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### VS Code ###
 .vscode/
 
-### Eclipse (STS) ###
 .apt_generated
 .classpath
 .factorypath
@@ -28,14 +23,9 @@ out/
 .sts4-cache
 bin/
 
-# Log files
 *.log
 
-# Environment variables file
 .env
 
-# Spring Boot sensitive configuration files
-# Contains secrets and should not be committed to Git.
-# Use template-application-local.yml as a guide for new team members.
 application-local.yml
 application-prod.yml
