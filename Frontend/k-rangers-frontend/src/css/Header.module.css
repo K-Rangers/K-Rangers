@@ -1,24 +1,18 @@
 .header {
   position: sticky;
-  top: 0;
   z-index: 50;
   background: #ffffff;
-  padding: 15px 20px;
   border-bottom: 0.1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px 0px 5px 15px;
 }
 
 .brand {
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
+  display: flex;             
+  align-items: center;       
   line-height: 1;
-  
 }
 
-.word {
-  font-weight: 800;
-  font-size: clamp(16px, 4.2vw, 18px);
-  color: #007AFF;
-  letter-spacing: -0.2px;
-  font-size: 20px;
+.logo {
+  height: 45px;
+  width: auto;
 }
