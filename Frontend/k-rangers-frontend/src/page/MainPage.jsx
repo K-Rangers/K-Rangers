@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import styles from "../css/MainPage.module.css";
 import HeroSection from "../components/HeroSection";
+import AccessChips from "../components/AccessChips";
 
 function MainPage() {
   return (
@@ -10,6 +11,7 @@ function MainPage() {
         <Header />
         <div className={styles.content}>
           <HeroSection />
+          <AccessChips />
         </div>
       </div>
     </div>
