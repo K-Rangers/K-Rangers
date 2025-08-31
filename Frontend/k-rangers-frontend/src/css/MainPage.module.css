@@ -10,10 +10,9 @@
   min-width: 375px;   /* iPhone SE 기준 */
   max-width: 430px;   /* iPhone 14/15/16 Pro Max 기준 */
   min-height: 100vh;
-  margin: 0 auto;
   background: #ffffff;
 }
 
 .content {
- padding: 30px 20px 0px 20px;
+ padding: 0px 20px 0px 20px;
 }
