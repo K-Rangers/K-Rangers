@@ -1,0 +1,30 @@
+.wrapper {
+  padding: 8px 0;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px 10px 10px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 750;
+}
+
+.moreBtn {
+  font-size: 14px;
+  font-weight: 600;
+  color: #007aff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
