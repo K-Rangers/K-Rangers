@@ -11,6 +11,7 @@ function MainPage() {
         <div className={styles.content}>
           <RecommendedSection />
         </div>
+        <BottomNav />
       </div>
     </div>
   );
