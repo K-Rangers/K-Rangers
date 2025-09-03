@@ -4,6 +4,7 @@ import styles from "../css/MainPage.module.css";
 import HeroSection from "../components/HeroSection";
 import AccessChips from "../components/AccessChips";
 import RecommendedList from "../components/RecommendedList";
+import BottomNav from "../components/BottomNav";
 
 function MainPage() {
   return (
@@ -15,6 +16,7 @@ function MainPage() {
           <AccessChips />
           <RecommendedList />
         </div>
+        <BottomNav />
       </div>
     </div>
   );
