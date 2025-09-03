@@ -1,0 +1,55 @@
+.bottomNav {
+  --ios-blue: #007aff;
+  --ios-gray: #8e8e93;
+  --container-width: 428px;
+  --bar-height: 74px;
+
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: var(--container-width);
+  height: var(--bar-height);
+  background: #fff;
+  border-top: 1px solid #ececec;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  z-index: 1000;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
+}
+
+.navItem {
+  height: 100%;
+  text-decoration: none;
+  color: var(--ios-gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.navItem .icon {
+  font-size: 22px;
+  line-height: 1;
+  display: block; 
+  text-align: center;
+}
+
+.navItem.active {
+  color: var(--ios-blue);
+}
+
+.navItem:focus-visible {
+  outline: 2px solid var(--ios-blue);
+  outline-offset: 2px;
+}
+
+.content {
+  padding-bottom: calc(var(--bar-height) + env(safe-area-inset-bottom));
+}

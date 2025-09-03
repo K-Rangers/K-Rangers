@@ -11,6 +11,7 @@
   max-width: 430px;   /* iPhone 14/15/16 Pro Max 기준 */
   min-height: 100vh;
   background: #ffffff;
+  margin-bottom: 68px;
 }
 
 .content {
