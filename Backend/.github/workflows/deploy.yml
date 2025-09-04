@@ -1,0 +1,20 @@
+name: K-Rangers 배포 로봇
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: KMA
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 다운로드
+        uses: actions/checkout@v4
+
+      - name: Fly.io에 배포하기
+        uses: superfly/fly-actions/setup-flyctl@master
+        with:
+          fly-api-token: ${{ secrets.FLY_API_TOKEN }}
+          args: "deploy --remote-only"

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FiMap, FiHome, FiHeart, FiUser } from "react-icons/fi";
+import { FiMap, FiHome, FiUser } from "react-icons/fi";
 import styles from "../css/BottomNav.module.css";
 
 function BottomNav() {
@@ -20,14 +20,6 @@ function BottomNav() {
       >
         <FiHome className={styles.icon} />
         <span className={styles.label}>홈</span>
-      </NavLink>
-
-      <NavLink to="/saved"
-        className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ""}`
-        }
-      >
-        <FiHeart className={styles.icon} />
-        <span className={styles.label}>저장</span>
       </NavLink>
 
       <NavLink to="/mypage"
