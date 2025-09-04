@@ -19,7 +19,7 @@ export default function RecommendedList({
     navigate("/all", {
       state: {
         title,
-        items: totalList,   // ← 여기! 전체 목록을 state로 넘김
+        items: totalList,   
       },
     });
   };

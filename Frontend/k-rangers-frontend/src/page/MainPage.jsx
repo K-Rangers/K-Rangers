@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import styles from "../css/MainPage.module.css";
 import RecommendedSection from "../components/RecommendedSection";
+import BottomNav from "../components/BottomNav";
 
 function MainPage() {
   return (
