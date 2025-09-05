@@ -1,18 +1,27 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import AllPostView from "../components/AllPostView";
+import styles from "../css/AllPostPage.module.css";
 
-export default function AllPostPage() {
-  const { state } = useLocation();    
-  const navigate = useNavigate();
+function AllPostPage() {
+    const { state } = useLocation();
+    const navigate = useNavigate();
 
-  const title = state?.title ?? "전체 보기";
-  const items = state?.items ?? [];   
+    const title = state?.title ?? "";
+    const items = state?.items ?? [];
 
-  return (
-    <AllPostView
-      title={title}
-      items={items}
-      onClose={() => navigate(-1)}
-    />
-  );
+    return (
+        <div className={styles.app}>
+            <div className={styles.phone}>
+                <div className={styles.content}>
+                    <AllPostView
+                        title={title}
+                        items={items}
+                        onClose={() => navigate(-1)}
+                    />
+                </div>
+            </div>
+        </div>
+    );
 }
+
+export default AllPostPage;

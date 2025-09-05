@@ -4,7 +4,7 @@ import './App.css';
 import MainPage from './page/MainPage';
 import Map from "./page/Map";
 import MyPage from "./page/MyPage";
-
+import AllPostPage from './page/AllPostPage';
 
 const App = () => {
   return (
@@ -14,6 +14,7 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/map" element={<Map />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/all" element={<AllPostPage />} />
         </Routes>
       </main>
 

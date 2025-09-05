@@ -1,0 +1,30 @@
+.headerRow {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px 10px 10px;
+  gap: 8px;
+}
+
+.title {
+  background: linear-gradient(90deg, #6a7cff 0%, #22d1ee 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;           
+  font-weight: 800;             
+  letter-spacing: -0.2px;
+  font-size: 20px;
+}
+
+.moreBtn {
+  font-size: 14px;
+  border: 0;
+  cursor: pointer;
+
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;             
+}

@@ -55,7 +55,7 @@ const FEATURE_KEY_MAP = {
 };
 
 
-export default function RecommendationsSection() {
+function RecommendationsSection() {
   const [district, setDistrict] = useState("");
   const [features, setFeatures] = useState(new Set());
 
@@ -80,21 +80,17 @@ export default function RecommendationsSection() {
     });
   }, [district, features]);
 
-  const filteredByDistrictOnly = useMemo(() => {
-    if (!district) return ITEMS;
-    return ITEMS.filter((it) => it.district === district);
-  }, [district]);
-
   return (
     <section>
       <HeroSection onSubmit={setDistrict} />
       <AccessChips selected={[...features]} onToggle={toggleFeature} />
 
       <RecommendedList
-        items={filteredPreview}                         // 미리보기(1개)
-        allItems={filteredByDistrictOnly}               // 모두보기(구만 필터 or 전체)
-        title={district ? "선택한 구 전체 목록" : "전체 관광지"}
+        items={filteredPreview}                         
+        title={district}
       />
     </section>
   );
 }
+
+export default RecommendationsSection;

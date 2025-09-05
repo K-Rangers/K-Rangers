@@ -1,16 +1,36 @@
-import styles from "../css/RecommendedList.module.css";
+import React from "react";
+import styles from "../css/AllPostView.module.css";
 import RecommendedCard from "./RecommendedCard";
+import { FiChevronLeft } from "react-icons/fi";
 
-export default function AllView({ items = [], onClose }) {
+function AllView({ items = [], onClose }) {
+  
+  const handleKeyDown = (e) => {
+    if (!onClose) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClose();
+    }
+  };
+
   return (
     <section className={styles.wrapper}>
       <div className={styles.headerRow}>
-        <h2 className={styles.title}>게시물</h2>
-        {onClose && (
-          <button type="button" className={styles.moreBtn} onClick={onClose}>
-            뒤로
-          </button>
+        {onClose ? (
+          <span
+            className={styles.moreBtn}
+            role="button"
+            tabIndex={0}
+            onClick={onClose}
+            onKeyDown={handleKeyDown}
+          >
+            <FiChevronLeft size={18} aria-hidden="true" />
+          </span>
+        ) : (
+          <span />
         )}
+
+        <h2 className={styles.title}>AI 추천 여행지</h2>
       </div>
 
       {items.length === 0 ? (
@@ -25,3 +45,5 @@ export default function AllView({ items = [], onClose }) {
     </section>
   );
 }
+
+export default AllView;
