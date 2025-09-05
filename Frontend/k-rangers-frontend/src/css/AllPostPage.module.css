@@ -1,0 +1,18 @@
+.app {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f6f7fb;
+}
+
+.phone {
+  width: 100%;
+  min-width: 375px;   
+  max-width: 430px;   
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.content {
+ padding: 0px 20px 0px 20px;
+}

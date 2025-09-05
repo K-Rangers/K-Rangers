@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../css/RecommendedCard.module.css";
 
-export default function RecommendedCard({ item, onClick }) {
+function RecommendedCard({ item, onClick }) {
     const f = item.features || {};
     const chips = [
         f.toilet && "장애인 화장실",
@@ -49,3 +49,5 @@ export default function RecommendedCard({ item, onClick }) {
         </article>
     );
 }
+
+export default RecommendedCard;
