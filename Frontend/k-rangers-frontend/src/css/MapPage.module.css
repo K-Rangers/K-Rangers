@@ -3,6 +3,8 @@
   justify-content: center;
   min-height: 100vh;
   background: #f6f7fb;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .phone {

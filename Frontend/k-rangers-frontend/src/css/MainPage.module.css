@@ -3,12 +3,14 @@
   justify-content: center;
   min-height: 100vh;
   background: #f6f7fb;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .phone {
   width: 100%;
-  min-width: 375px;   /* iPhone SE 기준 */
-  max-width: 430px;   /* iPhone 14/15/16 Pro Max 기준 */
+  min-width: 375px;
+  max-width: 430px;
   min-height: 100vh;
   background: #ffffff;
   margin-bottom: 68px;
