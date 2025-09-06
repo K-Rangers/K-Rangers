@@ -21,7 +21,6 @@ public class AccommodationApi {
     @GetMapping("/by-district/{district}")
     public ResponseEntity<List<AccommodationResponse>> getAccommodationsByDistrict(@PathVariable DaeguDistrict district) {
         List<Accommodation> accommodations = accommodationService.findAccommodationsByDistrict(district);
-
         List<AccommodationResponse> responseDtos = accommodations.stream()
                 .map(AccommodationResponse::from)
                 .toList();

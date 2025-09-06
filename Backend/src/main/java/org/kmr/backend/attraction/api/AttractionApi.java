@@ -21,7 +21,6 @@ public class AttractionApi {
     @GetMapping("/by-district/{district}")
     public ResponseEntity<List<AttractionResponse>> getAttractionsByDistrict(@PathVariable DaeguDistrict district) {
         List<Attraction> attractions = attractionService.findAttractionsByDistrict(district);
-
         List<AttractionResponse> responseDtos = attractions.stream()
                 .map(AttractionResponse::from)
                 .toList();
