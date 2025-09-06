@@ -13,6 +13,10 @@ function RecommendedList({ items = [], onSelect }) {
     navigate("/all", { state: { title, items } });
   };
 
+  const handleCardClick = (item) => {
+    navigate("/map", { state: { selectedItem: item } });
+  };
+
   return (
     <section className={styles.wrapper}>
       <div className={styles.headerRow}>
@@ -35,7 +39,7 @@ function RecommendedList({ items = [], onSelect }) {
             <RecommendedCard
               key={it.id}
               item={it}
-              onClick={() => onSelect?.(it)}
+              onClick={() => handleCardClick(it)}
             />
           ))}
         </div>
