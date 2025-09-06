@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../css/AllPostView.module.css";
 import RecommendedCard from "./RecommendedCard";
 import { FiChevronLeft } from "react-icons/fi";
 
 function AllView({ items = [], onClose }) {
+  const navigate = useNavigate();
   
   const handleKeyDown = (e) => {
     if (!onClose) return;
@@ -11,6 +13,10 @@ function AllView({ items = [], onClose }) {
       e.preventDefault();
       onClose();
     }
+  };
+
+  const handleCardClick = (item) => {
+    navigate("/map", { state: { selectedItem: item } });
   };
 
   return (
@@ -38,7 +44,11 @@ function AllView({ items = [], onClose }) {
       ) : (
         <div className={styles.grid}>
           {items.map((it) => (
-            <RecommendedCard key={it.id} item={it} />
+            <RecommendedCard 
+              key={it.id} 
+              item={it} 
+              onClick={() => handleCardClick(it)}
+            />
           ))}
         </div>
       )}

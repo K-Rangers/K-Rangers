@@ -1,71 +1,21 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import HeroSection from "./HeroSection";
 import AccessChips from "./AccessChips";
 import RecommendedList from "./RecommendedList";
-import AllPostView from "./AllPostView";
-
-const ITEMS = [
-  {
-    id: "daegu-modern-history-museum",
-    name: "대구근대역사관",
-    district: "jung",
-    category: "관광지",
-    address: "대구광역시 중구 경상감영길 67",
-    phone: "053-606-6432",
-    thumbnailUrl: "https://picsum.photos/id/1011/1200/800",
-    features: {
-      accessible: true,
-      parking: false,
-      toilet: true,
-      elevator: true,
-      ramp: true,
-      guide: true,
-      wheelchairRental: false,
-      restaurant: false,
-    },
-  },
-  {
-    id: "daegu-modern-history-museum",
-    name: "대구근대역사관",
-    district: "jung",
-    category: "관광지",
-    address: "대구광역시 중구 경상감영길 67",
-    phone: "053-606-6432",
-    thumbnailUrl: "https://picsum.photos/id/1011/1200/800",
-    features: {
-      accessible: true,
-      parking: false,
-      toilet: true,
-      elevator: true,
-      ramp: true,
-      guide: true,
-      wheelchairRental: false,
-      restaurant: false,
-    },
-  }
-];
-
-const FEATURE_KEY_MAP = {
-  wheelchair: "accessible",
-  parking: "parking",
-  toilet: "toilet",
-  elevator: "elevator",
-  ramp: "ramp",
-  info: "guide",
-};
+import { ITEMS, FEATURE_KEY_MAP } from "../Data/Data";                 
 
 
-function RecommendationsSection() {
+function RecommendationsSection({ onFilteredChange }) {
   const [district, setDistrict] = useState("");
   const [features, setFeatures] = useState(new Set());
 
-  const toggleFeature = (chipKey) => {
+  const toggleFeature = useCallback((chipKey) => {
     setFeatures((prev) => {
       const next = new Set(prev);
       next.has(chipKey) ? next.delete(chipKey) : next.add(chipKey);
       return next;
     });
-  };
+  }, []);
 
   const filteredPreview = useMemo(() => {
     return ITEMS.filter((it) => {
@@ -80,15 +30,15 @@ function RecommendationsSection() {
     });
   }, [district, features]);
 
+  useEffect(() => {
+    onFilteredChange?.(filteredPreview);
+  }, [filteredPreview, onFilteredChange]);
+
   return (
     <section>
       <HeroSection onSubmit={setDistrict} />
       <AccessChips selected={[...features]} onToggle={toggleFeature} />
-
-      <RecommendedList
-        items={filteredPreview}                         
-        title={district}
-      />
+      <RecommendedList items={filteredPreview} title={district} />
     </section>
   );
 }

@@ -1,7 +1,7 @@
 .bottomNav {
   --ios-blue: #007aff;
   --ios-gray: #8e8e93;
-  --container-width: 428px;
+  --container-width: 430px;
   --bar-height: 74px;
 
   position: fixed;
@@ -9,7 +9,7 @@
   transform: translateX(-50%);
   bottom: 0;
   width: var(--container-width);
-  height: var(--bar-height);
+  height: 70px;
   background: #fff;
   border-top: 1px solid #ececec;
   display: grid;
