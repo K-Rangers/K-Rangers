@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../css/Map.module.css";
+import { KAKAO_JS_KEY } from "../config/env";
 
-const KAKAO_JS_KEY = "1977884cfe27f35a9276beec0e35952d";
 
 function loadKakaoSdk() {
   return new Promise((resolve, reject) => {
