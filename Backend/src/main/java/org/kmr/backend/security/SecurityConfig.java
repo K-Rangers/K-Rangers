@@ -38,17 +38,18 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/h2-console/**"
+                        ).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/v1/main")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/v1/main/login")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/swagger-resources/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/actuator/**")).permitAll()
-                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/v1/main/user/**")).authenticated()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // 필터 다시 활성화
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
