@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/accommodations")
+@RequestMapping("/v1/main/user/accommodations") // 경로 수정
 @RequiredArgsConstructor
 public class AccommodationApi {
 
