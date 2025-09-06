@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import './App.css';
 import MainPage from './page/MainPage';
 import MapPage from "./page/MapPage"
-import MyPage from "./page/MyPage";
 import AllPostPage from './page/AllPostPage';
 
 const App = () => {
@@ -13,12 +12,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/map" element={<MapPage />} />
-          <Route path="/mypage" element={<MyPage />} />
           <Route path="/all" element={<AllPostPage />} />
         </Routes>
       </main>
-
-      
     </>
   );
 }
