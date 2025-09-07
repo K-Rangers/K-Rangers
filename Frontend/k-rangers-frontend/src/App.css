@@ -7,28 +7,31 @@
 }
 
 html,
-body 
-#root
-{
+body,
+#root {
   font-family: -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  min-height: -webkit-fill-available;
-  overflow-x: hidden;
   width: 100%;
-  
+  overflow-x: hidden;
+  padding-top: env(safe-area-inset-top);
+}
+
+html, body {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
   padding: 0;
+  background-color: white; 
 }
 
 .content {
+  min-height: 100vh; 
   width: 100%;
   overflow-x: hidden;
-  min-height: -webkit-fill-available; 
 }
