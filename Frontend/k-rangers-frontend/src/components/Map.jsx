@@ -37,6 +37,8 @@ export default function Map({
   const mapRef = useRef(null);
   const markerRefs = useRef([]);
   const [ready, setReady] = useState(false);
+  const initialCenterRef = useRef(center);
+  const initialLevelRef = useRef(level);
 
   useEffect(() => {
     let mounted = true;
@@ -45,14 +47,20 @@ export default function Map({
         if (!mounted) return;
         const map = new kakao.maps.Map(
           mapEl.current,
-          { center: new kakao.maps.LatLng(center.lat, center.lng), level }
+          {
+            center: new kakao.maps.LatLng(
+              initialCenterRef.current.lat,
+              initialCenterRef.current.lng
+            ),
+            level: initialLevelRef.current,
+          }
         );
         mapRef.current = map;
         setReady(true);
       })
       .catch((e) => console.error("[KakaoMap] SDK load failed:", e));
     return () => { mounted = false; };
-  }, [center.lat, center.lng, level]);
+  }, []);
 
   useEffect(() => {
     if (!ready) return;
@@ -84,9 +92,7 @@ export default function Map({
       markerRefs.current.push(marker);
 
       kakao.maps.event.addListener(marker, "click", () => {
-        map.setLevel(3);
-        map.setCenter(new kakao.maps.LatLng(lat, lng));
-        onMarkerClick?.(mData); 
+        onMarkerClick?.(mData);
       });
     });
   }, [ready, markers, onMarkerClick]);
