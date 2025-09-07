@@ -52,7 +52,7 @@ export default function Map({
       })
       .catch((e) => console.error("[KakaoMap] SDK load failed:", e));
     return () => { mounted = false; };
-  }, []);
+  }, [center.lat, center.lng, level]);
 
   useEffect(() => {
     if (!ready) return;
