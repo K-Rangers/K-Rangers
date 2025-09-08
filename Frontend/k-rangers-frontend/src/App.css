@@ -17,7 +17,6 @@ body,
   text-rendering: optimizeLegibility;
   width: 100%;
   overflow-x: hidden;
-  padding-top: env(safe-area-inset-top);
 }
 
 html, body {
