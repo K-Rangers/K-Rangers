@@ -6,6 +6,7 @@ import org.kmr.backend.accommodation.domain.Accommodation;
 import org.kmr.backend.accommodation.repository.AccommodationRepository;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.repository.AttractionRepository;
+import org.kmr.backend.common.TourCategory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -42,8 +43,23 @@ public class DataLoader implements ApplicationRunner {
             reader.skip(1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-
-                attractionsToSave.add(new Attraction(nextLine[0], nextLine[1]));
+                TourCategory category = TourCategory.fromString(nextLine[12]);                attractionsToSave.add(
+                        new Attraction(
+                                nextLine[0],
+                                nextLine[1],
+                                nextLine[2],
+                                nextLine[3],
+                                nextLine[4],
+                                nextLine[5],
+                                nextLine[6],
+                                nextLine[7],
+                                nextLine[8],
+                                nextLine[9],
+                                nextLine[10],
+                                nextLine[11],
+                                category
+                        )
+                );
             }
         }
 
