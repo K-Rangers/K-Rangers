@@ -17,5 +17,5 @@
 
 .mapWrap {
   width: 100%;
-  height: calc(100dvh - 74px);
+  height: calc(100svh - 74px);
 }
