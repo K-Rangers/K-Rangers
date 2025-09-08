@@ -28,9 +28,3 @@ body {
   padding: 0;
   background-color: white; 
 }
-
-.content {
-  min-height: 100vh; 
-  width: 100%;
-  overflow-x: hidden;
-}
