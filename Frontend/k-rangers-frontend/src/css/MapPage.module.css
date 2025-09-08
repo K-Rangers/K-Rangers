@@ -1,7 +1,7 @@
 .app {
   display: flex;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: #f6f7fb;
   overflow-x: hidden;
   width: 100%;
@@ -17,5 +17,5 @@
 
 .mapWrap {
   width: 100%;
-  height: calc(100svh - 74px);
+  height: 100dvh
 }

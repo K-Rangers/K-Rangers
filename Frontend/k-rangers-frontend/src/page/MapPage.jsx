@@ -69,7 +69,6 @@ export default function MapPage() {
             <DetailPost item={selected.raw} />
           ) : (
             <div className={styles.sheetContent}>
-              마커를 탭하면 상세 정보가 여기에 보여요.
             </div>
           )}
         </BottomSheet>

@@ -5,8 +5,6 @@
   --bar-height: 74px;
 
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
   bottom: 0;
   width: var(--container-width);
   height: var(--bar-height);
