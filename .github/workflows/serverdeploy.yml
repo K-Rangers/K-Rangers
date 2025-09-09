@@ -29,6 +29,6 @@ jobs:
             docker rm travel || true
             docker rmi travel || true
             docker build -t travel .
-            docker run -d -p 9000:9000 --network gamjanet --name travel travel
+            docker run -d -p 9000:9000 --network gamjanet --name travel --env-file travel.env travel
                         
             docker builder prune -f
