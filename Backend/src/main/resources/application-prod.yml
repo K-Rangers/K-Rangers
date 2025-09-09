@@ -12,5 +12,3 @@ spring:
         show_sql: false
         format_sql: false
     open-in-view: true
-server:
-  port: 9000
