@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: ${PROFILE}
   application:
     name: K-Rangers-Backend
   ai:
