@@ -1,7 +1,7 @@
 package org.kmr.backend.attraction.api;
 
 import lombok.RequiredArgsConstructor;
-import org.kmr.backend.ai.dto.AIRecommendationResponse;
+// import org.kmr.backend.ai.dto.AIRecommendationResponse; // 삭제
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.dto.response.AttractionResponse;
 import org.kmr.backend.attraction.service.AttractionService;
@@ -31,10 +31,12 @@ public class AttractionApi {
         return ResponseEntity.ok(responseDtos);
     }
 
-    // 랭킹 DTO 대신, 원래의 AIRecommendationResponse를 반환하도록 되돌립니다.
+    // --- 더 이상 사용하지 않는 AI 추천 관련 API 엔드포인트를 모두 삭제합니다. ---
+    /*
     @GetMapping("/recommendations/{district}")
     public ResponseEntity<AIRecommendationResponse> getAiRecommendations(@PathVariable DaeguDistrict district) {
         AIRecommendationResponse response = attractionService.getRecommendedAttractions(district);
         return ResponseEntity.ok(response);
     }
+    */
 }
