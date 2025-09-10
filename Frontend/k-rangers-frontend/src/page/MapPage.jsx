@@ -28,7 +28,7 @@ export default function MapPage() {
   }, []);
 
   const handleMarkerClick = useCallback((m) => {
-    setSelected(m);
+    setSelected(m?.raw || null);
     setOpen(true);
     setMapCenter({ lat: m.lat, lng: m.lng });
     setMapLevel(3);
@@ -39,7 +39,7 @@ export default function MapPage() {
     if (selectedItem) {
       const matchingMarker = markers.find(marker => marker.raw.id === selectedItem.id);
       if (matchingMarker) {
-        setSelected(matchingMarker);
+        setSelected(matchingMarker.raw);
         setOpen(true);
         setMapCenter({ lat: matchingMarker.lat, lng: matchingMarker.lng });
         setMapLevel(3);
@@ -66,7 +66,7 @@ export default function MapPage() {
           height={500}
         >
           {selected ? (
-            <DetailPost item={selected.raw} />
+            <DetailPost item={selected} />
           ) : (
             <div className={styles.sheetContent}>
             </div>

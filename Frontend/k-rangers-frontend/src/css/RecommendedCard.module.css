@@ -50,16 +50,13 @@
   padding: 12px 16px 2px;
 }
 
-.pin {
-  font-size: 14px;
-}
-
 .address {
   font-size: 15px;
   color: #717171;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-left: 5px;
 }
 
 .chips {
@@ -71,10 +68,113 @@
 
 .chip {
   font-size: 13px;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border-radius: 14px;
   background: #f1f4fb;
   color: #244;
   border: 1px solid #e0e8f8;
 }
 
+.reviewAvgText {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2d3d;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.reviewCount {
+  font-size: 12px;
+  color: #717171;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.reviewSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 15px 15px 15px;
+  background: linear-gradient(180deg, #ffffff, #fafcff);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+  padding-left: 5px;
+}
+
+.starsRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+
+.star {
+  position: relative;
+  font-size: 20px;
+  line-height: 1;
+  color: #ddd;
+  height: 1em;
+  vertical-align: middle;
+}
+
+.starFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  color: #ffb400;
+  width: 0;
+  height: 100%;
+}
+
+.reasonBox {
+  margin: 0 16px 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eef5ff 0%, #f7faff 100%);
+  border: 1px solid #e3edff;
+  box-shadow: inset 0 0 0 1px rgba(11,101,212,0.04), 0 4px 10px rgba(11,101,212,0.06);
+}
+
+.reasonTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 13px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b65d4;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid #e1eaff;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+.reasonText {
+  font-size: 13px;
+  color: #1f2d3d;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reasonBox {
+    transition: box-shadow 180ms ease, transform 180ms ease;
+  }
+  .reasonBox:hover {
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 0 1px rgba(11,101,212,0.06), 0 6px 16px rgba(11,101,212,0.10);
+  }
+}

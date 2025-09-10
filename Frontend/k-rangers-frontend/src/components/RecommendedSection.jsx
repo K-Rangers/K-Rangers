@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useCallback } from "react";
 import HeroSection from "./HeroSection";
 import AccessChips from "./AccessChips";
 import RecommendedList from "./RecommendedList";
-import { ITEMS, FEATURE_KEY_MAP } from "../Data/Data";                 
+import { ITEMS, FEATURE_KEY_MAP, REVIEWS, RECOMMEND_REASONS } from "../Data/Data";                                
 
 
 function RecommendationsSection({ onFilteredChange }) {
@@ -30,6 +30,12 @@ function RecommendationsSection({ onFilteredChange }) {
     });
   }, [district, features]);
 
+  const filteredReviews = useMemo(() => {
+  return REVIEWS.filter((r) =>
+    filteredPreview.some((item) => item.id === r.placeId)
+  );
+}, [filteredPreview]);
+
   useEffect(() => {
     onFilteredChange?.(filteredPreview);
   }, [filteredPreview, onFilteredChange]);
@@ -38,7 +44,7 @@ function RecommendationsSection({ onFilteredChange }) {
     <section>
       <HeroSection onSubmit={setDistrict} />
       <AccessChips selected={[...features]} onToggle={toggleFeature} />
-      <RecommendedList items={filteredPreview} title={district} />
+      <RecommendedList items={filteredPreview} title={district} reviews={filteredReviews} reasons={RECOMMEND_REASONS}/>
     </section>
   );
 }
