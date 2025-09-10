@@ -1,120 +1,338 @@
 .container {
   width: 100%;
-  background: #fff;
+  background: #ffffff;
 }
 
-.empty {
-  padding: 40px 20px;
-  text-align: center;
-  color: #666;
-  font-size: 16px;
-}
-
-.imageSection {
+.thumbWrap {
   position: relative;
-  height: 280px;
+  height: 220px;
   background: #f6f7fb;
-  overflow: hidden;
 }
 
-.mainImage {
+.thumb {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.imageOverlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
-  padding: 20px;
-  color: #fff;
-}
-
 .category {
-  display: inline-block;
+  position: absolute;
+  left: 16px;
+  top: 16px;
   background: #e9f2ff;
   color: #0b65d4;
   font-weight: 700;
   font-size: 13px;
   padding: 6px 12px;
   border-radius: 12px;
-  margin-bottom: 8px;
 }
 
-.title {
-  font-size: 28px;
+.name {
+  position: absolute;
+  left: 20px;
+  bottom: 16px;
+  right: 20px;
+  color: #fff;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.5px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
-  margin: 0;
 }
 
 .infoSection {
-  padding: 20px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 15px;
+  border-bottom: 1px solid #f0f2f7;
 }
 
-.addressInfo {
+.addressRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.pin {
-  font-size: 16px;
+  gap: 10px;
 }
 
 .address {
-  font-size: 16px;
-  color: #333;
-  line-height: 1.4;
+  flex: 1 1 auto;
+  font-size: 15px;
+  color: #717171;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
-.phoneInfo {
-  display: flex;
+.inlineRating {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex: 0 0 auto;
 }
 
-.phoneIcon {
-  font-size: 16px;
+.stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 
-.phone {
+.starsSm .star {
+  font-size: 14px;
+}
+
+.star {
+  position: relative;
   font-size: 16px;
-  color: #007aff;
-  font-weight: 500;
+  line-height: 1;
+  color: #ddd;
+}
+
+.starFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  color: #ffb400;
+  width: 0;
+}
+
+.reviewAvgText {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2d3d;
+}
+
+.reviewCount {
+  font-size: 12px;
+  color: #717171;
+  font-weight: 400;
 }
 
 .accessibilitySection {
-  padding: 20px;
+  padding: 12px 16px 8px 16px;
 }
 
 .sectionTitle {
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  margin: 0 0 10px 0;
+  color: #0b1a33;
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f2f7;
 }
 
 .chip {
   font-size: 13px;
-  padding: 8px 14px;
-  border-radius: 16px;
+  padding: 6px 12px;
+  border-radius: 14px;
   background: #f1f4fb;
   color: #244;
   border: 1px solid #e0e8f8;
-  font-weight: 500;
 }
 
+.sectionHeader {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.writeBtn {
+  color: #007aff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.writeBtn:hover {
+  filter: brightness(0.96);
+}
+
+.reviewTitle {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  color: #0b1a33;
+}
+
+.reviewList {
+  padding: 0 16px;
+}
+
+.reviewItem {
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f2f7;
+}
+
+.reviewItem:last-child {
+  border-bottom: 0;
+}
+
+.reviewHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
+}
+
+.nick {
+  font-size: 13px;
+  color: #2b3a55;
+}
+
+.itemStars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.itemStars .star {
+  font-size: 14px;
+}
+
+.itemRatingNumber {
+  font-size: 12px;
+  color: #717171;
+  margin-left: 6px;
+}
+
+.date {
+  font-size: 12px;
+  color: #9aa3af;
+  white-space: nowrap;
+}
+
+.reviewBody {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #2b3a55;
+  word-break: keep-all;
+}
+
+.empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.reasonBox {
+  margin: 12px 16px 24px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e0ebff 0%, #eef3ff 100%);
+  border: 1px solid #d7e4ff;
+  box-shadow: inset 0 0 0 1px rgba(11, 101, 212, 0.04),
+    0 4px 10px rgba(11, 101, 212, 0.06);
+}
+
+.reasonTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b65d4;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid #e1eaff;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+.reasonText {
+  font-size: 13px;
+  color: #1f2d3d;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .writeBtn {
+    transition: filter 120ms ease;
+  }
+  .reasonBox {
+    transition: box-shadow 180ms ease, transform 180ms ease;
+  }
+  .reasonBox:hover {
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 0 1px rgba(11, 101, 212, 0.06),
+      0 6px 16px rgba(11, 101, 212, 0.1);
+  }
+}
+
+.addressClickable {
+  cursor: pointer;
+}
+
+.addressClickable:hover {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  width: min(520px, calc(100% - 48px));
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0b1a33;
+}
+
+.modalClose {
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  user-select: none;
+}
+
+.modalBody {
+  padding: 16px;
+}
+
+.fullAddress {
+  margin: 0;
+  font-size: 14px;
+  color: #1f2d3d;
+  line-height: 1.6;
+  word-break: break-word;
+}
