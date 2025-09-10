@@ -3,7 +3,7 @@ import './App.css';
 import MainPage from './page/MainPage';
 import MapPage from "./page/MapPage"
 import AllPostPage from './page/AllPostPage';
-import MyPage from './page/MyPage';
+import LoginPage from './page/LoginPage';
 
 const App = () => {
   return (
@@ -13,7 +13,7 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/all" element={<AllPostPage />} />
-          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
     </>
