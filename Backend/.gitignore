@@ -1,31 +1,48 @@
+# =================================================
+# JetBrains IDE (IntelliJ) 관련 파일
+# 사용자 개인의 IDE 설정은 공유하지 않습니다.
+# =================================================
+.idea/
+*.iml
+
+# =================================================
+# Gradle 관련 파일
+# 빌드 캐시, 래퍼 등은 공유하지 않습니다.
+# =================================================
 .gradle
 build/
+gradle/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+# =================================================
+# 운영체제(OS) 자동 생성 파일
+# =================================================
+.DS_Store
+Thumbs.db
 
-.vscode/
-
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-
+# =================================================
+# 로그 파일
+# 실행 로그는 공유하지 않습니다.
+# =================================================
 *.log
 
-.env
-
+# =================================================
+# 민감한 설정 파일 (매우 중요!)
+# 로컬 환경의 API 키나 DB 접속 정보가 포함된 파일은 절대 공유하지 않습니다.
+# =================================================
 application-local.yml
+application-dev.yml
 application-prod.yml
+# 만약 application.properties를 사용한다면 아래 주석을 푸세요.
+# application-local.properties
+# application-dev.properties
+# application-prod.properties
+
+# =================================================
+# 기타
+# =================================================
+# Jar 파일
+*.jar
+# 압축 파일
+*.zip
+*.tar.gz

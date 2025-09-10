@@ -1,6 +1,7 @@
 package org.kmr.backend.attraction.api;
 
 import lombok.RequiredArgsConstructor;
+import org.kmr.backend.ai.dto.AIRecommendationResponse;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.dto.response.AttractionResponse;
 import org.kmr.backend.attraction.service.AttractionService;
@@ -16,15 +17,24 @@ import java.util.List;
 @RequestMapping("/v1/main/user/attractions")
 @RequiredArgsConstructor
 public class AttractionApi {
+
     private final AttractionService attractionService;
 
     @GetMapping("/by-district/{district}")
     public ResponseEntity<List<AttractionResponse>> getAttractionsByDistrict(@PathVariable DaeguDistrict district) {
         List<Attraction> attractions = attractionService.findAttractionsByDistrict(district);
+
         List<AttractionResponse> responseDtos = attractions.stream()
                 .map(AttractionResponse::from)
                 .toList();
 
         return ResponseEntity.ok(responseDtos);
+    }
+
+    // 랭킹 DTO 대신, 원래의 AIRecommendationResponse를 반환하도록 되돌립니다.
+    @GetMapping("/recommendations/{district}")
+    public ResponseEntity<AIRecommendationResponse> getAiRecommendations(@PathVariable DaeguDistrict district) {
+        AIRecommendationResponse response = attractionService.getRecommendedAttractions(district);
+        return ResponseEntity.ok(response);
     }
 }
