@@ -23,7 +23,7 @@ function BottomNav() {
       </NavLink>
       
       <NavLink
-        to="/mypage"
+        to="/Login"
         className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ""}`}
       >
         <FiUser className={styles.icon} />
