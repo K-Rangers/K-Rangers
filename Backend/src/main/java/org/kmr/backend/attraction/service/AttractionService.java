@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AttractionService {
-
     private final AttractionRepository attractionRepository;
 
     public List<Attraction> findAttractionsByDistrict(DaeguDistrict district) {

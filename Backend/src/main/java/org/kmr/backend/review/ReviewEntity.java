@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.user.domain.User;
-
 import java.time.LocalDateTime;
 
 @Entity

@@ -1,6 +1,6 @@
 package org.kmr.backend.attraction.dto.response;
-import org.kmr.backend.attraction.domain.Attraction;
 
+import org.kmr.backend.attraction.domain.Attraction;
 import lombok.Builder;
 import lombok.Getter;
 import org.kmr.backend.common.TourCategory;
