@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/main/user/attractions")
+@RequestMapping("/v1/main/attractions")
 @RequiredArgsConstructor
 public class AttractionApi {
     private final AttractionService attractionService;
