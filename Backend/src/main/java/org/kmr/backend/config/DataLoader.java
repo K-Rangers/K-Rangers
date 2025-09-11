@@ -58,7 +58,9 @@ public class DataLoader implements ApplicationRunner {
                                 nextLine[9],
                                 nextLine[10],
                                 nextLine[11],
-                                category
+                                category,
+                                nextLine[13],
+                                nextLine[14]
                         )
                 );
             }
