@@ -7,12 +7,12 @@ import org.kmr.backend.attraction.domain.Attraction;
 @Getter
 @Builder
 public class RankedAttractionResponse {
-    private int rank; // 순위
+    private int rank;
     private Long id;
     private String name;
     private String address;
-    private String recommendation; // AI의 추천 문구
-    private double score; // AI가 계산한 점수
+    private String recommendation;
+    private double score;
 
     public static RankedAttractionResponse of(int rank, Attraction attraction, String recommendation, double score) {
         return RankedAttractionResponse.builder()
