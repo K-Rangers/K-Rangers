@@ -23,6 +23,8 @@ public class AttractionResponse {
     private final String tableType;
     private final String lift;
     private final TourCategory category;
+    private final String latitude;
+    private final String longitude;
 
     public static AttractionResponse from(Attraction attraction) {
         return AttractionResponse.builder()
@@ -40,6 +42,8 @@ public class AttractionResponse {
                 .tableType (attraction.getTableType())
                 .lift(attraction.getLift())
                 .category(attraction.getCategory())
+                .latitude(attraction.getLatitude())
+                .longitude(attraction.getLongitude())
                 .build();
     }
 }
