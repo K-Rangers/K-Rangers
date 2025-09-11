@@ -46,6 +46,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/v1/main")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/v1/main/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/v1/main/user/attractions/by-district/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/v1/main/user/accommodations/by-district/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/v1/main/user/**")).authenticated()
                         .anyRequest().authenticated()
                 )

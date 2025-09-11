@@ -43,7 +43,8 @@ public class DataLoader implements ApplicationRunner {
             reader.skip(1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                TourCategory category = TourCategory.fromString(nextLine[12]);                attractionsToSave.add(
+                TourCategory category = TourCategory.fromString(nextLine[12]);
+                attractionsToSave.add(
                         new Attraction(
                                 nextLine[0],
                                 nextLine[1],
