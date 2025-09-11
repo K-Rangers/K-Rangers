@@ -10,7 +10,7 @@
 .phone {
   width: 100%;
   min-width: 375px;  
-  max-width: 430px;  
+  max-width: 430px;
   min-height: 100vh;
   background: #ffffff;
 }

@@ -2,7 +2,6 @@
   --ios-blue: #007aff;
   --ios-gray: #8e8e93;
   --container-width: 430px;
-  --bar-height: 75px;
 
   position: fixed;
   bottom: 0;
@@ -10,7 +9,7 @@
   max-width: var(--container-width);
   left: 50%;
   transform: translateX(-50%);
-  min-height: var(--bar-height);
+  min-height: 85px;
   box-sizing: border-box;
   background: #fff;
   border-top: 1px solid #ececec;
