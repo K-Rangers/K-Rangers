@@ -1,0 +1,74 @@
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# 가상환경
+venv/
+.venv/
+env/
+
+# 빌드/배포 산출물
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS/에디터
+.DS_Store
+Thumbs.db
+
+# 환경 변수 파일 (API 키 등 민감한 정보)
+.env
+.env.*
+*.env
+config.json
+secrets.json
+
+# API 키 및 인증 정보
+**/api_keys.txt
+**/credentials.json
+**/service_account.json
+
+# 로그/DB
+*.log
+*.sqlite
+*.sqlite3
+*.db
+logs/
+
+# IDE 및 에디터
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 대용량 모델·데이터 (필요 시)
+*.h5
+*.pt
+*.pth
+*.pkl
+*.joblib
+data/
+datasets/
+checkpoints/
+models/
+weights/
+
+# FastAPI/웹 관련
+.pytest_cache/
+htmlcov/
+.coverage
+.nyc_output
+coverage.xml
+
+# 임시 파일
+tmp/
+temp/
+*.tmp
+*.bak
