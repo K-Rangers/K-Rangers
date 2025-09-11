@@ -18,7 +18,6 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public Long join(String email, String password, String name) {
-        // 중복 회원 검증
         userRepository.findByEmail(email).ifPresent(user -> {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         });

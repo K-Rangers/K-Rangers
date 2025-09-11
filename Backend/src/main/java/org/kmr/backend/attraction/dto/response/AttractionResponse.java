@@ -1,6 +1,6 @@
 package org.kmr.backend.attraction.dto.response;
-import org.kmr.backend.attraction.domain.Attraction;
 
+import org.kmr.backend.attraction.domain.Attraction;
 import lombok.Builder;
 import lombok.Getter;
 import org.kmr.backend.common.TourCategory;
@@ -23,6 +23,8 @@ public class AttractionResponse {
     private final String tableType;
     private final String lift;
     private final TourCategory category;
+    private final String latitude;
+    private final String longitude;
 
     public static AttractionResponse from(Attraction attraction) {
         return AttractionResponse.builder()
@@ -40,6 +42,8 @@ public class AttractionResponse {
                 .tableType (attraction.getTableType())
                 .lift(attraction.getLift())
                 .category(attraction.getCategory())
+                .latitude(attraction.getLatitude())
+                .longitude(attraction.getLongitude())
                 .build();
     }
 }

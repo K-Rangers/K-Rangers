@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/main")
-public class UserApi { // 클래스 이름을 UserController에서 UserApi로 변경
+public class UserApi {
 
     private final UserService userService;
 

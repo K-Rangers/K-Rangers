@@ -4,9 +4,9 @@ import styles from "../css/AllPostView.module.css";
 import RecommendedCard from "./RecommendedCard";
 import { FiChevronLeft } from "react-icons/fi";
 
-function AllView({ items = [], onClose }) {
+function AllView({ items = [], onClose, reviews = [] , reasons = []}) {
   const navigate = useNavigate();
-  
+
   const handleKeyDown = (e) => {
     if (!onClose) return;
     if (e.key === "Enter" || e.key === " ") {
@@ -43,13 +43,18 @@ function AllView({ items = [], onClose }) {
         <p>표시할 항목이 없습니다.</p>
       ) : (
         <div className={styles.grid}>
-          {items.map((it) => (
-            <RecommendedCard 
-              key={it.id} 
-              item={it} 
-              onClick={() => handleCardClick(it)}
-            />
-          ))}
+          {items.map((it) => {
+            const itemReviews = reviews.filter((r) => r.placeId === it.id);
+            return (
+              <RecommendedCard
+                key={it.id}
+                item={it}
+                onClick={() => handleCardClick(it)}
+                reviews={itemReviews}
+                reason={reasons[it.id]}
+              />
+            );
+          })}
         </div>
       )}
     </section>

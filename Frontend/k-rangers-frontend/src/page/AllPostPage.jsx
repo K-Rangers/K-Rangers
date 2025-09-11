@@ -8,6 +8,8 @@ function AllPostPage() {
 
     const title = state?.title ?? "";
     const items = state?.items ?? [];
+    const reviews = state?.reviews ?? [];
+    const reason = state?.reasons ?? [];
 
     return (
         <div className={styles.app}>
@@ -17,6 +19,8 @@ function AllPostPage() {
                         title={title}
                         items={items}
                         onClose={() => navigate(-1)}
+                        reviews={reviews}
+                        reasons = {reason}
                     />
                 </div>
             </div>

@@ -43,7 +43,8 @@ public class DataLoader implements ApplicationRunner {
             reader.skip(1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                TourCategory category = TourCategory.fromString(nextLine[12]);                attractionsToSave.add(
+                TourCategory category = TourCategory.fromString(nextLine[12]);
+                attractionsToSave.add(
                         new Attraction(
                                 nextLine[0],
                                 nextLine[1],
@@ -57,7 +58,9 @@ public class DataLoader implements ApplicationRunner {
                                 nextLine[9],
                                 nextLine[10],
                                 nextLine[11],
-                                category
+                                category,
+                                nextLine[13],
+                                nextLine[14]
                         )
                 );
             }
@@ -80,7 +83,20 @@ public class DataLoader implements ApplicationRunner {
             reader.skip(1);
             String[] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                accommodationsToSave.add(new Accommodation(nextLine[0], nextLine[1]));
+                accommodationsToSave.add(
+                        new Accommodation(
+                                nextLine[0],
+                                nextLine[1],
+                                nextLine[2],
+                                nextLine[3],
+                                nextLine[4],
+                                nextLine[5],
+                                nextLine[6],
+                                nextLine[7],
+                                nextLine[8],
+                                nextLine[9],
+                                nextLine[10],
+                                nextLine[11]));
             }
         }
 

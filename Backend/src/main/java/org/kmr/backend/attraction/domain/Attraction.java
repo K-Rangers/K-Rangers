@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.kmr.backend.common.TourCategory;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Attraction {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,9 +31,13 @@ public class Attraction {
     @Enumerated(EnumType.STRING)
     private TourCategory category;
 
+    private String latitude;
+    private String longitude;
+
     public Attraction(String name, String address, String elevator, String parking, String facility,
                       String ramp, String informationCenter, String restroom,
-                      String wheelchairRental, String restaurant, String tableType, String lift, TourCategory category) {
+                      String wheelchairRental, String restaurant, String tableType, String lift, TourCategory category,
+                      String latitude, String longitude) {
         this.name = name;
         this.address = address;
         this.elevator = elevator;
@@ -46,5 +51,7 @@ public class Attraction {
         this.tableType = tableType;
         this.lift = lift;
         this.category = category;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }
