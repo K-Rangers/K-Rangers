@@ -16,7 +16,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final UserRepository userRepository;
 
-    @PostMapping("/create/{attractionId}")
+    @PostMapping("/attr/create/{attractionId}")
     public ResponseEntity<ReviewResponseDTO> createReview(@PathVariable Long attractionId,
                                                           @RequestBody ReviewRequestDTO request,
                                                           @AuthenticationPrincipal UserDetails userDetails) {
@@ -27,21 +27,43 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{attractionId}")
+    @GetMapping("/attr/{attractionId}")
     public ResponseEntity<List<ReviewResponseDTO>> getReviews(@PathVariable Long attractionId) {
         List<ReviewResponseDTO> reviews = reviewService.getReviewsByAttraction(attractionId);
         return ResponseEntity.ok(reviews);
     }
 
-    @GetMapping("/{attractionId}/avg")
+    @GetMapping("/attr/{attractionId}/avg")
     public ResponseEntity<Double> getAvgRating(@PathVariable Long attractionId) {
         Double avg = reviewService.getAvgRatingByAttraction(attractionId);
         return ResponseEntity.ok(avg);
     }
 
-    @GetMapping("/{attractionId}/summary")
+    @GetMapping("/attr/{attractionId}/summary")
     public ResponseEntity<String> getReviewSummary(@PathVariable Long attractionId) {
         String summary = reviewService.getReviewSummary(attractionId);
         return ResponseEntity.ok(summary);
+    }
+
+    @PostMapping("/accom/create/{accommodationId}")
+    public ResponseEntity<ReviewAccomResponseDTO> createAccomReview(@PathVariable Long accommodationId,
+                                                          @RequestBody ReviewAccomRequestDTO request,
+                                                          @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(()-> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+
+        ReviewAccomResponseDTO response = reviewService.createAccomReview(accommodationId, user, request);
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/accom/{accommodationId}")
+    public ResponseEntity<List<ReviewAccomResponseDTO>> getAccomReviews(@PathVariable Long accommodationId) {
+        List<ReviewAccomResponseDTO> reviews = reviewService.getReviewsByAccommodation(accommodationId);
+        return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("accom/{accommodationId}/avg")
+    public ResponseEntity<Double> getAccomAvgRating(@PathVariable Long accommodationId) {
+        Double avg = reviewService.getAvgRatingByAccommodation(accommodationId);
+        return ResponseEntity.ok(avg);
     }
 }
