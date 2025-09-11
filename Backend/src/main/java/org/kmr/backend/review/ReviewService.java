@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final AttractionRepository attractionRepository;
-    private final AIServiceClient aiServiceClient; // AI 클라이언트 주입
+    private final AIServiceClient aiServiceClient;
 
     public ReviewResponseDTO createReview(Long attractionId, User user,ReviewRequestDTO request) {
         Attraction attraction = attractionRepository.findById(attractionId)

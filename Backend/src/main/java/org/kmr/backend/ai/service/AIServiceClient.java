@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.kmr.backend.ai.dto.request.AISummarizationRequest;
 import org.kmr.backend.ai.dto.response.AISummarizationResponse;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
