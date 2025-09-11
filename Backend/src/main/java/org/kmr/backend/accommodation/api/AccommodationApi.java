@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/main/user/accommodations")
+@RequestMapping("/v1/main/accommodations")
 @RequiredArgsConstructor
 public class AccommodationApi {
     private final AccommodationService accommodationService;
