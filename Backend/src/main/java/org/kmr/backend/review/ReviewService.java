@@ -1,8 +1,8 @@
 package org.kmr.backend.review;
 
 import lombok.RequiredArgsConstructor;
-import org.kmr.backend.ai.dto.AISummarizationRequest;
-import org.kmr.backend.ai.dto.AISummarizationResponse;
+import org.kmr.backend.ai.dto.request.AISummarizationRequest;
+import org.kmr.backend.ai.dto.response.AISummarizationResponse;
 import org.kmr.backend.ai.service.AIServiceClient;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.repository.AttractionRepository;

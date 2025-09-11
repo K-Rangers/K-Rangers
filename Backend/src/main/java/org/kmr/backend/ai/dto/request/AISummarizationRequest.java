@@ -1,4 +1,4 @@
-package org.kmr.backend.ai.dto;
+package org.kmr.backend.ai.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
