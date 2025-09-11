@@ -31,13 +31,13 @@ function SignUpPage({ onDone }) {
   };
 
   return (
-    <div className={styles.viewport}>
-      <div className={styles.phone}>
+    <div className={styles.app}> 
+      <div className={styles.phone}> 
         <div className={styles.header}>
           <img src={logo} alt="앱 로고" className={styles.logo} />
         </div>
 
-        <form className={styles.app} onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form className={styles.formBox} onSubmit={handleSubmit(onSubmit)} noValidate>
           <label className={styles.label} htmlFor="name">이름</label>
           <input
             id="name"
@@ -49,10 +49,7 @@ function SignUpPage({ onDone }) {
               required: "이름을 입력하세요.",
               minLength: { value: 2, message: "이름은 2자 이상이어야 합니다." },
               maxLength: { value: 20, message: "이름은 20자 이하여야 합니다." },
-              pattern: {
-                value: /^[A-Za-z가-힣\s]+$/,
-                message: "이름은 한글/영문만 입력하세요."
-              }
+              pattern: { value: /^[A-Za-z가-힣\s]+$/, message: "이름은 한글/영문만 입력하세요." }
             })}
           />
           {errors.name && <span className={styles.errorText}>{errors.name.message}</span>}
@@ -81,10 +78,7 @@ function SignUpPage({ onDone }) {
             autoComplete="new-password"
             {...register("password", {
               required: "비밀번호를 입력하세요.",
-              pattern: {
-                value: /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/,
-                message: "비밀번호는 특수문자를 포함하고 8자 이상이어야 합니다."
-              }
+              pattern: { value: /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/, message: "비밀번호는 특수문자를 포함하고 8자 이상이어야 합니다." }
             })}
           />
           {errors.password && <span className={styles.errorText}>{errors.password.message}</span>}
@@ -105,11 +99,7 @@ function SignUpPage({ onDone }) {
             <span className={styles.errorText}>{errors.confirmPassword.message}</span>
           )}
 
-          <button
-            className={styles.button}
-            type="submit"
-            disabled={!isValid || isSubmitting}
-          >
+          <button className={styles.button} type="submit" disabled={!isValid || isSubmitting}>
             {isSubmitting ? "처리 중..." : "가입하기"}
           </button>
 
@@ -123,6 +113,8 @@ function SignUpPage({ onDone }) {
               로그인
             </button>
           </p>
+
+          {errors.root && <span className={styles.errorText}>{errors.root.message}</span>}
         </form>
 
         <BottomNav />
