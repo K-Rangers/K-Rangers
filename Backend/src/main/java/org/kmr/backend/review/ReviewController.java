@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -38,5 +37,11 @@ public class ReviewController {
     public ResponseEntity<Double> getAvgRating(@PathVariable Long attractionId) {
         Double avg = reviewService.getAvgRatingByAttraction(attractionId);
         return ResponseEntity.ok(avg);
+    }
+
+    @GetMapping("/{attractionId}/summary")
+    public ResponseEntity<String> getReviewSummary(@PathVariable Long attractionId) {
+        String summary = reviewService.getReviewSummary(attractionId);
+        return ResponseEntity.ok(summary);
     }
 }

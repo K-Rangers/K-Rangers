@@ -6,14 +6,12 @@ import org.kmr.backend.accommodation.repository.AccommodationRepository;
 import org.kmr.backend.common.DaeguDistrict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AccommodationService {
-
     private final AccommodationRepository accommodationRepository;
 
     public List<Accommodation> findAccommodationsByDistrict(DaeguDistrict district) {
