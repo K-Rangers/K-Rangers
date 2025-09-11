@@ -11,4 +11,7 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     List<ReviewEntity> findByAttractionIdOrderByCreatedAtDesc(Long attraction);
     @Query("SELECT AVG(r.rating) FROM ReviewEntity r WHERE r.attraction.id =:attractionId")
     Double findAvgRatingByAttractionId(@Param("attractionId") Long attractionId);
+    List<ReviewEntity> findByAccommodationIdOrderByCreatedAtDesc(Long attraction);
+    @Query("SELECT AVG(r.rating) FROM ReviewEntity r WHERE r.accommodation.id =:accommodationId")
+    Double findAvgRatingByAccommodationId(@Param("accommodationId") Long accommodationId);
 }

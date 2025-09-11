@@ -9,8 +9,8 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "ReviewRequest DTO", description = "관광지 리뷰 요청 DTO")
-public class ReviewRequestDTO {
+@Schema(name = "Review Accommodation Request DTO", description = "숙박시설 리뷰 요청 DTO")
+public class ReviewAccomRequestDTO {
     private String content;
     private Integer rating;
 }

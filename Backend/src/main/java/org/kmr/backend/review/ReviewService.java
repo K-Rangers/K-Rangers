@@ -1,6 +1,8 @@
 package org.kmr.backend.review;
 
 import lombok.RequiredArgsConstructor;
+import org.kmr.backend.accommodation.domain.Accommodation;
+import org.kmr.backend.accommodation.repository.AccommodationRepository;
 import org.kmr.backend.ai.dto.request.AISummarizationRequest;
 import org.kmr.backend.ai.dto.response.AISummarizationResponse;
 import org.kmr.backend.ai.service.AIServiceClient;
@@ -19,6 +21,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final AttractionRepository attractionRepository;
     private final AIServiceClient aiServiceClient;
+    private final AccommodationRepository accommodationRepository;
 
     public ReviewResponseDTO createReview(Long attractionId, User user,ReviewRequestDTO request) {
         Attraction attraction = attractionRepository.findById(attractionId)
@@ -66,5 +69,32 @@ public class ReviewService {
 
         AISummarizationResponse response = aiServiceClient.fetchSummary(request);
         return response.getSummary();
+    }
+
+    public ReviewAccomResponseDTO createAccomReview(Long accommodationId, User user,ReviewAccomRequestDTO request) {
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 숙박시설이 존재하지 않습니다."));
+
+        ReviewEntity review = ReviewEntity.builder()
+                .accommodation(accommodation)
+                .user(user)
+                .content(request.getContent())
+                .rating(request.getRating())
+                .build();
+
+        return reviewRepository.save(review).toAccomDTO();
+    }
+    public List<ReviewAccomResponseDTO> getReviewsByAccommodation(Long accommodationId) {
+        return reviewRepository.findByAccommodationIdOrderByCreatedAtDesc(accommodationId).stream()
+                .map(ReviewEntity::toAccomDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Double getAvgRatingByAccommodation(Long accommodationId) {
+        Double avg = reviewRepository.findAvgRatingByAccommodationId(accommodationId);
+        if (avg == null) {
+            return 0.0;
+        }
+        return Math.round(avg * 10) / 10.0;
     }
 }
