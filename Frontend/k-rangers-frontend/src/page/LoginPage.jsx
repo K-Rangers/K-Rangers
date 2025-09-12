@@ -25,7 +25,7 @@ function isJwtExpired(token) {
     return json.exp <= nowSec;
   } catch {
     return true;
-  }
+  } 
 }
 
 function LoginPage() {
