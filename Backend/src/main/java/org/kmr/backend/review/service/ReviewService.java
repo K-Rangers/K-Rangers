@@ -18,6 +18,7 @@ import org.kmr.backend.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,5 +103,17 @@ public class ReviewService {
             return 0.0;
         }
         return Math.round(avg * 10) / 10.0;
+    }
+
+    @Transactional
+    public void deleteReview(Long reviewId, User user) {
+        ReviewEntity review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
+
+        if (!Objects.equals(review.getUser().getId(), user.getId())) {
+            throw new IllegalArgumentException("리뷰를 삭제할 권한이 없습니다.");
+        }
+
+        reviewRepository.delete(review);
     }
 }

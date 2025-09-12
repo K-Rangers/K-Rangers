@@ -71,4 +71,12 @@ public class ReviewController {
         Double avg = reviewService.getAvgRatingByAccommodation(accommodationId);
         return ResponseEntity.ok(avg);
     }
+
+    @DeleteMapping("/v1/main/user/reviews/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+        reviewService.deleteReview(reviewId, user);
+        return ResponseEntity.noContent().build();
+    }
 }

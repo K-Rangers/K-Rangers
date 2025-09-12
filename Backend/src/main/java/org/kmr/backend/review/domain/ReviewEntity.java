@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reviewId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attraction_id")
@@ -45,6 +45,7 @@ public class ReviewEntity {
 
     public ReviewResponseDTO toDTO() {
         return ReviewResponseDTO.builder()
+                .reviewId(reviewId)
                 .userId(user.getId())
                 .userName(user.getName())
                 .attractionId(attraction.getId())
@@ -57,6 +58,7 @@ public class ReviewEntity {
 
     public ReviewAccomResponseDTO toAccomDTO() {
         return ReviewAccomResponseDTO.builder()
+                .reviewId(reviewId)
                 .userId(user.getId())
                 .userName(user.getName())
                 .accommodationId(accommodation.getId())
