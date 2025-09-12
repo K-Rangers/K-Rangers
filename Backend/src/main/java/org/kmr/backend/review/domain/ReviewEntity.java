@@ -1,9 +1,12 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.kmr.backend.accommodation.domain.Accommodation;
 import org.kmr.backend.attraction.domain.Attraction;
+import org.kmr.backend.review.dto.ReviewResponseDTO;
+import org.kmr.backend.review.dto.ReviewAccomResponseDTO;
 import org.kmr.backend.user.domain.User;
 import java.time.LocalDateTime;
 
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 public class ReviewEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reviewId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attraction_id")
@@ -26,6 +29,11 @@ public class ReviewEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accommodation_id")
+    private Accommodation accommodation;
 
     @Lob
     private String content;
@@ -37,10 +45,24 @@ public class ReviewEntity {
 
     public ReviewResponseDTO toDTO() {
         return ReviewResponseDTO.builder()
+                .reviewId(reviewId)
                 .userId(user.getId())
                 .userName(user.getName())
                 .attractionId(attraction.getId())
                 .attractionName(attraction.getName())
+                .content(content)
+                .createdAt(createdAt)
+                .rating(rating)
+                .build();
+    }
+
+    public ReviewAccomResponseDTO toAccomDTO() {
+        return ReviewAccomResponseDTO.builder()
+                .reviewId(reviewId)
+                .userId(user.getId())
+                .userName(user.getName())
+                .accommodationId(accommodation.getId())
+                .accommodationName(accommodation.getName())
                 .content(content)
                 .createdAt(createdAt)
                 .rating(rating)

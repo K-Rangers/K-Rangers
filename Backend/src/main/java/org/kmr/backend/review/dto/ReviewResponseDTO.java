@@ -1,4 +1,4 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "ReviewResponse DTO", description = "리뷰 응답 DTO")
+@Schema(name = "ReviewResponse DTO", description = "관광지 리뷰 응답 DTO")
 public class ReviewResponseDTO {
+    private Long reviewId;
     private Long attractionId;
     private String attractionName;
     private Long userId;

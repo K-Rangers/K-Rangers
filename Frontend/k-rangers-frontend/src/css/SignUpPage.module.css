@@ -1,12 +1,23 @@
+.app {
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  background: #f6f7fb;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .phone {
-  width: 430px;
-  margin: 0 auto;
+  width: 100%;
+  min-width: 375px;
+  max-width: 430px;
+  min-height: 100vh;
   background: #ffffff;
-  border-radius: 0;
-  box-shadow: none;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  overflow-y: auto;
 }
 
 .header {
@@ -26,22 +37,16 @@
   margin-top: 30px;
 }
 
-.app {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px 0;
-  background: #ffffff;
-  overflow: hidden;
-}
-
 .formBox {
   width: 90%;
   max-width: 360px;
+  margin: 0 auto;        
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+  padding: 24px 0; 
+  background: #ffffff;
+  padding-bottom: 100px;
 }
 
 .label {
@@ -72,14 +77,15 @@
 }
 
 .errorText {
+  display: block;
   font-size: 13px;
   color: #e63946;
-  margin-top: 4px;
+  margin-left: 20px;
 }
 
 .button {
   width: 90%;
-  margin: 20px auto 0;
+  margin: 15px auto 0;
   padding: 15px;
   font-size: 16px;
   font-weight: 600;

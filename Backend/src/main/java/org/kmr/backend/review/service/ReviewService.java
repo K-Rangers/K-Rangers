@@ -1,15 +1,24 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.service;
 
 import lombok.RequiredArgsConstructor;
+import org.kmr.backend.accommodation.domain.Accommodation;
+import org.kmr.backend.accommodation.repository.AccommodationRepository;
 import org.kmr.backend.ai.dto.request.AISummarizationRequest;
 import org.kmr.backend.ai.dto.response.AISummarizationResponse;
 import org.kmr.backend.ai.service.AIServiceClient;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.repository.AttractionRepository;
+import org.kmr.backend.review.domain.ReviewEntity;
+import org.kmr.backend.review.dto.ReviewAccomRequestDTO;
+import org.kmr.backend.review.dto.ReviewAccomResponseDTO;
+import org.kmr.backend.review.dto.ReviewRequestDTO;
+import org.kmr.backend.review.dto.ReviewResponseDTO;
+import org.kmr.backend.review.repository.ReviewRepository;
 import org.kmr.backend.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +28,9 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final AttractionRepository attractionRepository;
     private final AIServiceClient aiServiceClient;
+    private final AccommodationRepository accommodationRepository;
 
-    public ReviewResponseDTO createReview(Long attractionId, User user,ReviewRequestDTO request) {
+    public ReviewResponseDTO createReview(Long attractionId, User user, ReviewRequestDTO request) {
         Attraction attraction = attractionRepository.findById(attractionId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 관광지가 존재하지 않습니다."));
 
@@ -66,5 +76,44 @@ public class ReviewService {
 
         AISummarizationResponse response = aiServiceClient.fetchSummary(request);
         return response.getSummary();
+    }
+
+    public ReviewAccomResponseDTO createAccomReview(Long accommodationId, User user, ReviewAccomRequestDTO request) {
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 숙박시설이 존재하지 않습니다."));
+
+        ReviewEntity review = ReviewEntity.builder()
+                .accommodation(accommodation)
+                .user(user)
+                .content(request.getContent())
+                .rating(request.getRating())
+                .build();
+
+        return reviewRepository.save(review).toAccomDTO();
+    }
+    public List<ReviewAccomResponseDTO> getReviewsByAccommodation(Long accommodationId) {
+        return reviewRepository.findByAccommodationIdOrderByCreatedAtDesc(accommodationId).stream()
+                .map(ReviewEntity::toAccomDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Double getAvgRatingByAccommodation(Long accommodationId) {
+        Double avg = reviewRepository.findAvgRatingByAccommodationId(accommodationId);
+        if (avg == null) {
+            return 0.0;
+        }
+        return Math.round(avg * 10) / 10.0;
+    }
+
+    @Transactional
+    public void deleteReview(Long reviewId, User user) {
+        ReviewEntity review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
+
+        if (!Objects.equals(review.getUser().getId(), user.getId())) {
+            throw new IllegalArgumentException("리뷰를 삭제할 권한이 없습니다.");
+        }
+
+        reviewRepository.delete(review);
     }
 }
