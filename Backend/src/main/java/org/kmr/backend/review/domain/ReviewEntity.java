@@ -1,10 +1,12 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.kmr.backend.accommodation.domain.Accommodation;
 import org.kmr.backend.attraction.domain.Attraction;
+import org.kmr.backend.review.dto.ReviewResponseDTO;
+import org.kmr.backend.review.dto.ReviewAccomResponseDTO;
 import org.kmr.backend.user.domain.User;
 import java.time.LocalDateTime;
 

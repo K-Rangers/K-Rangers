@@ -1,4 +1,4 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.service;
 
 import lombok.RequiredArgsConstructor;
 import org.kmr.backend.accommodation.domain.Accommodation;
@@ -8,6 +8,12 @@ import org.kmr.backend.ai.dto.response.AISummarizationResponse;
 import org.kmr.backend.ai.service.AIServiceClient;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.repository.AttractionRepository;
+import org.kmr.backend.review.domain.ReviewEntity;
+import org.kmr.backend.review.dto.ReviewAccomRequestDTO;
+import org.kmr.backend.review.dto.ReviewAccomResponseDTO;
+import org.kmr.backend.review.dto.ReviewRequestDTO;
+import org.kmr.backend.review.dto.ReviewResponseDTO;
+import org.kmr.backend.review.repository.ReviewRepository;
 import org.kmr.backend.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +29,7 @@ public class ReviewService {
     private final AIServiceClient aiServiceClient;
     private final AccommodationRepository accommodationRepository;
 
-    public ReviewResponseDTO createReview(Long attractionId, User user,ReviewRequestDTO request) {
+    public ReviewResponseDTO createReview(Long attractionId, User user, ReviewRequestDTO request) {
         Attraction attraction = attractionRepository.findById(attractionId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 관광지가 존재하지 않습니다."));
 
@@ -71,7 +77,7 @@ public class ReviewService {
         return response.getSummary();
     }
 
-    public ReviewAccomResponseDTO createAccomReview(Long accommodationId, User user,ReviewAccomRequestDTO request) {
+    public ReviewAccomResponseDTO createAccomReview(Long accommodationId, User user, ReviewAccomRequestDTO request) {
         Accommodation accommodation = accommodationRepository.findById(accommodationId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 숙박시설이 존재하지 않습니다."));
 

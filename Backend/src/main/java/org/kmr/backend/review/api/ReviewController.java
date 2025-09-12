@@ -1,6 +1,11 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.api;
 
 import lombok.RequiredArgsConstructor;
+import org.kmr.backend.review.dto.ReviewRequestDTO;
+import org.kmr.backend.review.dto.ReviewResponseDTO;
+import org.kmr.backend.review.service.ReviewService;
+import org.kmr.backend.review.dto.ReviewAccomRequestDTO;
+import org.kmr.backend.review.dto.ReviewAccomResponseDTO;
 import org.kmr.backend.user.domain.User;
 import org.kmr.backend.user.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +51,8 @@ public class ReviewController {
 
     @PostMapping("/v1/main/user/reviews/accom/create/{accommodationId}")
     public ResponseEntity<ReviewAccomResponseDTO> createAccomReview(@PathVariable Long accommodationId,
-                                                          @RequestBody ReviewAccomRequestDTO request,
-                                                          @AuthenticationPrincipal UserDetails userDetails) {
+                                                                    @RequestBody ReviewAccomRequestDTO request,
+                                                                    @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(()-> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
