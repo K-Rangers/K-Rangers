@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List
 from analyzer import summarize_reviews_with_openai
@@ -7,6 +8,15 @@ app = FastAPI(
     title="K-Rangers AI-Server",
     description="관광지 리뷰 요약을 위한 AI 분석 서버입니다.",
     version="1.0.0"
+)
+
+# CORS 설정 추가
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 개발 환경에서는 모든 오리진 허용
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class SummarizationRequest(BaseModel):
