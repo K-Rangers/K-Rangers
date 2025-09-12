@@ -1,4 +1,4 @@
-package org.kmr.backend.review;
+package org.kmr.backend.review.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

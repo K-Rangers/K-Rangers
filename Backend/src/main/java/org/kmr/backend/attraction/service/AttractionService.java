@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.repository.AttractionRepository;
 import org.kmr.backend.common.DaeguDistrict;
-import org.kmr.backend.review.ReviewService;
+import org.kmr.backend.review.service.ReviewService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
