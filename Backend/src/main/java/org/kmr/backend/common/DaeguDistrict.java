@@ -12,7 +12,8 @@ public enum DaeguDistrict {
     SUSEONG_GU("수성구"),
     DALSEO_GU("달서구"),
     DALSEONG_GUN("달성군"),
-    CHILGOK("칠곡");
+    CHILGOK("칠곡"),
+    ALL("전체");
 
     private final String koreanName;
 

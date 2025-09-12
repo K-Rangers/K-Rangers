@@ -15,7 +15,11 @@ public class AccommodationService {
     private final AccommodationRepository accommodationRepository;
 
     public List<Accommodation> findAccommodationsByDistrict(DaeguDistrict district) {
-        String districtName = district.getKoreanName();
-        return accommodationRepository.findByAddressContaining(districtName);
+        if (district == DaeguDistrict.ALL) {
+            return accommodationRepository.findAll();
+        } else {
+            String districtName = district.getKoreanName();
+            return accommodationRepository.findByAddressContaining(districtName);
+        }
     }
 }
