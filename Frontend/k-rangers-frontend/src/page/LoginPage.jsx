@@ -11,7 +11,7 @@ function MyPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/login");
+    navigate("/mypage");
   };
 
   return (
