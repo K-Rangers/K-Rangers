@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import HeroSection from "./HeroSection";
 import AccessChips from "./AccessChips";
 import RecommendedList from "./RecommendedList";
-import { RECOMMEND_REASONS } from "../Data/Data";
 import { getAttractionsByDistrict, getAttractionReviews, getAttractionReviewSummary, getAttractionRatingAvg } from "../api/ApiStore";
 
 const isOn = (v) => {
@@ -16,9 +15,6 @@ export default function RecommendationsSection() {
   const [districtCode, setDistrictCode] = useState("ALL");
   const [features, setFeatures] = useState(new Set());
   const [items, setItems] = useState([]);
-  const [reviews, setReviews] = useState({});
-  const [summaries, setSummaries] = useState({});
-  const [ratings, setRatings] = useState({}); 
 
   const handleDistrictSubmit = useCallback((payload) => {
     const code =
@@ -33,38 +29,22 @@ export default function RecommendationsSection() {
       .then(async (attractions) => {
         if (!alive) return;
         const attractionList = Array.isArray(attractions) ? attractions : [];
-        setItems(attractionList);
-
         const promises = attractionList.map(async (item) => {
           const reviews = await getAttractionReviews(item.id).catch(() => []);
           const summary = await getAttractionReviewSummary(item.id).catch(() => null);
-          const rating = await getAttractionRatingAvg(item.id).catch(() => 0); 
-          return { id: item.id, reviews, summary, rating };
+          const rating = await getAttractionRatingAvg(item.id).catch(() => 0);
+          return { ...item, reviews, summary, rating };
         });
 
-        const fetchedData = await Promise.all(promises);
+        const enhancedAttractionList = await Promise.all(promises);
         
-        const reviewMap = {};
-        const summaryMap = {};
-        const ratingMap = {};
-        fetchedData.forEach(({ id, reviews, summary, rating }) => {
-          reviewMap[id] = reviews;
-          summaryMap[id] = summary;
-          ratingMap[id] = rating;
-        });
-
         if (alive) {
-          setReviews(reviewMap);
-          setSummaries(summaryMap);
-          setRatings(ratingMap);
+          setItems(enhancedAttractionList); 
         }
       })
       .catch(() => {
         if (alive) {
           setItems([]);
-          setReviews({});
-          setSummaries({});
-          setRatings({});
         }
       });
 
@@ -92,10 +72,6 @@ export default function RecommendationsSection() {
       <AccessChips selected={[...features]} onToggle={toggleFeature} />
       <RecommendedList
         items={filtered}
-        reviews={reviews}
-        reasons={RECOMMEND_REASONS}
-        summaries={summaries}
-        ratings={ratings} 
       />
     </section>
   );

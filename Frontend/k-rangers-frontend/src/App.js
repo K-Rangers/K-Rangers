@@ -6,6 +6,7 @@ import AllPostPage from './page/AllPostPage';
 import LoginPage from './page/LoginPage';
 import SignUpPage from './page/SignUpPage';
 import MyPage from './page/MyPage';
+import ReviewWrite from './page/ReviewWritePage';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/reviews/new" element={<ReviewWrite />} />
         </Routes>
       </main>
     </>

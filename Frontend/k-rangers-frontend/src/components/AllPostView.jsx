@@ -7,8 +7,7 @@ import { FiChevronLeft } from "react-icons/fi";
 function AllView({ onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const { items = [], reviews = {}, reasons = {}, summaries = {}, ratings = {} } = location.state || {};
+  const { items = [] } = location.state || {};
   
   const handleKeyDown = (e) => {
     if (!onClose) return;
@@ -47,15 +46,14 @@ function AllView({ onClose }) {
       ) : (
         <div className={styles.grid}>
           {items.map((it) => {
-            const itemReviews = reviews[it.id] || [];
             return (
               <RecommendedCard
                 key={it.id}
                 item={it}
                 onClick={() => handleCardClick(it)}
-                reviews={itemReviews}
-                reason={summaries[it.id] || reasons[it.id]}
-                rating={ratings[it.id] || 0} // 👈 여기서도 평점 데이터를 전달!
+                reviews={it.reviews}
+                rating={it.rating}
+                reason={it.summary || "요약할 리뷰가 없습니다."} 
               />
             );
           })}

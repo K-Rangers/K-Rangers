@@ -1,12 +1,14 @@
+// src/pages/Login.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import styles from "../css/Login.module.css";
 import logo from "../assets/Mainlogo.png";
 import { login } from "../api/ApiStore.js";
 
-function MyPage() {
+export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,12 +85,11 @@ function MyPage() {
               </button>
             </div>
           </form>
-
           <p className={styles.signupText}>
             아이디가 없으신가요?{" "}
             <span
               className={styles.signupLink}
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/signup", { state: { redirectTo } })}
             >
               회원가입
             </span>
