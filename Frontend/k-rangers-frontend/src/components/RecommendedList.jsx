@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styles from "../css/RecommendedList.module.css";
 import RecommendedCard from "./RecommendedCard";
 
-// 👈 ratings를 props로 추가
 function RecommendedList({ items = [], reviews = {}, reasons = {}, summaries = {}, ratings = {} }) {
   const navigate = useNavigate();
   const title = "AI 추천 여행지";
@@ -11,7 +10,6 @@ function RecommendedList({ items = [], reviews = {}, reasons = {}, summaries = {
   const view = items.slice(0, 1);
 
   const handleSeeAll = () => {
-    // 💥 navigate 함수에 ratings도 함께 state로 넘김
     navigate("/all", { state: { items, reviews, reasons, summaries, ratings } }); 
   };
 
@@ -46,7 +44,7 @@ function RecommendedList({ items = [], reviews = {}, reasons = {}, summaries = {
                 reviews={itemReviews}
                 onClick={handleCardClick}
                 reason={summaries[it.id] || reasons[it.id]}
-                rating={ratings[it.id] || 0} // 👈 여기서 평점 데이터를 전달!
+                rating={ratings[it.id] || 0} 
               />
             );
           })}

@@ -28,7 +28,7 @@ const CATEGORY_LABELS = {
   Theater: "공연예술극장",
 };
 
-function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) { // 👈 수정: rating props 추가
+function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) { 
   const chips = [
     isOn(item.restroom) && "장애인 화장실",
     isOn(item.elevator) && "엘리베이터",
@@ -41,8 +41,6 @@ function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) { 
     isOn(item.lift) && "휠체어 리프트",
   ].filter(Boolean);
 
-  // 💥 삭제: useMemo로 평균 계산하는 로직이 이제 필요 없음
-  // 대신 reviews 배열 길이를 사용해 리뷰 개수 표시
   const reviewCount = reviews.length;
 
   const renderStars = (rating = 0) => {

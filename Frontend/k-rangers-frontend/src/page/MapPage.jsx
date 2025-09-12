@@ -29,7 +29,6 @@ export default function MapPage() {
         const rows = await getAttractionsByDistrict("ALL");
         const attractionList = Array.isArray(rows) ? rows : [];
 
-        // 💥 수정: 리뷰, 요약, 평점 데이터를 한 번에 가져와서 raw 데이터에 포함
         const promises = attractionList.map(async (item) => {
           const reviews = await getAttractionReviews(item.id).catch(() => []);
           const summary = await getAttractionReviewSummary(item.id).catch(() => null);
@@ -46,7 +45,7 @@ export default function MapPage() {
             return {
               lat: ll.lat,
               lng: ll.lng,
-              raw: r, // raw 데이터에 모든 정보가 담겨 있음
+              raw: r, 
             };
           })
           .filter(Boolean);
@@ -59,7 +58,6 @@ export default function MapPage() {
     })();
   }, []);
 
-  // 💥 레이지 로딩 로직 유지: 100개씩 나눠서 지도에 그리기
   useEffect(() => {
     if (allMarkers.length === 0) return;
 
@@ -98,7 +96,6 @@ export default function MapPage() {
       allMarkers.find(
         (mm) => mm.raw?.id && selectedItem.id && mm.raw.id === selectedItem.id
       );
-    // 두 번째 find 로직은 이전 코드와 충돌할 수 있어 제거
     if (matching) {
       setSelected(matching.raw);
       setOpen(true);
@@ -121,7 +118,7 @@ export default function MapPage() {
 
         <BottomSheet open={open} onClose={() => setOpen(false)}>
           {selected ? (
-            <DetailPost item={selected} /> // 💥 수정: 모든 정보가 담긴 selected 객체를 그대로 전달
+            <DetailPost item={selected} /> 
           ) : (
             <div className={styles.sheetContent} />
           )}

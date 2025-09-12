@@ -18,7 +18,7 @@ export default function RecommendationsSection() {
   const [items, setItems] = useState([]);
   const [reviews, setReviews] = useState({});
   const [summaries, setSummaries] = useState({});
-  const [ratings, setRatings] = useState({}); // 👈 추가: 평균 평점 상태
+  const [ratings, setRatings] = useState({}); 
 
   const handleDistrictSubmit = useCallback((payload) => {
     const code =
@@ -38,7 +38,7 @@ export default function RecommendationsSection() {
         const promises = attractionList.map(async (item) => {
           const reviews = await getAttractionReviews(item.id).catch(() => []);
           const summary = await getAttractionReviewSummary(item.id).catch(() => null);
-          const rating = await getAttractionRatingAvg(item.id).catch(() => 0); // 👈 수정: 평균 평점 API 호출
+          const rating = await getAttractionRatingAvg(item.id).catch(() => 0); 
           return { id: item.id, reviews, summary, rating };
         });
 
@@ -56,7 +56,7 @@ export default function RecommendationsSection() {
         if (alive) {
           setReviews(reviewMap);
           setSummaries(summaryMap);
-          setRatings(ratingMap); // 👈 수정: 평점 상태 업데이트
+          setRatings(ratingMap);
         }
       })
       .catch(() => {
@@ -95,7 +95,7 @@ export default function RecommendationsSection() {
         reviews={reviews}
         reasons={RECOMMEND_REASONS}
         summaries={summaries}
-        ratings={ratings} // 👈 수정: ratings props 전달
+        ratings={ratings} 
       />
     </section>
   );

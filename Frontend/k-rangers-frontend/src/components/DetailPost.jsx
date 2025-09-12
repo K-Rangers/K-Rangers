@@ -48,7 +48,6 @@ function DetailPost({ item, onWriteReview }) {
     return { avg, count };
   }, [item]);
 
-  // 💥 수정: 요약 텍스트가 없을 때 기본 메시지를 표시하도록 변경
   const reasonText = item?.summary || RECOMMEND_REASONS?.[item?.id] || "요약할 리뷰가 없습니다.";
 
   const addressRef = useRef(null);
@@ -137,7 +136,6 @@ function DetailPost({ item, onWriteReview }) {
         </div>
       </div>
 
-      {/* 💥 수정: reasonText가 비어있어도 reasonBox가 표시되도록 함 */}
       <div className={styles.reasonBox} role="note">
         <div className={styles.reasonTitle}>AI가 추천해요!</div>
         <p className={styles.reasonText} title={reasonText}>{reasonText}</p>
