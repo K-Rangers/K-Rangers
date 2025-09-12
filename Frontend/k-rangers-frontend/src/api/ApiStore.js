@@ -25,3 +25,33 @@ export const getAttractionsByDistrict = async (district) => {
     throw err;
   }
 };
+
+export const getAttractionReviews = async (attractionId) => {
+  try {
+    const res = await api.get(`/reviews/attr/${attractionId}`);
+    return Array.isArray(res.data) ? res.data : [];
+  } catch (err) {
+    logError('getAttractionReviews', err);
+    throw err;
+  }
+};
+
+export const getAttractionReviewSummary = async (attractionId) => {
+  try {
+    const res = await api.get(`/reviews/attr/${attractionId}/summary`);
+    return res.data;
+  } catch (err) {
+    logError('getAttractionReviewSummary', err);
+    throw err;
+  }
+};
+
+export const getAttractionRatingAvg = async (attractionId) => {
+  try {
+    const res = await api.get(`/reviews/attr/${attractionId}/avg`);
+    return res.data;
+  } catch (err) {
+    logError('getAttractionRatingAvg', err);
+    throw err;
+  }
+};

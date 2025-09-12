@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styles from "../css/RecommendedCard.module.css";
 
 const isOn = (v) => {
@@ -28,7 +28,7 @@ const CATEGORY_LABELS = {
   Theater: "공연예술극장",
 };
 
-function RecommendedCard({ item, reviews = [], onClick, reason }) {
+function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) { // 👈 수정: rating props 추가
   const chips = [
     isOn(item.restroom) && "장애인 화장실",
     isOn(item.elevator) && "엘리베이터",
@@ -41,13 +41,9 @@ function RecommendedCard({ item, reviews = [], onClick, reason }) {
     isOn(item.lift) && "휠체어 리프트",
   ].filter(Boolean);
 
-  const { avg, count, sum } = useMemo(() => {
-    const c = reviews.length;
-    if (!c) return { avg: null, count: 0, sum: 0 };
-    const sum = reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0);
-    const avg = Math.round((sum / c) * 10) / 10;
-    return { avg, count: c, sum };
-  }, [reviews]);
+  // 💥 삭제: useMemo로 평균 계산하는 로직이 이제 필요 없음
+  // 대신 reviews 배열 길이를 사용해 리뷰 개수 표시
+  const reviewCount = reviews.length;
 
   const renderStars = (rating = 0) => {
     const stars = [];
@@ -84,8 +80,6 @@ function RecommendedCard({ item, reviews = [], onClick, reason }) {
       onKeyDown={(e) => e.key === "Enter" && onClick?.(item)}
       style={{ cursor: "pointer" }}
     >
-
-
       <div className={styles.thumbWrap}>
         <img
           src={thumb}
@@ -110,16 +104,16 @@ function RecommendedCard({ item, reviews = [], onClick, reason }) {
       )}
 
       <div className={styles.reviewSummary}>
-        {count > 0 ? (
-          <div className={styles.starsRow} aria-label={`평균 평점 ${avg}점`}>
-            {renderStars(avg)}
+        {reviewCount > 0 ? (
+          <div className={styles.starsRow} aria-label={`평균 평점 ${rating}점`}>
+            {renderStars(rating)}
             <span
               className={styles.reviewAvgText}
-              title={`${sum} ÷ ${count} = ${avg}`}
+              title={`${rating.toFixed(1)}점`}
             >
-              {avg.toFixed(1)}
+              {rating.toFixed(1)}
             </span>
-            <span className={styles.reviewCount}>{count}개 리뷰</span>
+            <span className={styles.reviewCount}>{reviewCount}개 리뷰</span>
           </div>
         ) : (
           <span className={styles.reviewCount}>리뷰가 아직 없어요. 😭</span>

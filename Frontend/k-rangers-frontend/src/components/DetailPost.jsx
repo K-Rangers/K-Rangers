@@ -50,8 +50,9 @@ function StarRating({ rating = 0, small = false }) {
 
 function DetailPost({ item, onWriteReview }) {
   const ratingInfo = useMemo(() => {
-    const avg = typeof item?.ratingAvg === "number" ? Math.round(item.ratingAvg * 10) / 10 : null;
-    const count = Number.isFinite(item?.reviewCount) ? item.reviewCount : 0;
+    // 💥 수정: API에서 받은 평점(item.rating)을 바로 사용
+    const avg = Number.isFinite(item?.rating) ? Math.round(item.rating * 10) / 10 : null;
+    const count = Array.isArray(item?.reviews) ? item.reviews.length : 0;
     return { avg, count };
   }, [item]);
 
@@ -70,7 +71,7 @@ function DetailPost({ item, onWriteReview }) {
     ].filter(Boolean);
   }, [item]);
 
-  const reason = RECOMMEND_REASONS?.[item?.id];
+  const reasonText = item?.summary || RECOMMEND_REASONS?.[item?.id];
 
   const addressRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);
@@ -169,14 +170,13 @@ function DetailPost({ item, onWriteReview }) {
         </div>
       )}
 
-      {reason && (
+      {reasonText && (
         <div className={styles.reasonBox} role="note">
           <div className={styles.reasonTitle}>AI가 추천해요!</div>
-          <p className={styles.reasonText} title={reason}>{reason}</p>
+          <p className={styles.reasonText} title={reasonText}>{reasonText}</p>
         </div>
       )}
 
-      {/* 리뷰 API 붙기 전까진 안내만 */}
       <div className={styles.sectionHeader}>
         <h3 className={styles.reviewTitle}>
           리뷰 <span className={styles.reviewCount}>({ratingInfo.count || 0}개)</span>
@@ -198,8 +198,29 @@ function DetailPost({ item, onWriteReview }) {
         </div>
       </div>
 
-      <div className={styles.empty}>아직 등록된 리뷰가 없어요. 첫 리뷰를 남겨보세요!</div>
-
+      {Array.isArray(item.reviews) && item.reviews.length > 0 ? (
+        <div className={styles.reviewList}>
+          {item.reviews.map((review) => (
+            <div key={review.reviewId} className={styles.reviewItem}>
+              <div className={styles.reviewHead}>
+                <div className={styles.reviewMeta}>
+                  <span className={styles.nick}>{review.userName || '익명'}</span>
+                  <span className={styles.date}>
+                    {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : '날짜 없음'}
+                  </span>
+                </div>
+                <div className={styles.itemStars}>
+                  <StarRating rating={review.rating} small />
+                </div>
+              </div>
+              <p className={styles.reviewBody}>{review.content}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.empty}>아직 등록된 리뷰가 없어요. 첫 리뷰를 남겨보세요!</div>
+      )}
+      
       {showModal && (
         <div className={styles.modalBackdrop} onClick={() => setShowModal(false)} role="presentation">
           <div

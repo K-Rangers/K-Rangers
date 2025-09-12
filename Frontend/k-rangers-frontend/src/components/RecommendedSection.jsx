@@ -3,7 +3,7 @@ import HeroSection from "./HeroSection";
 import AccessChips from "./AccessChips";
 import RecommendedList from "./RecommendedList";
 import { RECOMMEND_REASONS } from "../Data/Data";
-import { getAttractionsByDistrict } from "../api/ApiStore";
+import { getAttractionsByDistrict, getAttractionReviews, getAttractionReviewSummary, getAttractionRatingAvg } from "../api/ApiStore";
 
 const isOn = (v) => {
   if (typeof v === "boolean") return v;
@@ -16,6 +16,9 @@ export default function RecommendationsSection() {
   const [districtCode, setDistrictCode] = useState("ALL");
   const [features, setFeatures] = useState(new Set());
   const [items, setItems] = useState([]);
+  const [reviews, setReviews] = useState({});
+  const [summaries, setSummaries] = useState({});
+  const [ratings, setRatings] = useState({}); // 👈 추가: 평균 평점 상태
 
   const handleDistrictSubmit = useCallback((payload) => {
     const code =
@@ -25,10 +28,49 @@ export default function RecommendationsSection() {
 
   useEffect(() => {
     let alive = true;
+
     getAttractionsByDistrict(districtCode)
-      .then((list) => { if (alive) setItems(Array.isArray(list) ? list : []); })
-      .catch(() => { if (alive) setItems([]); });
-    return () => { alive = false; };
+      .then(async (attractions) => {
+        if (!alive) return;
+        const attractionList = Array.isArray(attractions) ? attractions : [];
+        setItems(attractionList);
+
+        const promises = attractionList.map(async (item) => {
+          const reviews = await getAttractionReviews(item.id).catch(() => []);
+          const summary = await getAttractionReviewSummary(item.id).catch(() => null);
+          const rating = await getAttractionRatingAvg(item.id).catch(() => 0); // 👈 수정: 평균 평점 API 호출
+          return { id: item.id, reviews, summary, rating };
+        });
+
+        const fetchedData = await Promise.all(promises);
+        
+        const reviewMap = {};
+        const summaryMap = {};
+        const ratingMap = {};
+        fetchedData.forEach(({ id, reviews, summary, rating }) => {
+          reviewMap[id] = reviews;
+          summaryMap[id] = summary;
+          ratingMap[id] = rating;
+        });
+
+        if (alive) {
+          setReviews(reviewMap);
+          setSummaries(summaryMap);
+          setRatings(ratingMap); // 👈 수정: 평점 상태 업데이트
+        }
+      })
+      .catch(() => {
+        if (alive) {
+          setItems([]);
+          setReviews({});
+          setSummaries({});
+          setRatings({});
+        }
+      });
+
+    return () => {
+      alive = false;
+    };
   }, [districtCode]);
 
   const toggleFeature = useCallback((key) => {
@@ -50,8 +92,10 @@ export default function RecommendationsSection() {
       <AccessChips selected={[...features]} onToggle={toggleFeature} />
       <RecommendedList
         items={filtered}
-        reviews={[]}
+        reviews={reviews}
         reasons={RECOMMEND_REASONS}
+        summaries={summaries}
+        ratings={ratings} // 👈 수정: ratings props 전달
       />
     </section>
   );
