@@ -1,49 +1,79 @@
-import { useMemo, useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "../css/MapPage.module.css";
 import Map from "../components/Map";
 import BottomNav from "../components/BottomNav";
 import BottomSheet from "../components/BottomSheet";
 import DetailPost from "../components/DetailPost";
-import { ITEMS } from "../Data/Data";
+import { getAttractionsByDistrict } from "../api/ApiStore";
+
+function pickLatLng(row) {
+  const lat = Number(row?.mapY ?? row?.latitude ?? row?.lat);
+  const lng = Number(row?.mapX ?? row?.longitude ?? row?.lng);
+  return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
+}
 
 export default function MapPage() {
   const location = useLocation();
-  const NAV_HEIGHT = 70;
+
   const [selected, setSelected] = useState(null);
   const [open, setOpen] = useState(false);
-  const [mapCenter, setMapCenter] = useState({ lat: 35.8714, lng: 128.6014 });
-  const [mapLevel, setMapLevel] = useState(7);
+  const [mapCenter, setMapCenter] = useState({ lat: 35.8683, lng: 128.5988 });
+  const [mapLevel, setMapLevel] = useState(5);
+  const [markers, setMarkers] = useState([]);
 
-  const markers = useMemo(() => {
-    return (ITEMS || [])
-      .filter(it => it?.coords?.lat && it?.coords?.lng)
-      .map(it => ({
-        lat: Number(it.coords.lat),
-        lng: Number(it.coords.lng),
-        title: it.name,
-        address: it.address,
-        raw: it, 
-      }));
+  useEffect(() => {
+    (async () => {
+      try {
+        const rows = await getAttractionsByDistrict("ALL");
+        const ms = (Array.isArray(rows) ? rows : [])
+          .map((r) => {
+            const ll = pickLatLng(r);
+            if (!ll) return null;
+            return {
+              lat: ll.lat,
+              lng: ll.lng,
+              // title: r.name || r.title || "장소",
+              // address: r.address || "",
+              raw: r,
+            };
+          })
+          .filter(Boolean);
+
+        setMarkers(ms);
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, []);
 
   const handleMarkerClick = useCallback((m) => {
     setSelected(m?.raw || null);
     setOpen(true);
-    setMapCenter({ lat: m.lat, lng: m.lng });
-    setMapLevel(3);
+    if (m?.lat && m?.lng) {
+      setMapCenter({ lat: m.lat, lng: m.lng });
+      setMapLevel(3);
+    }
   }, []);
 
   useEffect(() => {
     const selectedItem = location.state?.selectedItem;
-    if (selectedItem) {
-      const matchingMarker = markers.find(marker => marker.raw.id === selectedItem.id);
-      if (matchingMarker) {
-        setSelected(matchingMarker.raw);
-        setOpen(true);
-        setMapCenter({ lat: matchingMarker.lat, lng: matchingMarker.lng });
-        setMapLevel(3);
-      }
+    if (!selectedItem || !markers.length) return;
+
+    const matching =
+      markers.find(
+        (mm) => mm.raw?.id && selectedItem.id && mm.raw.id === selectedItem.id
+      ) ||
+      markers.find(
+        (mm) =>
+          mm.title === selectedItem.name && mm.address === selectedItem.address
+      );
+
+    if (matching) {
+      setSelected(matching.raw);
+      setOpen(true);
+      setMapCenter({ lat: matching.lat, lng: matching.lng });
+      setMapLevel(3);
     }
   }, [location.state, markers]);
 
@@ -59,17 +89,11 @@ export default function MapPage() {
           />
         </div>
 
-        <BottomSheet
-          open={open}
-          onClose={() => setOpen(false)}
-          bottomOffset={`calc(${NAV_HEIGHT}px + env(safe-area-inset-bottom))`}
-          height={500}
-        >
+        <BottomSheet open={open} onClose={() => setOpen(false)}>
           {selected ? (
             <DetailPost item={selected} />
           ) : (
-            <div className={styles.sheetContent}>
-            </div>
+            <div className={styles.sheetContent} />
           )}
         </BottomSheet>
 

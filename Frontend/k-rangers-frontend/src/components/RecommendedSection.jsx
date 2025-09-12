@@ -1,52 +1,58 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import HeroSection from "./HeroSection";
 import AccessChips from "./AccessChips";
 import RecommendedList from "./RecommendedList";
-import { ITEMS, FEATURE_KEY_MAP, REVIEWS, RECOMMEND_REASONS } from "../Data/Data";                                
+import { RECOMMEND_REASONS } from "../Data/Data";
+import { getAttractionsByDistrict } from "../api/ApiStore";
 
+const isOn = (v) => {
+  if (typeof v === "boolean") return v;
+  if (v == null) return false;
+  const s = String(v).trim().toLowerCase();
+  return s === "있음" || s === "y";
+};
 
-function RecommendationsSection({ onFilteredChange }) {
-  const [district, setDistrict] = useState("");
+export default function RecommendationsSection() {
+  const [districtCode, setDistrictCode] = useState("ALL");
   const [features, setFeatures] = useState(new Set());
+  const [items, setItems] = useState([]);
 
-  const toggleFeature = useCallback((chipKey) => {
+  const handleDistrictSubmit = useCallback((payload) => {
+    const code =
+      typeof payload === "string" ? payload : (payload?.code || payload?.value || "ALL");
+    setDistrictCode(code || "ALL");
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    getAttractionsByDistrict(districtCode)
+      .then((list) => { if (alive) setItems(Array.isArray(list) ? list : []); })
+      .catch(() => { if (alive) setItems([]); });
+    return () => { alive = false; };
+  }, [districtCode]);
+
+  const toggleFeature = useCallback((key) => {
     setFeatures((prev) => {
       const next = new Set(prev);
-      next.has(chipKey) ? next.delete(chipKey) : next.add(chipKey);
+      next.has(key) ? next.delete(key) : next.add(key);
       return next;
     });
   }, []);
 
-  const filteredPreview = useMemo(() => {
-    return ITEMS.filter((it) => {
-      if (district && it.district !== district) return false;
-      if (features.size > 0) {
-        for (const chipKey of features) {
-          const fKey = FEATURE_KEY_MAP[chipKey];
-          if (!it.features?.[fKey]) return false;
-        }
-      }
-      return true;
-    });
-  }, [district, features]);
-
-  const filteredReviews = useMemo(() => {
-  return REVIEWS.filter((r) =>
-    filteredPreview.some((item) => item.id === r.placeId)
-  );
-}, [filteredPreview]);
-
-  useEffect(() => {
-    onFilteredChange?.(filteredPreview);
-  }, [filteredPreview, onFilteredChange]);
+  const filtered =
+    features.size === 0
+      ? items
+      : items.filter((it) => [...features].every((k) => isOn(it[k])));
 
   return (
     <section>
-      <HeroSection onSubmit={setDistrict} />
+      <HeroSection onSubmit={handleDistrictSubmit} />
       <AccessChips selected={[...features]} onToggle={toggleFeature} />
-      <RecommendedList items={filteredPreview} title={district} reviews={filteredReviews} reasons={RECOMMEND_REASONS}/>
+      <RecommendedList
+        items={filtered}
+        reviews={[]}
+        reasons={RECOMMEND_REASONS}
+      />
     </section>
   );
 }
-
-export default RecommendationsSection;

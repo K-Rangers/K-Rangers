@@ -28,7 +28,7 @@ function loadKakaoSdk() {
 }
 
 export default function Map({
-  center = { lat: 35.8714, lng: 128.6014 },
+  center = { lat: 35.8683, lng: 128.5988 }, 
   level = 7,
   markers = [],
   onMarkerClick,

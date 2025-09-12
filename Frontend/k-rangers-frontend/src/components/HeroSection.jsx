@@ -3,18 +3,20 @@ import styles from "../css/HeroSection.module.css";
 import DropdownSelect from "./DropDownSelect";
 
 const REGION_OPTIONS = [
-  { value: "jung", label: "중구" },
-  { value: "dalseo", label: "달서구" },
-  { value: "seo", label: "서구" },
-  { value: "buk", label: "북구" },
-  { value: "dong", label: "동구" },
-  { value: "nam", label: "남구" },
-  { value: "suseong", label: "수성구" },
+  { value: "ALL", label: "전체보기" },
+  { value: "JUNG_GU", label: "중구" },
+  { value: "DONG_GU", label: "동구" },
+  { value: "SEO_GU",  label: "서구" },
+  { value: "NAM_GU",  label: "남구" },
+  { value: "BUK_GU",  label: "북구" },
+  { value: "SUSEONG_GU", label: "수성구" },
+  { value: "DALSEO_GU",   label: "달서구" },
+  { value: "DALSEONG_GUN",label: "달성군" },
+  { value: "CHILGOK",     label: "칠곡군" },
 ];
 
-
 function HeroSection({ onSubmit }) {
-  const [region, setRegion] = useState("");
+  const [region, setRegion] = useState("ALL");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,7 +34,6 @@ function HeroSection({ onSubmit }) {
 
       <form className={styles.searchCard} onSubmit={handleSubmit}>
         <DropdownSelect
-          name="region"
           placeholder="어디로 여행을 떠나고 싶으신가요?"
           options={REGION_OPTIONS}
           value={region}

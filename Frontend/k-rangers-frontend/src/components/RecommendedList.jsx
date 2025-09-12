@@ -10,7 +10,7 @@ function RecommendedList({ items = [], reviews = [], reasons = [] }) {
   const view = items.slice(0, 1);
 
   const handleSeeAll = () => {
-    navigate("/all", { state: { items, reviews, reasons}});
+    navigate("/all", { state: { items, reviews, reasons } });
   };
 
   const handleCardClick = (item) => {
@@ -36,15 +36,14 @@ function RecommendedList({ items = [], reviews = [], reasons = [] }) {
       ) : (
         <div className={styles.grid}>
           {view.map((it) => {
-            const itemReviews = reviews.filter((r) => r.placeId === it.id); 
+            const itemReviews = reviews.filter((r) => r.placeId === it.id);
 
             return (
               <RecommendedCard
-                key={it.id}
+                key={String(it.id)}
                 item={it}
-                reviews={itemReviews} 
-                variant="summary"
-                onClick={() => handleCardClick(it)}
+                reviews={itemReviews}
+                onClick={handleCardClick}      
                 reason={reasons[it.id]}
               />
             );

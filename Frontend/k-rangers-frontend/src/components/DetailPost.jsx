@@ -1,6 +1,33 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import styles from "../css/DetailPost.module.css";
-import { REVIEWS, RECOMMEND_REASONS } from "../Data/Data";
+import { RECOMMEND_REASONS } from "../Data/Data";
+
+const isOn = (v) => {
+  if (typeof v === "boolean") return v;
+  if (v == null) return false;
+  const s = String(v).trim().toLowerCase();
+  return s === "있음" || s === "y" || s === "true" || s === "1";
+};
+
+const CATEGORY_LABELS = {
+  Park: "공원",
+  Museum: "박물관",
+  ThemaPark: "테마파크",
+  Market: "시장",
+  Temple: "사찰",
+  School: "학교",
+  SportsFacility: "스포츠 시설",
+  CulturalHeritage: "문화재",
+  ArtMuseum: "미술관",
+  Arboretum: "수목원",
+  Attraction: "명소",
+  DepartmentStore: "백화점",
+  CultureCenter: "문화센터",
+  LearningCenter: "학습관",
+  ExhibitionHall: "전시장",
+  Aquarium: "아쿠아리움",
+  Theater: "공연예술극장",
+};
 
 function StarRating({ rating = 0, small = false }) {
   const render = () => {
@@ -22,29 +49,24 @@ function StarRating({ rating = 0, small = false }) {
 }
 
 function DetailPost({ item, onWriteReview }) {
-  const reviews = useMemo(
-    () => (item ? (REVIEWS || []).filter((r) => r.placeId === item.id) : []),
-    [item]
-  );
-
-  const { avg, count } = useMemo(() => {
-    const c = reviews.length;
-    if (!c) return { avg: null, count: 0 };
-    const sum = reviews.reduce((s, r) => s + (r.rating || 0), 0);
-    return { avg: Math.round((sum / c) * 10) / 10, count: c };
-  }, [reviews]);
+  const ratingInfo = useMemo(() => {
+    const avg = typeof item?.ratingAvg === "number" ? Math.round(item.ratingAvg * 10) / 10 : null;
+    const count = Number.isFinite(item?.reviewCount) ? item.reviewCount : 0;
+    return { avg, count };
+  }, [item]);
 
   const chips = useMemo(() => {
-    const f = item?.features || {};
+    if (!item) return [];
     return [
-      f.toilet && "장애인 화장실",
-      f.elevator && "엘리베이터",
-      f.parking && "장애인 주차구역",
-      f.accessible && "장애인 이용가능시설",
-      f.ramp && "경사로",
-      f.guide && "관광안내소",
-      f.wheelchairRental && "휠체어 대여소",
-      f.restaurant && "음식점",
+      isOn(item.restroom) && "장애인 화장실",
+      isOn(item.elevator) && "엘리베이터",
+      isOn(item.parking) && "장애인 주차구역",
+      isOn(item.facility) && "장애인 이용가능시설",
+      isOn(item.ramp) && "경사로",
+      isOn(item.informationCenter) && "관광안내소",
+      isOn(item.wheelchairRental) && "휠체어 대여소",
+      isOn(item.restaurant) && "음식점",
+      isOn(item.lift) && "휠체어 리프트",
     ].filter(Boolean);
   }, [item]);
 
@@ -91,11 +113,17 @@ function DetailPost({ item, onWriteReview }) {
     );
   }
 
+  const thumb =
+    item.thumbnailUrl ||
+    "https://velog.velcdn.com/images/kiw0n/post/d254dfb0-b3b6-43b4-b0b5-2914257a09c7/image.jpeg";
+  const category =
+    CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
+
   return (
     <div className={styles.container}>
       <div className={styles.thumbWrap}>
-        <img src={item.thumbnailUrl} alt={`${item.name} 대표 이미지`} className={styles.thumb} />
-        <span className={styles.category}>{item.category}</span>
+        <img src={thumb} alt={`${item.name} 대표 이미지`} className={styles.thumb} />
+        {category && <span className={styles.category}>{category}</span>}
         <h3 className={styles.name}>{item.name}</h3>
       </div>
 
@@ -120,11 +148,11 @@ function DetailPost({ item, onWriteReview }) {
             {item.address}
           </div>
 
-          {avg && (
+          {ratingInfo.avg != null && (
             <div className={styles.inlineRating}>
-              <StarRating rating={avg} small />
-              <span className={styles.reviewAvgText}>{avg.toFixed(1)}</span>
-              <span className={styles.reviewCount}>({count}개)</span>
+              <StarRating rating={ratingInfo.avg} small />
+              <span className={styles.reviewAvgText}>{ratingInfo.avg.toFixed(1)}</span>
+              <span className={styles.reviewCount}>({ratingInfo.count}개)</span>
             </div>
           )}
         </div>
@@ -148,9 +176,10 @@ function DetailPost({ item, onWriteReview }) {
         </div>
       )}
 
+      {/* 리뷰 API 붙기 전까진 안내만 */}
       <div className={styles.sectionHeader}>
         <h3 className={styles.reviewTitle}>
-          리뷰 <span className={styles.reviewCount}>({count}개)</span>
+          리뷰 <span className={styles.reviewCount}>({ratingInfo.count || 0}개)</span>
         </h3>
         <div
           role="button"
@@ -169,29 +198,7 @@ function DetailPost({ item, onWriteReview }) {
         </div>
       </div>
 
-      {reviews.length > 0 ? (
-        <div className={styles.reviewList}>
-          {reviews.map((r, i) => (
-            <div key={i} className={styles.reviewItem}>
-              <div className={styles.reviewHead}>
-                <span className={styles.nick}>{r.nickname}</span>
-                <time className={styles.date}>
-                  {r.createdAt ? new Date(r.createdAt).toLocaleDateString("ko-KR") : ""}
-                </time>
-                <div className={styles.itemStars}>
-                  <StarRating rating={r.rating} small />
-                  <span className={styles.itemRatingNumber}>
-                    {r.rating?.toFixed?.(1) ?? r.rating}
-                  </span>
-                </div>
-              </div>
-              <p className={styles.reviewBody}>{r.content}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className={styles.empty}>아직 등록된 리뷰가 없어요. 첫 리뷰를 남겨보세요!</div>
-      )}
+      <div className={styles.empty}>아직 등록된 리뷰가 없어요. 첫 리뷰를 남겨보세요!</div>
 
       {showModal && (
         <div className={styles.modalBackdrop} onClick={() => setShowModal(false)} role="presentation">
