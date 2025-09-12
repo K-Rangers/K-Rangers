@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Schema(name = "Review Accommodation Response DTO", description = "숙박시설 리뷰 요청 DTO")
 public class ReviewAccomResponseDTO {
+    private Long reviewId;
     private Long accommodationId;
     private String accommodationName;
     private Long userId;

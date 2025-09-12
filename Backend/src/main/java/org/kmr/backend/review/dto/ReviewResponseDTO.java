@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Schema(name = "ReviewResponse DTO", description = "관광지 리뷰 응답 DTO")
 public class ReviewResponseDTO {
+    private Long reviewId;
     private Long attractionId;
     private String attractionName;
     private Long userId;
