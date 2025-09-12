@@ -2,13 +2,6 @@ import React, { useMemo, useRef, useState, useEffect } from "react";
 import styles from "../css/DetailPost.module.css";
 import { RECOMMEND_REASONS } from "../Data/Data";
 
-const isOn = (v) => {
-  if (typeof v === "boolean") return v;
-  if (v == null) return false;
-  const s = String(v).trim().toLowerCase();
-  return s === "있음" || s === "y" || s === "true" || s === "1";
-};
-
 const CATEGORY_LABELS = {
   Park: "공원",
   Museum: "박물관",
@@ -50,28 +43,13 @@ function StarRating({ rating = 0, small = false }) {
 
 function DetailPost({ item, onWriteReview }) {
   const ratingInfo = useMemo(() => {
-    // 💥 수정: API에서 받은 평점(item.rating)을 바로 사용
     const avg = Number.isFinite(item?.rating) ? Math.round(item.rating * 10) / 10 : null;
     const count = Array.isArray(item?.reviews) ? item.reviews.length : 0;
     return { avg, count };
   }, [item]);
 
-  const chips = useMemo(() => {
-    if (!item) return [];
-    return [
-      isOn(item.restroom) && "장애인 화장실",
-      isOn(item.elevator) && "엘리베이터",
-      isOn(item.parking) && "장애인 주차구역",
-      isOn(item.facility) && "장애인 이용가능시설",
-      isOn(item.ramp) && "경사로",
-      isOn(item.informationCenter) && "관광안내소",
-      isOn(item.wheelchairRental) && "휠체어 대여소",
-      isOn(item.restaurant) && "음식점",
-      isOn(item.lift) && "휠체어 리프트",
-    ].filter(Boolean);
-  }, [item]);
-
-  const reasonText = item?.summary || RECOMMEND_REASONS?.[item?.id];
+  // 💥 수정: 요약 텍스트가 없을 때 기본 메시지를 표시하도록 변경
+  const reasonText = item?.summary || RECOMMEND_REASONS?.[item?.id] || "요약할 리뷰가 없습니다.";
 
   const addressRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);
@@ -159,23 +137,11 @@ function DetailPost({ item, onWriteReview }) {
         </div>
       </div>
 
-      {chips.length > 0 && (
-        <div className={styles.accessibilitySection}>
-          <h3 className={styles.sectionTitle}>접근성 정보</h3>
-          <div className={styles.chips}>
-            {chips.map((c) => (
-              <span key={c} className={styles.chip}>{c}</span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {reasonText && (
-        <div className={styles.reasonBox} role="note">
-          <div className={styles.reasonTitle}>AI가 추천해요!</div>
-          <p className={styles.reasonText} title={reasonText}>{reasonText}</p>
-        </div>
-      )}
+      {/* 💥 수정: reasonText가 비어있어도 reasonBox가 표시되도록 함 */}
+      <div className={styles.reasonBox} role="note">
+        <div className={styles.reasonTitle}>AI가 추천해요!</div>
+        <p className={styles.reasonText} title={reasonText}>{reasonText}</p>
+      </div>
 
       <div className={styles.sectionHeader}>
         <h3 className={styles.reviewTitle}>
