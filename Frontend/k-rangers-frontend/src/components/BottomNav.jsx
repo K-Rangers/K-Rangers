@@ -3,7 +3,6 @@ import { FiMap, FiHome, FiUser } from "react-icons/fi";
 import styles from "../css/BottomNav.module.css";
 
 function BottomNav() {
-  // ✅ /login, /signin, /signup, /mypage(하위 경로 포함)에서 활성 처리
   const matchLogin  = useMatch("/login");
   const matchSignin = useMatch("/signin");
   const matchSignup = useMatch("/signup");

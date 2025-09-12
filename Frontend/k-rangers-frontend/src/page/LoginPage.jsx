@@ -1,14 +1,53 @@
-// src/pages/Login.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import styles from "../css/Login.module.css";
 import logo from "../assets/Mainlogo.png";
 import { login } from "../api/ApiStore.js";
 
-export default function Login() {
+function getStoredToken() {
+  const keys = ["accessToken"];
+  for (const k of keys) {
+    const v = localStorage.getItem(k) || sessionStorage.getItem(k);
+    if (v) return v;
+  }
+  return null;
+}
+
+function isJwtExpired(token) {
+  try {
+    const [, payload] = token.split(".");
+    if (!payload) return true;
+    const b64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const json = JSON.parse(atob(b64));
+    if (!json.exp) return false;
+    const nowSec = Math.floor(Date.now() / 1000);
+    return json.exp <= nowSec;
+  } catch {
+    return true;
+  } 
+}
+
+function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const redirectTo = (() => {
+    const sp = new URLSearchParams(location.search);
+    return location.state?.redirectTo || sp.get("redirect") || "/mypage";
+  })();
+
+  const [booting, setBooting] = useState(true);
+
+  useEffect(() => {
+    const token = getStoredToken();
+    if (token && !isJwtExpired(token)) {
+      navigate(redirectTo, { replace: true });
+      return;
+    }
+    setBooting(false);
+  }, [navigate, redirectTo]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,9 +60,8 @@ export default function Login() {
     setErrorMsg("");
     setIsSubmitting(true);
     try {
-      
       await login(email.trim(), password);
-      navigate("/mypage", { replace: true });
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       const msg =
         err?.response?.data && typeof err.response.data === "string"
@@ -34,6 +72,8 @@ export default function Login() {
       setIsSubmitting(false);
     }
   };
+
+  if (booting) return null;
 
   return (
     <div className={styles.app}>
@@ -85,11 +125,19 @@ export default function Login() {
               </button>
             </div>
           </form>
+
           <p className={styles.signupText}>
             아이디가 없으신가요?{" "}
             <span
               className={styles.signupLink}
+              role="button"
+              tabIndex={0}
               onClick={() => navigate("/signup", { state: { redirectTo } })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  navigate("/signup", { state: { redirectTo } });
+                }
+              }}
             >
               회원가입
             </span>
@@ -101,4 +149,4 @@ export default function Login() {
   );
 }
 
-export default MyPage;
+export default LoginPage;
