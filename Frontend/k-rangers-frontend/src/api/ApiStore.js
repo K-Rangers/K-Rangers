@@ -55,3 +55,18 @@ export const getAttractionRatingAvg = async (attractionId) => {
     throw err;
   }
 };
+
+export const login = async (email, password) => {
+  try {
+    const res = await api.post("/login", { email, password });
+
+    const token = res.data;
+
+    localStorage.setItem("access_token", token);
+
+    return token;
+  } catch (err) {
+    logError("login", err);
+    throw err;
+  }
+};
