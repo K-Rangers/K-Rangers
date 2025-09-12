@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../css/DetailPost.module.css";
 
 const CATEGORY_LABELS = {
@@ -40,14 +41,17 @@ function StarRating({ rating = 0, small = false }) {
   return <div className={styles.stars}>{render()}</div>;
 }
 
-function DetailPost({ item, onWriteReview }) {
+function DetailPost({ item }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const ratingInfo = useMemo(() => {
     const avg = Number.isFinite(item?.rating) ? Math.round(item.rating * 10) / 10 : null;
     const count = Array.isArray(item?.reviews) ? item.reviews.length : 0;
     return { avg, count };
   }, [item]);
 
-  const reasonText = item?.summary  || "요약할 리뷰가 없습니다.";
+  const reasonText = item?.summary || "요약할 리뷰가 없습니다.";
 
   const addressRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);
@@ -95,6 +99,29 @@ function DetailPost({ item, onWriteReview }) {
     "https://velog.velcdn.com/images/kiw0n/post/d254dfb0-b3b6-43b4-b0b5-2914257a09c7/image.jpeg";
   const category =
     CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
+
+  // 버튼 클릭 시 리뷰 작성 페이지로 이동 (미로그인 → 로그인으로)
+  const handleWrite = () => {
+    const id = item?.accommodationId || item?.id || item?.attractionId;
+    if (!id) return;
+
+    const token =
+      localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+
+    const target = `/reviews/new?id=${id}`;
+
+    if (!token) {
+      window.alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요!");
+      // 쿼리 + state 둘 다에 redirect 넣어 안정성 확보
+      navigate(`/login?redirect=${encodeURIComponent(target)}`, {
+        state: { redirectTo: target, from: location.pathname + location.search, item },
+        replace: true,
+      });
+      return;
+    }
+
+    navigate(target, { state: { item } });
+  };
 
   return (
     <div className={styles.container}>
@@ -149,11 +176,11 @@ function DetailPost({ item, onWriteReview }) {
           tabIndex={0}
           className={styles.writeBtn}
           aria-label="리뷰 작성하기"
-          onClick={() => onWriteReview?.(item)}
+          onClick={handleWrite}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              onWriteReview?.(item);
+              handleWrite();
             }
           }}
         >
@@ -167,9 +194,9 @@ function DetailPost({ item, onWriteReview }) {
             <div key={review.reviewId} className={styles.reviewItem}>
               <div className={styles.reviewHead}>
                 <div className={styles.reviewMeta}>
-                  <span className={styles.nick}>{review.userName || '익명'}</span>
+                  <span className={styles.nick}>{review.userName || "익명"}</span>
                   <span className={styles.date}>
-                    {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : '날짜 없음'}
+                    {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : "날짜 없음"}
                   </span>
                 </div>
                 <div className={styles.itemStars}>
@@ -183,7 +210,7 @@ function DetailPost({ item, onWriteReview }) {
       ) : (
         <div className={styles.empty}>아직 등록된 리뷰가 없어요. 첫 리뷰를 남겨보세요!</div>
       )}
-      
+
       {showModal && (
         <div className={styles.modalBackdrop} onClick={() => setShowModal(false)} role="presentation">
           <div

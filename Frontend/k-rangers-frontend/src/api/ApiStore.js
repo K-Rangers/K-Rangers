@@ -8,11 +8,25 @@ export const api = axios.create({
   timeout: 10000,
 });
 
+api.interceptors.request.use(
+  (config) => {
+    if (!config.headers.Authorization) {
+      const t =
+        localStorage.getItem('accessToken') ??
+        sessionStorage.getItem('accessToken');
+      if (t) config.headers.Authorization = `Bearer ${t}`;
+    }
+    return config;
+  },
+  (err) => Promise.reject(err)
+);
+
 function logError(ctx, err) {
   const status = err.response?.status;
-  const body = typeof err.response?.data === 'string'
-    ? err.response.data
-    : JSON.stringify(err.response?.data || {});
+  const body =
+    typeof err.response?.data === 'string'
+      ? err.response.data
+      : JSON.stringify(err.response?.data || {});
   console.error(`[${ctx}] status: ${status} body: ${body}`);
 }
 
@@ -52,6 +66,16 @@ export const getAttractionRatingAvg = async (attractionId) => {
     return res.data;
   } catch (err) {
     logError('getAttractionRatingAvg', err);
+    throw err;
+  }
+};
+
+export const createAccommodationReview = async (accommodationId, reviewData) => {
+  try {
+    const res = await api.post(`/user/reviews/accom/create/${accommodationId}`, reviewData);
+    return res.data;
+  } catch (err) {
+    logError('createAccommodationReview', err);
     throw err;
   }
 };
