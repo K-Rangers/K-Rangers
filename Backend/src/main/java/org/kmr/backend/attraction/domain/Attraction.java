@@ -33,11 +33,12 @@ public class Attraction {
 
     private String latitude;
     private String longitude;
+    private String imageUrl;
 
     public Attraction(String name, String address, String elevator, String parking, String facility,
                       String ramp, String informationCenter, String restroom,
                       String wheelchairRental, String restaurant, String tableType, String lift, TourCategory category,
-                      String latitude, String longitude) {
+                      String latitude, String longitude, String imageUrl) {
         this.name = name;
         this.address = address;
         this.elevator = elevator;
@@ -53,5 +54,6 @@ public class Attraction {
         this.category = category;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.imageUrl = imageUrl;
     }
 }
