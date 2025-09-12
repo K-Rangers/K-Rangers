@@ -40,6 +40,9 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/main", "/v1/main/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/main/attractions/**", "/v1/main/accommodations/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/main/reviews/**").permitAll()
+
+                        .requestMatchers("/v1/main/user/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -56,9 +59,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
                 "https://travel.gamja.cloud",
-
                 "https://travel-aiga.netlify.app",
-
                 "http://localhost:3000",
                 "http://localhost:5173"
         ));
