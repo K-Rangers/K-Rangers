@@ -29,7 +29,6 @@ function BottomNav() {
         <span className={styles.label}>홈</span>
       </NavLink>
 
-      {/* ✅ /signup에서도 파란색 활성화 */}
       <NavLink
         to="/login"
         className={() => `${styles.navItem} ${isAccountActive ? styles.active : ""}`}

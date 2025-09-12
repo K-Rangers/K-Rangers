@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import styles from "../css/RecommendedList.module.css";
 import RecommendedCard from "./RecommendedCard";
 
-function RecommendedList({ items = [], reviews = [], reasons = [] }) {
+function RecommendedList({ items = [], reviews = {}, reasons = {}, summaries = {}, ratings = {} }) {
   const navigate = useNavigate();
   const title = "AI 추천 여행지";
   const canSeeAll = items.length > 1;
   const view = items.slice(0, 1);
 
   const handleSeeAll = () => {
-    navigate("/all", { state: { items, reviews, reasons}});
+    navigate("/all", { state: { items, reviews, reasons, summaries, ratings } }); 
   };
 
   const handleCardClick = (item) => {
@@ -36,16 +36,15 @@ function RecommendedList({ items = [], reviews = [], reasons = [] }) {
       ) : (
         <div className={styles.grid}>
           {view.map((it) => {
-            const itemReviews = reviews.filter((r) => r.placeId === it.id); 
-
+            const itemReviews = reviews[it.id] || [];
             return (
               <RecommendedCard
-                key={it.id}
+                key={String(it.id)}
                 item={it}
-                reviews={itemReviews} 
-                variant="summary"
-                onClick={() => handleCardClick(it)}
-                reason={reasons[it.id]}
+                reviews={itemReviews}
+                onClick={handleCardClick}
+                reason={summaries[it.id] || reasons[it.id]}
+                rating={ratings[it.id] || 0} 
               />
             );
           })}

@@ -1,12 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../css/AllPostView.module.css";
 import RecommendedCard from "./RecommendedCard";
 import { FiChevronLeft } from "react-icons/fi";
 
-function AllView({ items = [], onClose, reviews = [] , reasons = []}) {
+function AllView({ onClose }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const { items = [], reviews = {}, reasons = {}, summaries = {}, ratings = {} } = location.state || {};
+  
   const handleKeyDown = (e) => {
     if (!onClose) return;
     if (e.key === "Enter" || e.key === " ") {
@@ -44,14 +47,15 @@ function AllView({ items = [], onClose, reviews = [] , reasons = []}) {
       ) : (
         <div className={styles.grid}>
           {items.map((it) => {
-            const itemReviews = reviews.filter((r) => r.placeId === it.id);
+            const itemReviews = reviews[it.id] || [];
             return (
               <RecommendedCard
                 key={it.id}
                 item={it}
                 onClick={() => handleCardClick(it)}
                 reviews={itemReviews}
-                reason={reasons[it.id]}
+                reason={summaries[it.id] || reasons[it.id]}
+                rating={ratings[it.id] || 0} // 👈 여기서도 평점 데이터를 전달!
               />
             );
           })}
