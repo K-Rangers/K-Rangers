@@ -60,7 +60,5 @@ application-prod.yml
 *.war
 *.ear
 
-# =================================================
-# 배포 관련 파일
-# =================================================
-Dockerfile
+# --- 핵심 수정: gradle-wrapper.jar는 반드시 포함하도록 예외 규칙을 추가합니다. ---
+!gradle/wrapper/gradle-wrapper.jar
