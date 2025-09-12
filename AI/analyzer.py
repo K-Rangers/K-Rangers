@@ -1,9 +1,18 @@
 import os
 from openai import OpenAI
+from dotenv import load_dotenv
+
+# .env 파일 로드
+load_dotenv()
 
 try:
-    client = OpenAI()
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key or api_key == 'your-openai-api-key-here' or api_key == '':
+        raise ValueError("OPENAI_API_KEY 환경변수가 설정되지 않았습니다.")
+    
+    client = OpenAI(api_key=api_key)
     API_KEY_CONFIGURED = True
+    print(f"--- [성공] OpenAI API 키가 정상적으로 설정되었습니다. ---")
 except Exception as e:
     print(f"--- [경고] OpenAI API 키가 설정되지 않았습니다. 분석 기능을 스킵합니다. ---")
     print(f"--- 에러: {e} ---")
