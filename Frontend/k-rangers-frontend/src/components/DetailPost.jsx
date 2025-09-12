@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import styles from "../css/DetailPost.module.css";
-import { RECOMMEND_REASONS } from "../Data/Data";
 
 const CATEGORY_LABELS = {
   Park: "공원",
@@ -48,7 +47,7 @@ function DetailPost({ item, onWriteReview }) {
     return { avg, count };
   }, [item]);
 
-  const reasonText = item?.summary || RECOMMEND_REASONS?.[item?.id] || "요약할 리뷰가 없습니다.";
+  const reasonText = item?.summary  || "요약할 리뷰가 없습니다.";
 
   const addressRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);

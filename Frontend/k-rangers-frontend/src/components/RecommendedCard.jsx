@@ -28,7 +28,26 @@ const CATEGORY_LABELS = {
   Theater: "공연예술극장",
 };
 
-function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) { 
+function StarRating({ rating = 0, small = false }) {
+  const render = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      let fill = 0;
+      if (rating >= i) fill = 100;
+      else if (rating >= i - 0.5) fill = 50;
+      stars.push(
+        <span key={i} className={`${styles.star} ${small ? styles.starsSm : ""}`}>
+          ★
+          <span className={styles.starFill} style={{ width: `${fill}%` }}>★</span>
+        </span>
+      );
+    }
+    return stars;
+  };
+  return <div className={styles.stars}>{render()}</div>;
+}
+
+function RecommendedCard({ item, onClick, reason }) { 
   const chips = [
     isOn(item.restroom) && "장애인 화장실",
     isOn(item.elevator) && "엘리베이터",
@@ -41,25 +60,7 @@ function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) {
     isOn(item.lift) && "휠체어 리프트",
   ].filter(Boolean);
 
-  const reviewCount = reviews.length;
-
-  const renderStars = (rating = 0) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      let fill = 0;
-      if (rating >= i) fill = 100;
-      else if (rating >= i - 0.5) fill = 50;
-      stars.push(
-        <span key={i} className={styles.star}>
-          ★
-          <span className={styles.starFill} style={{ width: `${fill}%` }}>
-            ★
-          </span>
-        </span>
-      );
-    }
-    return stars;
-  };
+  const reviewCount = Array.isArray(item.reviews) ? item.reviews.length : 0;
 
   const getCategoryLabel = (cat) =>
     CATEGORY_LABELS[cat?.toString().trim()] ?? cat ?? "";
@@ -79,12 +80,9 @@ function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) {
       style={{ cursor: "pointer" }}
     >
       <div className={styles.thumbWrap}>
-        <img
-          src={thumb}
-          alt={`${name} 대표 이미지`}
-          className={styles.thumb}
-          loading="lazy"
-        />
+        {thumb && (
+          <img src={thumb} alt={`${name} 대표 이미지`} className={styles.thumb} loading="lazy" />
+        )}
         {category && <span className={styles.category}>{category}</span>}
         <h3 className={styles.name}>{name}</h3>
       </div>
@@ -103,13 +101,10 @@ function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) {
 
       <div className={styles.reviewSummary}>
         {reviewCount > 0 ? (
-          <div className={styles.starsRow} aria-label={`평균 평점 ${rating}점`}>
-            {renderStars(rating)}
-            <span
-              className={styles.reviewAvgText}
-              title={`${rating.toFixed(1)}점`}
-            >
-              {rating.toFixed(1)}
+          <div className={styles.starsRow} aria-label={`평균 평점 ${item.rating}점`}>
+            <StarRating rating={item.rating} />
+            <span className={styles.reviewAvgText} title={`${item.rating}점`}>
+              {item.rating.toFixed(1)}
             </span>
             <span className={styles.reviewCount}>{reviewCount}개 리뷰</span>
           </div>
@@ -118,14 +113,10 @@ function RecommendedCard({ item, onClick, reviews = [], reason, rating = 0 }) {
         )}
       </div>
 
-      {reason && (
-        <div className={styles.reasonBox} role="note">
-          <div className={styles.reasonTitle}>AI가 추천해요!</div>
-          <p className={styles.reasonText} title={reason}>
-            {reason}
-          </p>
-        </div>
-      )}
+      <div className={styles.reasonBox} role="note">
+        <div className={styles.reasonTitle}>AI가 추천해요!</div>
+        <p className={styles.reasonText} title={reason}>{reason}</p>
+      </div>
     </article>
   );
 }
