@@ -8,25 +8,11 @@ export const api = axios.create({
   timeout: 10000,
 });
 
-api.interceptors.request.use(
-  (config) => {
-    if (!config.headers.Authorization) {
-      const t =
-        localStorage.getItem('accessToken') ??
-        sessionStorage.getItem('accessToken');
-      if (t) config.headers.Authorization = `Bearer ${t}`;
-    }
-    return config;
-  },
-  (err) => Promise.reject(err)
-);
-
 function logError(ctx, err) {
   const status = err.response?.status;
-  const body =
-    typeof err.response?.data === 'string'
-      ? err.response.data
-      : JSON.stringify(err.response?.data || {});
+  const body = typeof err.response?.data === 'string'
+    ? err.response.data
+    : JSON.stringify(err.response?.data || {});
   console.error(`[${ctx}] status: ${status} body: ${body}`);
 }
 
@@ -72,15 +58,28 @@ export const getAttractionRatingAvg = async (attractionId) => {
 
 export const login = async (email, password) => {
   try {
-    const res = await api.post("/login", { email, password });
+    const res = await api.post('/login', { email, password });
+    const token = res?.data?.accessToken ?? res?.data?.token ?? res?.data;
+    if (!token) throw new Error('토큰이 없습니다.');
 
-    const token = res.data;
-
-    localStorage.setItem("access_token", token);
-
+    localStorage.setItem('accessToken', token);
+    api.defaults.headers.Authorization = `Bearer ${token}`;
     return token;
   } catch (err) {
-    logError("login", err);
+    logError('login', err);
+    throw err;
+  }
+};
+
+export const createAttractionReview = async (attractionId, reviewData) => {
+  try {
+    const res = await api.post(
+      `/user/reviews/attr/create/${attractionId}`,
+      reviewData
+    );
+    return res.data;
+  } catch (err) {
+    logError('createAttractionReview', err);
     throw err;
   }
 };

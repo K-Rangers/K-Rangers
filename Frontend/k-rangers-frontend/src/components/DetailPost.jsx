@@ -100,28 +100,30 @@ function DetailPost({ item }) {
   const category =
     CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
 
-  // 버튼 클릭 시 리뷰 작성 페이지로 이동 (미로그인 → 로그인으로)
-  const handleWrite = () => {
-    const id = item?.accommodationId || item?.id || item?.attractionId;
-    if (!id) return;
+const handleWrite = () => {
+  const id = item?.accommodationId || item?.id || item?.attractionId;
+  if (!id) return;
 
-    const token =
-      localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+  const target = `/reviews?id=${id}`;
 
-    const target = `/reviews/new?id=${id}`;
+  if (!token) {
+    console.log("[handleWrite] → login", {
+      path: `/login?redirect=${encodeURIComponent(target)}`,
+      state: { redirectTo: target, from: location.pathname + location.search, item },
+    });
+    window.alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요!");
+    navigate(`/login?redirect=${encodeURIComponent(target)}`, {
+      state: { redirectTo: target, from: location.pathname + location.search, item },
+      replace: true,
+    });
+    return;
+  }
 
-    if (!token) {
-      window.alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요!");
-      // 쿼리 + state 둘 다에 redirect 넣어 안정성 확보
-      navigate(`/login?redirect=${encodeURIComponent(target)}`, {
-        state: { redirectTo: target, from: location.pathname + location.search, item },
-        replace: true,
-      });
-      return;
-    }
+  console.log("[handleWrite] →", { path: target, state: { item } });
+  navigate(target, { state: { item } });
+};
 
-    navigate(target, { state: { item } });
-  };
 
   return (
     <div className={styles.container}>
