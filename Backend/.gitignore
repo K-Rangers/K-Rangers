@@ -42,6 +42,7 @@ Thumbs.db
 # API 키, 비밀번호, 로컬 DB 설정 등은 절대 공유하지 않습니다.
 # =================================================
 .env
+travel.env
 application-local.yml
 application-dev.yml
 application-prod.yml

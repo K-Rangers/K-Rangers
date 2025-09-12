@@ -70,12 +70,17 @@ export const getAttractionRatingAvg = async (attractionId) => {
   }
 };
 
-export const createAccommodationReview = async (accommodationId, reviewData) => {
+export const login = async (email, password) => {
   try {
-    const res = await api.post(`/user/reviews/accom/create/${accommodationId}`, reviewData);
-    return res.data;
+    const res = await api.post("/login", { email, password });
+
+    const token = res.data;
+
+    localStorage.setItem("access_token", token);
+
+    return token;
   } catch (err) {
-    logError('createAccommodationReview', err);
+    logError("login", err);
     throw err;
   }
 };
