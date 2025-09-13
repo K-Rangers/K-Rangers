@@ -84,4 +84,5 @@ public class ReviewController {
         MyReviewsResponseDTO myReviews = reviewService.getMyReviews(user);
         return ResponseEntity.ok(myReviews);
     }
+
 }
