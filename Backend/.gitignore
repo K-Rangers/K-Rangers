@@ -44,8 +44,6 @@ Thumbs.db
 .env
 travel.env
 application-local.yml
-application-dev.yml
-application-prod.yml
 
 # 만약 .properties 파일을 사용한다면 아래 주석을 푸세요.
 # application-local.properties
