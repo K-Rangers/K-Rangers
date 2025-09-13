@@ -1,5 +1,5 @@
 ## (1) 프로젝트명
-<img width="899" height="506" alt="image" src="https://github.com/user-attachments/assets/82b22f51-3df2-4cc1-ae7d-a98c3dfb6e42" />
+<img width="900" height="510" alt="image" src="https://github.com/user-attachments/assets/c1eb6a66-7c75-4430-8950-030f6afedf7f" />
 
 ---
 ## (2) 프로젝트 목표
