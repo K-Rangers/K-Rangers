@@ -22,13 +22,13 @@ spring:
   # --- 핵심 추가: MySQL 데이터베이스 설정 ---
   datasource:
     # --- 핵심 수정: allowPublicKeyRetrieval=true 옵션 추가 ---
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:k_rangers_db}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&createDatabaseIfNotExists=true
-    username: ${MYSQL_USERNAME:gamja_user}
-    password: ${MYSQL_PASSWORD:your_password}
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?createDatabaseIfNotExists=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update # 개발 단계에서는 'update'를 사용하고, 운영 시에는 'none' 또는 'validate'를 권장합니다.
+      ddl-auto: create-drop # 개발 단계에서는 'update'를 사용하고, 운영 시에는 'none' 또는 'validate'를 권장합니다.
     show-sql: true # SQL 쿼리를 콘솔에 출력할지 여부
     properties:
       hibernate:
