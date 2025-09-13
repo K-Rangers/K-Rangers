@@ -1,5 +1,6 @@
 ## (1) 프로젝트명
-![](https://d1085v6s0hknp1.cloudfront.net/boards/coinsect_blog/0781694c-6830-412d-8008-0af07acbad17_image.png)
+<img width="899" height="506" alt="image" src="https://github.com/user-attachments/assets/82b22f51-3df2-4cc1-ae7d-a98c3dfb6e42" />
+
 ---
 ## (2) 프로젝트 목표
 
