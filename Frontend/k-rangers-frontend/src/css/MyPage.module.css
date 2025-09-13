@@ -50,13 +50,14 @@
   object-position: center;
   display: block;
   transform: scale(2) translate(22%, 10%);
- }
+}
 
 .profileTexts {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  margin-bottom: 250px;
 }
 
 .profileName {
@@ -87,96 +88,29 @@
   overflow: hidden;
 }
 
-.reviewTitle {
-  margin: 4px 0 2px;
-  padding-left: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #007aff;
-  border-left: 4px solid #007aff;
-}
-
-.reviewList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background: #fff;
-  border-top: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
-  overflow-y: auto
-}
-
-.reviewItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 12px;    
-  border-bottom: 1px solid #f1f5f9;
-}
-.reviewItem:last-child { border-bottom: none; }
-
-.reviewTexts {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;         
-}
-
-.reviewPlace {
-  font-size: 14px;
-  font-weight: 700;
-  color: #111827;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.reviewContent {
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.deleteBtn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-}
-.deleteBtn:active { transform: scale(0.96); }
-.deleteBtn :global(svg) {
-  width: 18px;
-  height: 18px;
-  color: #ef4444;
-}
-
 .list { display: grid; }
 
 .logoutSection {
-  margin-top: auto;      
-  margin-bottom: 3px;          
+  display: flex;
+  justify-content: center;
+  width: 100%; 
+  margin-top: 20px;
 }
 
 .item {
-  width: 100%;
+  width: 85%;
   height: 48px;
   border-radius: 14px;
   border: 1px solid #eef2f6;
   background: #ffffff;
   color: #111827;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.2px;
-  display: grid;
+  display: flex;
   place-items: center;
+  justify-content: center;
+  align-items: center;   
   cursor: pointer;
 }
 

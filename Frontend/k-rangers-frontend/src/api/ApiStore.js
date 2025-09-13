@@ -83,3 +83,16 @@ export const createAttractionReview = async (attractionId, reviewData) => {
     throw err;
   }
 };
+
+export const signup = async ({ email, password, name }) => {
+  try {
+    const res = await api.post('', { email, password, name });
+
+    return typeof res.data === 'string'
+      ? res.data
+      : res?.data?.message ?? '회원가입이 완료되었습니다.';
+  } catch (err) {
+    logError('signup', err);
+    throw err;
+  }
+};
