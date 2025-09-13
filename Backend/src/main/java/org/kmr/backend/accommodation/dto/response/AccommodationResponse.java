@@ -21,6 +21,7 @@ public class AccommodationResponse {
     private final String room;
     private final String latitude;
     private final String longitude;
+    private final String imageUrl;
 
     public static AccommodationResponse from(Accommodation accommodation) {
         return AccommodationResponse.builder()
@@ -30,13 +31,14 @@ public class AccommodationResponse {
                 .phoneNumber(accommodation.getPhoneNumber())
                 .restroom(accommodation.getRestroom())
                 .elevator(accommodation.getElevator())
-                .parking(accommodation.getAccommodation())
+                .parking(accommodation.getParking())
                 .facility(accommodation.getFacility())
                 .ramp(accommodation.getRamp())
                 .accommodation(accommodation.getAccommodation())
                 .room(accommodation.getRoom())
                 .latitude(accommodation.getLatitude())
                 .longitude(accommodation.getLongitude())
+                .imageUrl(accommodation.getImageUrl())
                 .build();
     }
 }

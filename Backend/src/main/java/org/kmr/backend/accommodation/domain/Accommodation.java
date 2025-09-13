@@ -30,10 +30,11 @@ public class Accommodation {
     private String room;
     private String latitude;
     private String longitude;
+    private String imageUrl;
 
     public Accommodation(String name, String address, String phoneNumber, String restroom, String elevator,
                          String parking, String facility, String ramp, String accommodation, String room,
-                         String latitude, String longitude) {
+                         String latitude, String longitude, String imageUrl) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -46,5 +47,6 @@ public class Accommodation {
         this.room = room;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.imageUrl = imageUrl;
     }
 }

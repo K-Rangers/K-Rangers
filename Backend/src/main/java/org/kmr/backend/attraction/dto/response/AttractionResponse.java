@@ -25,6 +25,7 @@ public class AttractionResponse {
     private final TourCategory category;
     private final String latitude;
     private final String longitude;
+    private final String imageUrl;
 
     public static AttractionResponse from(Attraction attraction) {
         return AttractionResponse.builder()
@@ -44,6 +45,7 @@ public class AttractionResponse {
                 .category(attraction.getCategory())
                 .latitude(attraction.getLatitude())
                 .longitude(attraction.getLongitude())
+                .imageUrl(attraction.getImageUrl())
                 .build();
     }
 }
