@@ -9,10 +9,7 @@ import org.kmr.backend.ai.service.AIServiceClient;
 import org.kmr.backend.attraction.domain.Attraction;
 import org.kmr.backend.attraction.repository.AttractionRepository;
 import org.kmr.backend.review.domain.ReviewEntity;
-import org.kmr.backend.review.dto.ReviewAccomRequestDTO;
-import org.kmr.backend.review.dto.ReviewAccomResponseDTO;
-import org.kmr.backend.review.dto.ReviewRequestDTO;
-import org.kmr.backend.review.dto.ReviewResponseDTO;
+import org.kmr.backend.review.dto.*;
 import org.kmr.backend.review.repository.ReviewRepository;
 import org.kmr.backend.user.domain.User;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,7 @@ public class ReviewService {
     private final AIServiceClient aiServiceClient;
     private final AccommodationRepository accommodationRepository;
 
+    @Transactional
     public ReviewResponseDTO createReview(Long attractionId, User user, ReviewRequestDTO request) {
         Attraction attraction = attractionRepository.findById(attractionId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 관광지가 존재하지 않습니다."));
@@ -78,6 +76,7 @@ public class ReviewService {
         return response.getSummary();
     }
 
+    @Transactional
     public ReviewAccomResponseDTO createAccomReview(Long accommodationId, User user, ReviewAccomRequestDTO request) {
         Accommodation accommodation = accommodationRepository.findById(accommodationId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 숙박시설이 존재하지 않습니다."));
@@ -115,5 +114,21 @@ public class ReviewService {
         }
 
         reviewRepository.delete(review);
+    }
+
+    public MyReviewsResponseDTO getMyReviews(User user) {
+        List<ReviewEntity> allMyReviews = reviewRepository.findByUserOrderByCreatedAtDesc(user);
+
+        List<ReviewResponseDTO> attractionReviews = allMyReviews.stream()
+                .filter(review -> review.getAttraction() != null)
+                .map(ReviewEntity::toDTO)
+                .collect(Collectors.toList());
+
+        List<ReviewAccomResponseDTO> accommodationReviews = allMyReviews.stream()
+                .filter(review -> review.getAccommodation() != null)
+                .map(ReviewEntity::toAccomDTO)
+                .collect(Collectors.toList());
+
+        return new MyReviewsResponseDTO(attractionReviews, accommodationReviews);
     }
 }

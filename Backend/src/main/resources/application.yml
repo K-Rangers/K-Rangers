@@ -3,7 +3,6 @@
 # =================================================
 ai:
   server:
-    # --- 핵심 수정: AI_SERVER_URL 환경 변수가 없을 경우 사용할 기본값을 지정합니다. ---
     url: ${AI_SERVER_URL:http://localhost:8001}
 
 # =================================================
@@ -20,6 +19,22 @@ spring:
       chat:
         options:
           model: gpt-4.1-nano-2025-04-14
+  # --- 핵심 추가: MySQL 데이터베이스 설정 ---
+  datasource:
+    # --- 핵심 수정: allowPublicKeyRetrieval=true 옵션 추가 ---
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?createDatabaseIfNotExists=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # 개발 단계에서는 'update'를 사용하고, 운영 시에는 'none' 또는 'validate'를 권장합니다.
+    show-sql: true # SQL 쿼리를 콘솔에 출력할지 여부
+    properties:
+      hibernate:
+        format_sql: true # SQL 쿼리 포맷팅
+        dialect: org.hibernate.dialect.MySQL8Dialect # MySQL 8 다이얼렉트 사용
+
 kakao:
   api:
     key: ${KAKAO_API_KEY}
