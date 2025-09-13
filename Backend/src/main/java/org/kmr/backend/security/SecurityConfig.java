@@ -26,7 +26,6 @@ import java.util.List;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // --- 핵심 수정: Swagger UI 경로를 보안 검사에서 완전히 제외 ---
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(
