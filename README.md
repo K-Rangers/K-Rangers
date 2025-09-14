@@ -1,4 +1,5 @@
-![](https://d1085v6s0hknp1.cloudfront.net/boards/coinsect_blog/0781694c-6830-412d-8008-0af07acbad17_image.png)
+<img width="890" height="494" alt="image" src="https://github.com/user-attachments/assets/7418cb79-529b-49c8-8b04-7331996015b0" />
+
 ---
 ## (1) 프로젝트 목표
 
@@ -22,7 +23,7 @@
 
 ---
 
-## (4) 팀원 소개
+## (3) 팀원 소개
 
 | Backend | Backend | Frontend | Frontend |
 |:-------:|:-------:|:--------:|:--------:|
@@ -40,7 +41,7 @@
 
 ---
 
-## (5) 프로젝트 소개
+## (4) 프로젝트 소개
 
 본 프로젝트는 교통약자를 위한 여행지 접근성 추천 서비스로, AI가 실제 방문객 리뷰를 분석해 화장실·엘리베이터·주차장 등 접근성 정보를 추출하고, 카카오맵을 통해 여행지를 시각화하여 누구나 쉽고 편리하게 여행지를 찾아볼 수 있도록 했습니다. 
 
@@ -85,17 +86,13 @@ React: 18.2.0
 
 ### 기술 스택  
 
-**Backend**  
- ![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![H2](https://img.shields.io/badge/H2-000000?style=for-the-badge&logo=h2&logoColor=white) ![JPA](https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)  
+**Backend** : ![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)  ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)![H2](https://img.shields.io/badge/H2-000000?style=for-the-badge&logo=h2&logoColor=white)  ![JPA](https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)  
 
-**Frontend**  
- ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)  
+**Frontend** : ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)  
 
-**Deployment**  
- ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)  
+**Deployment** : ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)  
 
-**External API & Data**  
-![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white) ![KakaoMap](https://img.shields.io/badge/KakaoMap-FFCD00?style=for-the-badge&logo=kakao&logoColor=black) ![PublicData](https://img.shields.io/badge/공공데이터포털-00A0E2?style=for-the-badge&logo=data&logoColor=white)  
+**External API & Data** : ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)  ![KakaoMap](https://img.shields.io/badge/KakaoMap-FFCD00?style=for-the-badge&logo=kakao&logoColor=black)  ![PublicData](https://img.shields.io/badge/공공데이터포털-00A0E2?style=for-the-badge&logo=data&logoColor=white)  
 
 
 ### 주요 기능
