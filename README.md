@@ -1,8 +1,8 @@
-## (1) 프로젝트명
-<img width="890" height="494" alt="image" src="https://github.com/user-attachments/assets/7418cb79-529b-49c8-8b04-7331996015b0" />
 
+# 프로젝트명
+![](https://d1085v6s0hknp1.cloudfront.net/boards/coinsect_blog/0781694c-6830-412d-8008-0af07acbad17_image.png)
 ---
-## (2) 프로젝트 목표
+## (1) 프로젝트 목표
 
 **“맛집 평점은 쉽게 찾는데, 휠체어 입장은 가능할까?”**
 
@@ -18,7 +18,7 @@
 
 --- 
 
-## (3) 배포 주소
+## (2) 배포 주소
 
 > **https://travel-aiga.netlify.app**
 
@@ -48,7 +48,7 @@
 
 또한 **Progressive Web App(PWA)** 형태로 개발해 모바일에서도 앱처럼 설치해 사용할 수 있습니다.
 
-### 요구사항
+### 최소 요구사항
 
 ```
 Node.js: v18.17.0
@@ -88,16 +88,16 @@ React: 18.2.0
 ### 기술 스택  
 
 **Backend**  
-![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)![H2](https://img.shields.io/badge/H2-000000?style=for-the-badge&logo=h2&logoColor=white)![JPA](https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)  
+ ![Spring Boot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) ![H2](https://img.shields.io/badge/H2-000000?style=for-the-badge&logo=h2&logoColor=white) ![JPA](https://img.shields.io/badge/JPA-59666C?style=for-the-badge&logo=hibernate&logoColor=white)  
 
 **Frontend**  
-![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)  
+ ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)  
 
 **Deployment**  
-![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)  
+ ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)  
 
 **External API & Data**  
-![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)![KakaoMap](https://img.shields.io/badge/KakaoMap-FFCD00?style=for-the-badge&logo=kakao&logoColor=black)![PublicData](https://img.shields.io/badge/공공데이터포털-00A0E2?style=for-the-badge&logo=data&logoColor=white)  
+![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white) ![KakaoMap](https://img.shields.io/badge/KakaoMap-FFCD00?style=for-the-badge&logo=kakao&logoColor=black) ![PublicData](https://img.shields.io/badge/공공데이터포털-00A0E2?style=for-the-badge&logo=data&logoColor=white)  
 
 
 ### 주요 기능
