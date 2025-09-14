@@ -1,5 +1,3 @@
-
-# 프로젝트명
 ![](https://d1085v6s0hknp1.cloudfront.net/boards/coinsect_blog/0781694c-6830-412d-8008-0af07acbad17_image.png)
 ---
 ## (1) 프로젝트 목표
