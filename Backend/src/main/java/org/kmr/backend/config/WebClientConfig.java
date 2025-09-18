@@ -11,7 +11,6 @@ import java.time.Duration;
 @Configuration
 public class WebClientConfig {
 
-    // --- 핵심 수정: ai.server.url 속성을 찾을 수 없을 경우 사용할 기본값을 지정합니다. ---
     @Value("${ai.server.url:http://localhost:8001}")
     private String aiServerUrl;
 
