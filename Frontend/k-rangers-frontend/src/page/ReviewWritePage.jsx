@@ -1,4 +1,3 @@
-// src/page/ReviewWritePage.jsx
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
@@ -108,13 +107,13 @@ export default function ReviewWritePage() {
             >
               <FiChevronLeft size={22} aria-hidden="true" />
             </button>
-            <h1 className={styles.title}>{placeName} 리뷰</h1>
+            <h1 className={styles.title}>{placeName}</h1>
           </header>
 
           <form className={styles.form} onSubmit={handleSubmit}>
-            <label className={styles.label}>별점</label>
+            <label className={styles.label}>별점을 남겨주세요!</label>
             <StarInput value={rating} onChange={setRating} />
-            <div className={styles.hint}>1~5점 중 선택</div>
+            <div className={styles.hint}>악의적인 댓글 혹은 욕설은 예고없이 삭제될 수 있습니다.</div>
 
             <label className={styles.label} htmlFor="content">
               내용

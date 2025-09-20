@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../css/AccessChips.module.css";
+import useAttractionStore from "../store/AttractionStore"; 
 
 const CHIPS = [
   { key: "facility",           label: "휠체어 접근성",   icon: "♿️" },
@@ -13,19 +14,22 @@ const CHIPS = [
   { key: "restaurant",         label: "음식점",          icon: "🍽️" },
 ];
 
-function AccessChips({ selected = [], onToggle }) {
+function AccessChips() {
+  const features = useAttractionStore((s) => s.features);     
+  const toggleFeature = useAttractionStore((s) => s.toggleFeature);
+
   return (
     <div className={styles.section}>
       <h3 className={styles.title}>맞춤형 관광지 찾기</h3>
-      <div className={styles.scroller} role="listbox" aria-label="접근성 필터">
+      <div className={styles.scroller}>
         {CHIPS.map((c) => {
-          const active = selected.includes(c.key);
+          const active = features.has(c.key);
           return (
             <button
               key={c.key}
               type="button"
               className={`${styles.chip} ${active ? styles.active : ""}`}
-              onClick={() => onToggle?.(c.key)}
+              onClick={() => toggleFeature(c.key)}
             >
               <span className={styles.icon} aria-hidden="true">{c.icon}</span>
               {c.label}

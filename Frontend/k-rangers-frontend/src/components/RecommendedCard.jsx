@@ -65,7 +65,7 @@ function RecommendedCard({ item, onClick, reason }) {
   const getCategoryLabel = (cat) =>
     CATEGORY_LABELS[cat?.toString().trim()] ?? cat ?? "";
 
-  const thumb = item.thumbnailUrl || "https://velog.velcdn.com/images/kiw0n/post/d254dfb0-b3b6-43b4-b0b5-2914257a09c7/image.jpeg";
+  const thumb = item.imageUrl || "https://velog.velcdn.com/images/kiw0n/post/d254dfb0-b3b6-43b4-b0b5-2914257a09c7/image.jpeg";
   const category = getCategoryLabel(item.category) || "";
   const name = item.name || "";
   const address = item.address || "";
