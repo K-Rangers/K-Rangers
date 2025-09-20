@@ -1,12 +1,6 @@
 import React from "react";
 import styles from "../css/RecommendedCard.module.css";
-
-const isOn = (v) => {
-  if (typeof v === "boolean") return v;
-  if (v == null) return false;
-  const s = String(v).trim().toLowerCase();
-  return s === "있음" || s === "y";
-};
+import isOn from "../utils/isOn";
 
 const CATEGORY_LABELS = {
   Park: "공원",
@@ -29,25 +23,31 @@ const CATEGORY_LABELS = {
 };
 
 function StarRating({ rating = 0, small = false }) {
-  const render = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      let fill = 0;
-      if (rating >= i) fill = 100;
-      else if (rating >= i - 0.5) fill = 50;
-      stars.push(
-        <span key={i} className={`${styles.star} ${small ? styles.starsSm : ""}`}>
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    let fill = 0;
+    if (rating >= i) fill = 100;
+    else if (rating >= i - 0.5) fill = 50;
+
+    stars.push(
+      <span
+        key={i}
+        className={`${styles.star} ${small ? styles.starsSm : ""}`}
+      >
+        ★
+        <span
+          className={styles.starFill}
+          style={{ width: `${fill}%` }}
+        >
           ★
-          <span className={styles.starFill} style={{ width: `${fill}%` }}>★</span>
         </span>
-      );
-    }
-    return stars;
-  };
-  return <div className={styles.stars}>{render()}</div>;
+      </span>
+    );
+  }
+  return <div className={styles.stars}>{stars}</div>;
 }
 
-function RecommendedCard({ item, onClick, reason }) { 
+function RecommendedCard({ item, onClick, reason }) {
   const chips = [
     isOn(item.restroom) && "장애인 화장실",
     isOn(item.elevator) && "엘리베이터",
@@ -60,13 +60,13 @@ function RecommendedCard({ item, onClick, reason }) {
     isOn(item.lift) && "휠체어 리프트",
   ].filter(Boolean);
 
-  const reviewCount = Array.isArray(item.reviews) ? item.reviews.length : 0;
+  const reviewCount = item.reviews?.length ?? 0;
 
   const getCategoryLabel = (cat) =>
     CATEGORY_LABELS[cat?.toString().trim()] ?? cat ?? "";
 
-  const thumb = item.imageUrl || "https://velog.velcdn.com/images/kiw0n/post/d254dfb0-b3b6-43b4-b0b5-2914257a09c7/image.jpeg";
-  const category = getCategoryLabel(item.category) || "";
+  const thumb = item.imageUrl || "/assets/no-image.png";
+  const category = getCategoryLabel(item.category);
   const name = item.name || "";
   const address = item.address || "";
 
@@ -75,47 +75,63 @@ function RecommendedCard({ item, onClick, reason }) {
       className={styles.card}
       role="button"
       tabIndex={0}
+      aria-label={`${name} 카드`}
       onClick={() => onClick?.(item)}
       onKeyDown={(e) => e.key === "Enter" && onClick?.(item)}
-      style={{ cursor: "pointer" }}
     >
       <div className={styles.thumbWrap}>
         {thumb && (
-          <img src={thumb} alt={`${name} 대표 이미지`} className={styles.thumb} loading="lazy" />
+          <img
+            src={thumb}
+            alt={`${name} 대표 이미지`}
+            className={styles.thumb}
+            loading="lazy"
+          />
         )}
         {category && <span className={styles.category}>{category}</span>}
-        <h3 className={styles.name}>{name}</h3>
+        {name && <h3 className={styles.name}>{name}</h3>}
       </div>
 
-      <div className={styles.meta}>
-        {address && <span className={styles.address}>{address}</span>}
-      </div>
+      {address && (
+        <div className={styles.meta}>
+          <span className={styles.address}>{address}</span>
+        </div>
+      )}
 
       {chips.length > 0 && (
         <div className={styles.chips}>
-          {chips.slice(0, 10).map((c) => (
-            <span key={c} className={styles.chip}>{c}</span>
+          {chips.map((c) => (
+            <span key={c} className={styles.chip}>
+              {c}
+            </span>
           ))}
         </div>
       )}
 
       <div className={styles.reviewSummary}>
         {reviewCount > 0 ? (
-          <div className={styles.starsRow} aria-label={`평균 평점 ${item.rating}점`}>
+          <div
+            className={styles.starsRow}
+            aria-label={`평균 평점 ${item.rating}점`}
+          >
             <StarRating rating={item.rating} />
-            <span className={styles.reviewAvgText} title={`${item.rating}점`}>
+            <span className={styles.reviewAvgText}>
               {item.rating.toFixed(1)}
             </span>
-            <span className={styles.reviewCount}>{reviewCount}개 리뷰</span>
+            <span className={styles.reviewCount}>
+              {reviewCount}개 리뷰
+            </span>
           </div>
         ) : (
-          <span className={styles.reviewCount}>리뷰가 아직 없어요. 😭</span>
+          <span className={styles.reviewCount}>
+            리뷰가 아직 없어요. 😭
+          </span>
         )}
       </div>
 
       <div className={styles.reasonBox} role="note">
         <div className={styles.reasonTitle}>AI가 추천해요!</div>
-        <p className={styles.reasonText} title={reason}>{reason}</p>
+        <p className={styles.reasonText}>{reason}</p>
       </div>
     </article>
   );

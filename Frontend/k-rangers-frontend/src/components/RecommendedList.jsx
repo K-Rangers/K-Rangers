@@ -4,13 +4,7 @@ import styles from "../css/RecommendedList.module.css";
 import RecommendedCard from "./RecommendedCard";
 import useAttractionStore from "../store/AttractionStore";
 import useAttraction from "../hooks/useAttraction";
-
-const isOn = (v) => {
-  if (typeof v === "boolean") return v;
-  if (v == null) return false;
-  const s = String(v).trim().toLowerCase();
-  return s === "있음" ;
-};
+import isOn from "../utils/isOn";
 
 function RecommendedList() {
   const navigate = useNavigate();
