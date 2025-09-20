@@ -63,14 +63,14 @@ function LoginPage() {
       await login(email.trim(), password);
       navigate(redirectTo, { replace: true });
     } catch (err) {
-      const msg =
-        err?.response?.data && typeof err.response.data === "string"
-          ? err.response.data
-          : "로그인에 실패했어요. 이메일/비밀번호를 확인해 주세요.";
-      setErrorMsg(msg);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const msg =
+    err?.response?.data && typeof err.response.data === "string"
+      ? err.response.data
+      : "로그인에 실패했어요. 이메일/비밀번호를 확인해 주세요.";
+    setErrorMsg(msg);
+  } finally {
+    setIsSubmitting(false);
+  }
   };
 
   if (booting) return null;
@@ -109,11 +109,11 @@ function LoginPage() {
               />
             </div>
 
-            {errorMsg && (
-              <p className={styles.error} aria-live="assertive">
-                {errorMsg}
-              </p>
-            )}
+          {errorMsg && (
+            <div className={styles.errorBanner} role="alert" aria-live="assertive">
+              {errorMsg}
+            </div>
+          )}
 
             <div className={styles.actions}>
               <button
