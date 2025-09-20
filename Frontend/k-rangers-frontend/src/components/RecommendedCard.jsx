@@ -1,26 +1,7 @@
 import React from "react";
 import styles from "../css/RecommendedCard.module.css";
 import isOn from "../utils/isOn";
-
-const CATEGORY_LABELS = {
-  Park: "공원",
-  Museum: "박물관",
-  ThemaPark: "테마파크",
-  Market: "시장",
-  Temple: "사찰",
-  School: "학교",
-  SportsFacility: "스포츠 시설",
-  CulturalHeritage: "문화재",
-  ArtMuseum: "미술관",
-  Arboretum: "수목원",
-  Attraction: "명소",
-  DepartmentStore: "백화점",
-  CultureCenter: "문화센터",
-  LearningCenter: "학습관",
-  ExhibitionHall: "전시장",
-  Aquarium: "아쿠아리움",
-  Theater: "공연예술극장",
-};
+import { CATEGORY_LABELS , CHIPS} from "../data/Options";
 
 function StarRating({ rating = 0, small = false }) {
   const stars = [];
@@ -48,20 +29,11 @@ function StarRating({ rating = 0, small = false }) {
 }
 
 function RecommendedCard({ item, onClick, reason }) {
-  const chips = [
-    isOn(item.restroom) && "장애인 화장실",
-    isOn(item.elevator) && "엘리베이터",
-    isOn(item.parking) && "장애인 주차구역",
-    isOn(item.facility) && "장애인 이용가능시설",
-    isOn(item.ramp) && "경사로",
-    isOn(item.informationCenter) && "관광안내소",
-    isOn(item.wheelchairRental) && "휠체어 대여소",
-    isOn(item.restaurant) && "음식점",
-    isOn(item.lift) && "휠체어 리프트",
-  ].filter(Boolean);
+  const chips = CHIPS
+  .filter((chip) => isOn(item[chip.key]))
+  .map((chip) => chip.label);
 
   const reviewCount = item.reviews?.length ?? 0;
-
   const getCategoryLabel = (cat) =>
     CATEGORY_LABELS[cat?.toString().trim()] ?? cat ?? "";
 

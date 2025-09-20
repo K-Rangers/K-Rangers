@@ -2,19 +2,7 @@ import React, { useState } from "react";
 import styles from "../css/HeroSection.module.css";
 import DropdownSelect from "./DropDownSelect";
 import useAttractionStore from "../store/AttractionStore"; 
-
-const REGION_OPTIONS = [
-  { value: "ALL", label: "전체보기" },
-  { value: "JUNG_GU", label: "중구" },
-  { value: "DONG_GU", label: "동구" },
-  { value: "SEO_GU",  label: "서구" },
-  { value: "NAM_GU",  label: "남구" },
-  { value: "BUK_GU",  label: "북구" },
-  { value: "SUSEONG_GU", label: "수성구" },
-  { value: "DALSEO_GU",   label: "달서구" },
-  { value: "DALSEONG_GUN",label: "달성군" },
-  { value: "CHILGOK",     label: "칠곡군" },
-];
+import { REGION_OPTIONS } from "../data/Options";
 
 function HeroSection() {
   const [region, setRegion] = useState(REGION_OPTIONS[0].value); 

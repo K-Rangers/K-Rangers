@@ -1,26 +1,7 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../css/DetailPost.module.css";
-
-const CATEGORY_LABELS = {
-  Park: "공원",
-  Museum: "박물관",
-  ThemaPark: "테마파크",
-  Market: "시장",
-  Temple: "사찰",
-  School: "학교",
-  SportsFacility: "스포츠 시설",
-  CulturalHeritage: "문화재",
-  ArtMuseum: "미술관",
-  Arboretum: "수목원",
-  Attraction: "명소",
-  DepartmentStore: "백화점",
-  CultureCenter: "문화센터",
-  LearningCenter: "학습관",
-  ExhibitionHall: "전시장",
-  Aquarium: "아쿠아리움",
-  Theater: "공연예술극장",
-};
+import { CATEGORY_LABELS } from "../data/Options";
 
 function StarRating({ rating = 0, small = false }) {
   const render = () => {
