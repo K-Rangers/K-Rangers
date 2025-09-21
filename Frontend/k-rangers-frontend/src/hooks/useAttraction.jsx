@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 // import { getAttractionsByDistrict,getAttractionReviews,getAttractionReviewSummary, getAttractionRatingAvg, } from "../api/ApiStore";
 //임시 더미데이터
 import { dummyAttractions } from "../data/dummyAttractions"; 
