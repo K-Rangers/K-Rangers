@@ -8,14 +8,6 @@ function AllView({ onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { items = [] } = location.state || {};
-  
-  const handleKeyDown = (e) => {
-    if (!onClose) return;
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onClose();
-    }
-  };
 
   const handleCardClick = (item) => {
     navigate("/map", { state: { selectedItem: item } });
@@ -27,12 +19,9 @@ function AllView({ onClose }) {
         {onClose ? (
           <span
             className={styles.moreBtn}
-            role="button"
-            tabIndex={0}
             onClick={onClose}
-            onKeyDown={handleKeyDown}
           >
-            <FiChevronLeft size={18} aria-hidden="true" />
+            <FiChevronLeft size={18} />
           </span>
         ) : (
           <span />
@@ -42,7 +31,7 @@ function AllView({ onClose }) {
       </div>
 
       {items.length === 0 ? (
-        <p>표시할 항목이 없습니다.</p>
+        <div className={styles.empty}>조건에 맞는 관광지가 없어요. 😢</div>
       ) : (
         <div className={styles.grid}>
           {items.map((it) => {
@@ -53,7 +42,7 @@ function AllView({ onClose }) {
                 onClick={() => handleCardClick(it)}
                 reviews={it.reviews}
                 rating={it.rating}
-                reason={it.summary || "요약할 리뷰가 없습니다."} 
+                reason={it.summary || "요약할 리뷰가 없습니다."}
               />
             );
           })}

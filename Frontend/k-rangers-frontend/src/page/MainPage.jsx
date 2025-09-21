@@ -1,7 +1,9 @@
 import React from "react";
 import Header from "../components/Header";
 import styles from "../css/MainPage.module.css";
-import RecommendedSection from "../components/RecommendedSection";
+import HeroSection from "../components/HeroSection";
+import AccessChips from "../components/AccessChips";
+import RecommendedList from "../components/RecommendedList";
 import BottomNav from "../components/BottomNav";
 
 function MainPage() {
@@ -10,7 +12,9 @@ function MainPage() {
       <div className={styles.phone}>
         <Header />
         <div className={styles.content}>
-          <RecommendedSection />
+          <HeroSection />
+          <AccessChips />
+          <RecommendedList />
         </div>
         <BottomNav />
       </div>

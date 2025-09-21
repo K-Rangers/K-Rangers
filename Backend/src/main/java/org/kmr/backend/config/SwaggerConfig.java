@@ -22,7 +22,7 @@ public class SwaggerConfig {
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .info(apiInfo())
                 .addServersItem(new Server()
-                        .url("https://travel.gamja.cloud")
+                        .url("http://3.35.65.183:9000")
                         .description("Production server"))
                 .addServersItem(new Server()
                         .url("http://localhost:9000")

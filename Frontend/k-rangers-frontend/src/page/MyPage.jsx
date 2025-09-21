@@ -5,7 +5,7 @@ import styles from "../css/MyPage.module.css";
 import brandAvatar from "../assets/chricon.png";
 import { FiTrash2 } from "react-icons/fi";
 
-export default function MyPage({ user }) {
+function MyPage({ user }) {
   const navigate = useNavigate();
   const name = user?.name || "계명레인저";
   const email = user?.email || "krangers@example.com";
@@ -60,7 +60,7 @@ export default function MyPage({ user }) {
       </li>
     ))}
   </ul>
-          <nav className={`${styles.list} ${styles.logoutSection}`} aria-label="계정 메뉴">
+          <nav className={`${styles.list} ${styles.logoutSection}`}>
             <button
               type="button"
               className={`${styles.item} ${styles.dangerItem}`}
@@ -76,3 +76,5 @@ export default function MyPage({ user }) {
     </div>
   );
 }
+
+export default MyPage;

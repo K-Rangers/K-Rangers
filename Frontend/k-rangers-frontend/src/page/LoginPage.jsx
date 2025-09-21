@@ -110,7 +110,7 @@ function LoginPage() {
             </div>
 
             {errorMsg && (
-              <p className={styles.error} aria-live="assertive">
+              <p className={styles.error}>
                 {errorMsg}
               </p>
             )}

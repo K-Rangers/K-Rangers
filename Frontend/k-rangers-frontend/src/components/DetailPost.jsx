@@ -1,49 +1,11 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "../css/DetailPost.module.css";
-
-const CATEGORY_LABELS = {
-  Park: "공원",
-  Museum: "박물관",
-  ThemaPark: "테마파크",
-  Market: "시장",
-  Temple: "사찰",
-  School: "학교",
-  SportsFacility: "스포츠 시설",
-  CulturalHeritage: "문화재",
-  ArtMuseum: "미술관",
-  Arboretum: "수목원",
-  Attraction: "명소",
-  DepartmentStore: "백화점",
-  CultureCenter: "문화센터",
-  LearningCenter: "학습관",
-  ExhibitionHall: "전시장",
-  Aquarium: "아쿠아리움",
-  Theater: "공연예술극장",
-};
-
-function StarRating({ rating = 0, small = false }) {
-  const render = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      let fill = 0;
-      if (rating >= i) fill = 100;
-      else if (rating >= i - 0.5) fill = 50;
-      stars.push(
-        <span key={i} className={`${styles.star} ${small ? styles.starsSm : ""}`}>
-          ★
-          <span className={styles.starFill} style={{ width: `${fill}%` }}>★</span>
-        </span>
-      );
-    }
-    return stars;
-  };
-  return <div className={styles.stars}>{render()}</div>;
-}
+import { CATEGORY_LABELS, CHIPS } from "../data/Options";
+import CalcStars from "../utils/CalcStars"; 
 
 function DetailPost({ item }) {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const ratingInfo = useMemo(() => {
     const avg = Number.isFinite(item?.rating) ? Math.round(item.rating * 10) / 10 : null;
@@ -76,13 +38,10 @@ function DetailPost({ item }) {
 
   useEffect(() => {
     if (!showModal) return;
-    const onKey = (e) => e.key === "Escape" && setShowModal(false);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    document.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
-      document.removeEventListener("keydown", onKey);
     };
   }, [showModal]);
 
@@ -100,30 +59,24 @@ function DetailPost({ item }) {
   const category =
     CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
 
-const handleWrite = () => {
-  const id = item?.accommodationId || item?.id || item?.attractionId;
-  if (!id) return;
+  const handleWrite = () => {
+    const id = item?.accommodationId || item?.id || item?.attractionId;
+    if (!id) return;
 
-  const token = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
-  const target = `/reviews?id=${id}`;
+    const token = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+    const target = `/reviews?id=${id}`;
 
-  if (!token) {
-    console.log("[handleWrite] → login", {
-      path: `/login?redirect=${encodeURIComponent(target)}`,
-      state: { redirectTo: target, from: location.pathname + location.search, item },
-    });
-    window.alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요!");
-    navigate(`/login?redirect=${encodeURIComponent(target)}`, {
-      state: { redirectTo: target, from: location.pathname + location.search, item },
-      replace: true,
-    });
-    return;
-  }
+    if (!token) {
+      window.alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요!");
+      navigate(`/login?redirect=${encodeURIComponent(target)}`, {
+        state: { redirectTo: target, item },
+        replace: true,
+      });
+      return;
+    }
 
-  console.log("[handleWrite] →", { path: target, state: { item } });
-  navigate(target, { state: { item } });
-};
-
+    navigate(target, { state: { item } });
+  };
 
   return (
     <div className={styles.container}>
@@ -138,9 +91,6 @@ const handleWrite = () => {
           <div
             ref={addressRef}
             className={`${styles.address} ${isOverflow ? styles.addressClickable : ""}`}
-            role={isOverflow ? "button" : undefined}
-            tabIndex={isOverflow ? 0 : -1}
-            aria-label={isOverflow ? "전체 주소 보기" : undefined}
             onClick={() => isOverflow && setShowModal(true)}
             onKeyDown={(e) => {
               if (!isOverflow) return;
@@ -156,7 +106,14 @@ const handleWrite = () => {
 
           {ratingInfo.avg != null && (
             <div className={styles.inlineRating}>
-              <StarRating rating={ratingInfo.avg} small />
+              <div className={styles.stars}>
+                {CalcStars(ratingInfo.avg).map((s) => (
+                  <span key={s.id} className={`${styles.star} ${styles.starsSm}`}>
+                    ★
+                    <span className={styles.starFill} style={{ width: `${s.fill}%` }}>★</span>
+                  </span>
+                ))}
+              </div>
               <span className={styles.reviewAvgText}>{ratingInfo.avg.toFixed(1)}</span>
               <span className={styles.reviewCount}>({ratingInfo.count}개)</span>
             </div>
@@ -164,7 +121,20 @@ const handleWrite = () => {
         </div>
       </div>
 
-      <div className={styles.reasonBox} role="note">
+      <div className={styles.accessibilitySection}>
+        <h3 className={styles.sectionTitle}>접근성 정보</h3>
+        <div className={styles.chips}>
+          {CHIPS.map(({ key, label }) =>
+            item[key] === "있음" ? (
+              <span key={key} className={styles.chip}>
+                {label}
+              </span>
+            ) : null
+          )}
+        </div>
+      </div>
+
+      <div className={styles.reasonBox}>
         <div className={styles.reasonTitle}>AI가 추천해요!</div>
         <p className={styles.reasonText} title={reasonText}>{reasonText}</p>
       </div>
@@ -174,10 +144,7 @@ const handleWrite = () => {
           리뷰 <span className={styles.reviewCount}>({ratingInfo.count || 0}개)</span>
         </h3>
         <div
-          role="button"
-          tabIndex={0}
           className={styles.writeBtn}
-          aria-label="리뷰 작성하기"
           onClick={handleWrite}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -202,7 +169,12 @@ const handleWrite = () => {
                   </span>
                 </div>
                 <div className={styles.itemStars}>
-                  <StarRating rating={review.rating} small />
+                  {CalcStars(review.rating).map((s) => (
+                    <span key={s.id} className={`${styles.star} ${styles.starsSm}`}>
+                      ★
+                      <span className={styles.starFill} style={{ width: `${s.fill}%` }}>★</span>
+                    </span>
+                  ))}
                 </div>
               </div>
               <p className={styles.reviewBody}>{review.content}</p>
@@ -214,21 +186,15 @@ const handleWrite = () => {
       )}
 
       {showModal && (
-        <div className={styles.modalBackdrop} onClick={() => setShowModal(false)} role="presentation">
+        <div className={styles.modalBackdrop} onClick={() => setShowModal(false)}>
           <div
             className={styles.modal}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="addressModalTitle"
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.modalHeader}>
-              <h4 id="addressModalTitle" className={styles.modalTitle}>전체 주소</h4>
+              <h4 className={styles.modalTitle}>전체 주소</h4>
               <div
                 className={styles.modalClose}
-                role="button"
-                tabIndex={0}
-                aria-label="닫기"
                 onClick={() => setShowModal(false)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") setShowModal(false);
