@@ -1,37 +1,11 @@
 import React from "react";
 import styles from "../css/RecommendedCard.module.css";
 import isOn from "../utils/isOn";
-import { CATEGORY_LABELS , CHIPS} from "../data/Options";
-
-function StarRating({ rating = 0, small = false }) {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    let fill = 0;
-    if (rating >= i) fill = 100;
-    else if (rating >= i - 0.5) fill = 50;
-
-    stars.push(
-      <span
-        key={i}
-        className={`${styles.star} ${small ? styles.starsSm : ""}`}
-      >
-        ★
-        <span
-          className={styles.starFill}
-          style={{ width: `${fill}%` }}
-        >
-          ★
-        </span>
-      </span>
-    );
-  }
-  return <div className={styles.stars}>{stars}</div>;
-}
+import { CATEGORY_LABELS, CHIPS } from "../data/Options";
+import CalcStars from "../utils/CalcStars"; 
 
 function RecommendedCard({ item, onClick, reason }) {
-  const chips = CHIPS
-  .filter((chip) => isOn(item[chip.key]))
-  .map((chip) => chip.label);
+  const chips = CHIPS.filter((chip) => isOn(item[chip.key])).map((chip) => chip.label);
 
   const reviewCount = item.reviews?.length ?? 0;
   const getCategoryLabel = (cat) =>
@@ -41,6 +15,7 @@ function RecommendedCard({ item, onClick, reason }) {
   const category = getCategoryLabel(item.category);
   const name = item.name || "";
   const address = item.address || "";
+  const stars = CalcStars(item.rating);
 
   return (
     <article
@@ -80,10 +55,20 @@ function RecommendedCard({ item, onClick, reason }) {
 
       <div className={styles.reviewSummary}>
         {reviewCount > 0 ? (
-          <div
-            className={styles.starsRow}
-          >
-            <StarRating rating={item.rating} />
+          <div className={styles.starsRow}>
+            <div className={styles.stars}>
+              {stars.map((s) => (
+                <span key={s.id} className={styles.star}>
+                  ★
+                  <span
+                    className={styles.starFill}
+                    style={{ width: `${s.fill}%` }}
+                  >
+                    ★
+                  </span>
+                </span>
+              ))}
+            </div>
             <span className={styles.reviewAvgText}>
               {item.rating.toFixed(1)}
             </span>

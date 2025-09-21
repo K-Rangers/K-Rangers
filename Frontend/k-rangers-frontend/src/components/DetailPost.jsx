@@ -2,25 +2,7 @@ import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/DetailPost.module.css";
 import { CATEGORY_LABELS, CHIPS } from "../data/Options";
-
-function StarRating({ rating = 0, small = false }) {
-  const render = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      let fill = 0;
-      if (rating >= i) fill = 100;
-      else if (rating >= i - 0.5) fill = 50;
-      stars.push(
-        <span key={i} className={`${styles.star} ${small ? styles.starsSm : ""}`}>
-          ★
-          <span className={styles.starFill} style={{ width: `${fill}%` }}>★</span>
-        </span>
-      );
-    }
-    return stars;
-  };
-  return <div className={styles.stars}>{render()}</div>;
-}
+import CalcStars from "../utils/CalcStars"; 
 
 function DetailPost({ item }) {
   const navigate = useNavigate();
@@ -124,7 +106,14 @@ function DetailPost({ item }) {
 
           {ratingInfo.avg != null && (
             <div className={styles.inlineRating}>
-              <StarRating rating={ratingInfo.avg} small />
+              <div className={styles.stars}>
+                {CalcStars(ratingInfo.avg).map((s) => (
+                  <span key={s.id} className={`${styles.star} ${styles.starsSm}`}>
+                    ★
+                    <span className={styles.starFill} style={{ width: `${s.fill}%` }}>★</span>
+                  </span>
+                ))}
+              </div>
               <span className={styles.reviewAvgText}>{ratingInfo.avg.toFixed(1)}</span>
               <span className={styles.reviewCount}>({ratingInfo.count}개)</span>
             </div>
@@ -180,7 +169,12 @@ function DetailPost({ item }) {
                   </span>
                 </div>
                 <div className={styles.itemStars}>
-                  <StarRating rating={review.rating} small />
+                  {CalcStars(review.rating).map((s) => (
+                    <span key={s.id} className={`${styles.star} ${styles.starsSm}`}>
+                      ★
+                      <span className={styles.starFill} style={{ width: `${s.fill}%` }}>★</span>
+                    </span>
+                  ))}
                 </div>
               </div>
               <p className={styles.reviewBody}>{review.content}</p>
