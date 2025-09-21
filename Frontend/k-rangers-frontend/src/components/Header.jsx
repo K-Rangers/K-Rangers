@@ -7,7 +7,7 @@ function Header() {
     <header className={styles.header}>
       
       <div className={styles.top}>
-        <a href="/" className={styles.brand} aria-label="Travel Alga 홈">
+        <a href="/" className={styles.brand}>
           <img src={logo} className={styles.logo} alt="로고" />
         </a>
       </div>

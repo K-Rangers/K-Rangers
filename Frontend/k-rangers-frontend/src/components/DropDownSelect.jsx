@@ -8,7 +8,6 @@ function DropDownSelect({ name, placeholder, options, value, onChange }) {
                 className={styles.select}
                 value={value}
                 onChange={(e) => onChange && onChange(e.target.value)}
-                aria-label={placeholder}
             >
                 <option value="" disabled hidden>
                     {placeholder}
@@ -19,7 +18,7 @@ function DropDownSelect({ name, placeholder, options, value, onChange }) {
                     </option>
                 ))}
             </select>
-            <span className={styles.arrow} aria-hidden="true">▾</span>
+            <span className={styles.arrow}>▾</span>
         </div>
     );
 }

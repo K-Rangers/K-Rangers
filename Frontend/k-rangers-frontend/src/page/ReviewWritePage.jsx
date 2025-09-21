@@ -1,4 +1,3 @@
-// src/page/ReviewWritePage.jsx
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
@@ -13,8 +12,6 @@ function StarInput({ value, onChange }) {
     <div
       className={styles.stars}
       onMouseLeave={() => setHover(0)}
-      role="radiogroup"
-      aria-label="별점 선택"
     >
       {[1, 2, 3, 4, 5].map((i) => (
         <button
@@ -23,9 +20,6 @@ function StarInput({ value, onChange }) {
           className={`${styles.starBtn} ${shown >= i ? styles.on : ""}`}
           onMouseEnter={() => setHover(i)}
           onClick={() => onChange(i)}
-          aria-label={`${i}점`}
-          role="radio"
-          aria-checked={value === i}
         >
           ★
         </button>
@@ -34,7 +28,7 @@ function StarInput({ value, onChange }) {
   );
 }
 
-export default function ReviewWritePage() {
+function ReviewWritePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [sp] = useSearchParams();
@@ -104,17 +98,16 @@ export default function ReviewWritePage() {
             <button
               className={styles.backBtn}
               onClick={() => navigate(-1)}
-              aria-label="뒤로가기"
             >
-              <FiChevronLeft size={22} aria-hidden="true" />
+              <FiChevronLeft size={22} />
             </button>
-            <h1 className={styles.title}>{placeName} 리뷰</h1>
+            <h1 className={styles.title}>{placeName}</h1>
           </header>
 
           <form className={styles.form} onSubmit={handleSubmit}>
-            <label className={styles.label}>별점</label>
+            <label className={styles.label}>별점을 남겨주세요!</label>
             <StarInput value={rating} onChange={setRating} />
-            <div className={styles.hint}>1~5점 중 선택</div>
+            <div className={styles.hint}>악의적인 댓글 혹은 욕설은 예고없이 삭제될 수 있습니다.</div>
 
             <label className={styles.label} htmlFor="content">
               내용
@@ -134,7 +127,6 @@ export default function ReviewWritePage() {
               type="submit"
               className={styles.submitBtn}
               disabled={!canSubmit}
-              aria-disabled={!canSubmit}
             >
               {submitting ? "작성 중..." : "리뷰 등록"}
             </button>
@@ -144,3 +136,5 @@ export default function ReviewWritePage() {
     </div>
   );
 }
+
+export default ReviewWritePage;
