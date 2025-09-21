@@ -1,4 +1,3 @@
-// src/pages/MapPage.jsx
 import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "../css/MapPage.module.css";
