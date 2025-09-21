@@ -20,7 +20,7 @@ function AccessChips() {
               className={`${styles.chip} ${active ? styles.active : ""}`}
               onClick={() => toggleFeature(c.key)}
             >
-              <span className={styles.icon} aria-hidden="true">{c.icon}</span>
+              <span className={styles.icon}>{c.icon}</span>
               {c.label}
             </button>
           );

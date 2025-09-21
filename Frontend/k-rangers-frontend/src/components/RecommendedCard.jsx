@@ -45,9 +45,7 @@ function RecommendedCard({ item, onClick, reason }) {
   return (
     <article
       className={styles.card}
-      role="button"
       tabIndex={0}
-      aria-label={`${name} 카드`}
       onClick={() => onClick?.(item)}
       onKeyDown={(e) => e.key === "Enter" && onClick?.(item)}
     >
@@ -84,7 +82,6 @@ function RecommendedCard({ item, onClick, reason }) {
         {reviewCount > 0 ? (
           <div
             className={styles.starsRow}
-            aria-label={`평균 평점 ${item.rating}점`}
           >
             <StarRating rating={item.rating} />
             <span className={styles.reviewAvgText}>
@@ -101,7 +98,7 @@ function RecommendedCard({ item, onClick, reason }) {
         )}
       </div>
 
-      <div className={styles.reasonBox} role="note">
+      <div className={styles.reasonBox}>
         <div className={styles.reasonTitle}>AI가 추천해요!</div>
         <p className={styles.reasonText}>{reason}</p>
       </div>

@@ -8,7 +8,7 @@ import DetailPost from "../components/DetailPost";
 import useAttractionStore from "../store/AttractionStore";
 import useAttraction from "../hooks/useAttraction";
 
-export default function MapPage() {
+function MapPage() {
   const location = useLocation();
 
   const districtCode = useAttractionStore((s) => s.districtCode);
@@ -87,3 +87,5 @@ export default function MapPage() {
     </div>
   );
 }
+
+export default MapPage;

@@ -12,8 +12,6 @@ function StarInput({ value, onChange }) {
     <div
       className={styles.stars}
       onMouseLeave={() => setHover(0)}
-      role="radiogroup"
-      aria-label="별점 선택"
     >
       {[1, 2, 3, 4, 5].map((i) => (
         <button
@@ -22,9 +20,6 @@ function StarInput({ value, onChange }) {
           className={`${styles.starBtn} ${shown >= i ? styles.on : ""}`}
           onMouseEnter={() => setHover(i)}
           onClick={() => onChange(i)}
-          aria-label={`${i}점`}
-          role="radio"
-          aria-checked={value === i}
         >
           ★
         </button>
@@ -33,7 +28,7 @@ function StarInput({ value, onChange }) {
   );
 }
 
-export default function ReviewWritePage() {
+function ReviewWritePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [sp] = useSearchParams();
@@ -103,9 +98,8 @@ export default function ReviewWritePage() {
             <button
               className={styles.backBtn}
               onClick={() => navigate(-1)}
-              aria-label="뒤로가기"
             >
-              <FiChevronLeft size={22} aria-hidden="true" />
+              <FiChevronLeft size={22} />
             </button>
             <h1 className={styles.title}>{placeName}</h1>
           </header>
@@ -133,7 +127,6 @@ export default function ReviewWritePage() {
               type="submit"
               className={styles.submitBtn}
               disabled={!canSubmit}
-              aria-disabled={!canSubmit}
             >
               {submitting ? "작성 중..." : "리뷰 등록"}
             </button>
@@ -143,3 +136,5 @@ export default function ReviewWritePage() {
     </div>
   );
 }
+
+export default ReviewWritePage;
