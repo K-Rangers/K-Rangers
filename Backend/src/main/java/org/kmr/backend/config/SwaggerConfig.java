@@ -4,7 +4,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +19,7 @@ public class SwaggerConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .info(apiInfo())
-                .addServersItem(new Server()
-                        .url("http://3.35.65.183:9000")
-                        .description("Production server"))
-                .addServersItem(new Server()
-                        .url("http://localhost:9000")
-                        .description("local server"));
+                .info(apiInfo());
     }
 
     private Info apiInfo() {
