@@ -5,79 +5,37 @@ import Map from "../components/Map";
 import BottomNav from "../components/BottomNav";
 import BottomSheet from "../components/BottomSheet";
 import DetailPost from "../components/DetailPost";
-import { getAttractionsByDistrict, getAttractionReviews, getAttractionReviewSummary, getAttractionRatingAvg } from "../api/ApiStore";
+import useAttractionStore from "../store/AttractionStore";
+import useAttraction from "../hooks/useAttraction";
 
-function pickLatLng(row) {
-  const lat = Number(row?.mapY ?? row?.latitude ?? row?.lat);
-  const lng = Number(row?.mapX ?? row?.longitude ?? row?.lng);
-  return Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null;
-}
-
-export default function MapPage() {
+function MapPage() {
   const location = useLocation();
 
-  const [selected, setSelected] = useState(null);
-  const [open, setOpen] = useState(false);
+  const districtCode = useAttractionStore((s) => s.districtCode);
+  const items = useAttraction(districtCode);
+
+  const [selected, setSelected] = useState(null); 
+  const [open, setOpen] = useState(false); 
   const [mapCenter, setMapCenter] = useState({ lat: 35.8683, lng: 128.5988 });
-  const [mapLevel, setMapLevel] = useState(5);
-  const [allMarkers, setAllMarkers] = useState([]);
-  const [markers, setMarkers] = useState([]);
+  const [mapLevel, setMapLevel] = useState(5); 
+  const [markers, setMarkers] = useState([]); 
 
   useEffect(() => {
-    (async () => {
-      try {
-        const rows = await getAttractionsByDistrict("ALL");
-        const attractionList = Array.isArray(rows) ? rows : [];
+    if (!items.length) return;
 
-        const promises = attractionList.map(async (item) => {
-          const reviews = await getAttractionReviews(item.id).catch(() => []);
-          const summary = await getAttractionReviewSummary(item.id).catch(() => null);
-          const rating = await getAttractionRatingAvg(item.id).catch(() => 0);
-          return { ...item, reviews, summary, rating };
-        });
+    const ms = items
+      .map((r) => {
+        if (!r) return null;
+        return {
+          lat: r.latitude,
+          lng: r.longitude,
+          raw: r,
+        };
+      })
+      .filter(Boolean);
 
-        const enhancedAttractionList = await Promise.all(promises);
-
-        const ms = enhancedAttractionList
-          .map((r) => {
-            const ll = pickLatLng(r);
-            if (!ll) return null;
-            return {
-              lat: ll.lat,
-              lng: ll.lng,
-              raw: r, 
-            };
-          })
-          .filter(Boolean);
-        
-        setAllMarkers(ms);
-
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (allMarkers.length === 0) return;
-
-    let markerIndex = 0;
-    const loadBatch = () => {
-      if (markerIndex >= allMarkers.length) return;
-      
-      const batchSize = 100;
-      const nextBatch = allMarkers.slice(markerIndex, markerIndex + batchSize);
-
-      setMarkers(prev => [...prev, ...nextBatch]);
-      
-      markerIndex += batchSize;
-      
-      setTimeout(loadBatch, 100); 
-    };
-
-    loadBatch();
-
-  }, [allMarkers]);
+    setMarkers(ms);
+  }, [items]);
 
   const handleMarkerClick = useCallback((m) => {
     setSelected(m?.raw || null);
@@ -90,19 +48,19 @@ export default function MapPage() {
 
   useEffect(() => {
     const selectedItem = location.state?.selectedItem;
-    if (!selectedItem || !allMarkers.length) return;
+    if (!selectedItem || !markers.length) return;
 
-    const matching =
-      allMarkers.find(
-        (mm) => mm.raw?.id && selectedItem.id && mm.raw.id === selectedItem.id
-      );
+    const matching = markers.find(
+      (mm) => mm.raw?.id && selectedItem.id && mm.raw.id === selectedItem.id
+    );
+
     if (matching) {
       setSelected(matching.raw);
       setOpen(true);
       setMapCenter({ lat: matching.lat, lng: matching.lng });
       setMapLevel(3);
     }
-  }, [location.state, allMarkers]);
+  }, [location.state, markers]);
 
   return (
     <div className={styles.app}>
@@ -118,7 +76,7 @@ export default function MapPage() {
 
         <BottomSheet open={open} onClose={() => setOpen(false)}>
           {selected ? (
-            <DetailPost item={selected} /> 
+            <DetailPost item={selected} />
           ) : (
             <div className={styles.sheetContent} />
           )}
@@ -129,3 +87,5 @@ export default function MapPage() {
     </div>
   );
 }
+
+export default MapPage;

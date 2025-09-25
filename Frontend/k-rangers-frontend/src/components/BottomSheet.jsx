@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
 import styles from "../css/BottomSheet.module.css";
 
-export default function BottomSheet({
+function BottomSheet({
   open = false,
   onClose,
   height = 360,
   bottomOffset = "0px",
-  ariaLabel = "하단 시트",
   closeOnBackdrop = true,
   unmountOnClose = false,
   children,
@@ -30,7 +29,6 @@ export default function BottomSheet({
     };
   }, [open]);
 
-
   const onBackdropClick = (e) => {
     if (!closeOnBackdrop) return;
     if (e.target === backdropRef.current) onClose?.();
@@ -44,7 +42,6 @@ export default function BottomSheet({
         ref={backdropRef}
         className={`${styles.dim} ${open ? styles.show : ""}`}
         onClick={onBackdropClick}
-        aria-hidden={!open}
       />
       <section
         ref={sheetRef}
@@ -53,15 +50,14 @@ export default function BottomSheet({
           "--sheet-height": `${height}px`,
           "--bottom-offset": bottomOffset,
         }}
-        role="dialog"
-        aria-modal="true"
-        aria-label={ariaLabel}
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.handle} aria-hidden="true" />
+        <div className={styles.handle} />
         <div className={styles.inner}>{children}</div>
       </section>
     </>
   );
 }
+
+export default BottomSheet;

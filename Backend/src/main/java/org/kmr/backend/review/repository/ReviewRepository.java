@@ -1,6 +1,7 @@
 package org.kmr.backend.review.repository;
 
 import org.kmr.backend.review.domain.ReviewEntity;
+import org.kmr.backend.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     List<ReviewEntity> findByAccommodationIdOrderByCreatedAtDesc(Long attraction);
     @Query("SELECT AVG(r.rating) FROM ReviewEntity r WHERE r.accommodation.id =:accommodationId")
     Double findAvgRatingByAccommodationId(@Param("accommodationId") Long accommodationId);
+
+    List<ReviewEntity> findByUserOrderByCreatedAtDesc(User user);
 }

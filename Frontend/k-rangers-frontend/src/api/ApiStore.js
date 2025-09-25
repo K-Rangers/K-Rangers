@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://travel.gamja.cloud/v1/main';
+const API_BASE_URL = 'https://travelaiga.cloud/v1/main';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 10000,
 });
+
 
 function logError(ctx, err) {
   const status = err.response?.status;

@@ -109,11 +109,11 @@ function LoginPage() {
               />
             </div>
 
-          {errorMsg && (
-            <div className={styles.errorBanner} role="alert" aria-live="assertive">
-              {errorMsg}
-            </div>
-          )}
+            {errorMsg && (
+              <p className={styles.error}>
+                {errorMsg}
+              </p>
+            )}
 
             <div className={styles.actions}>
               <button

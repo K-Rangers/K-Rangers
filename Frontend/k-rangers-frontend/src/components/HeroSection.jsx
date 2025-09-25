@@ -1,27 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "../css/HeroSection.module.css";
 import DropdownSelect from "./DropDownSelect";
+import useAttractionStore from "../store/AttractionStore"; 
+import { REGION_OPTIONS } from "../data/Options";
 
-const REGION_OPTIONS = [
-  { value: "ALL", label: "전체보기" },
-  { value: "JUNG_GU", label: "중구" },
-  { value: "DONG_GU", label: "동구" },
-  { value: "SEO_GU",  label: "서구" },
-  { value: "NAM_GU",  label: "남구" },
-  { value: "BUK_GU",  label: "북구" },
-  { value: "SUSEONG_GU", label: "수성구" },
-  { value: "DALSEO_GU",   label: "달서구" },
-  { value: "DALSEONG_GUN",label: "달성군" },
-  { value: "CHILGOK",     label: "칠곡군" },
-];
+function HeroSection() {
+  const [region, setRegion] = useState(REGION_OPTIONS[0].value); 
+  const setDistrictCode = useAttractionStore((s) => s.setDistrictCode);
 
-function HeroSection({ onSubmit }) {
-  const [region, setRegion] = useState("ALL");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!region) return;
-    onSubmit(region);
+    setDistrictCode((typeof region === "string" ? region : region.value) ?? "ALL");
   };
 
   return (
@@ -34,10 +25,9 @@ function HeroSection({ onSubmit }) {
 
       <form className={styles.searchCard} onSubmit={handleSubmit}>
         <DropdownSelect
-          placeholder="어디로 여행을 떠나고 싶으신가요?"
           options={REGION_OPTIONS}
-          value={region}
-          onChange={setRegion}
+          value={region}           
+          onChange={setRegion}     
         />
         <button className={styles.button} type="submit" disabled={!region}>
           찾기
@@ -46,4 +36,5 @@ function HeroSection({ onSubmit }) {
     </section>
   );
 }
+
 export default HeroSection;

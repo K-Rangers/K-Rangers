@@ -4,7 +4,7 @@ import BottomNav from "../components/BottomNav";
 import styles from "../css/MyPage.module.css";
 import brandAvatar from "../assets/chricon.png";
 
-export default function MyPage({ user }) {
+function MyPage({ user }) {
   const navigate = useNavigate();
   const name = user?.name || "계명레인저";
   const email = user?.email || "krangers@example.com";
@@ -28,6 +28,7 @@ export default function MyPage({ user }) {
 
         <main className={styles.content}>
           <nav className={`${styles.list} ${styles.logoutSection}`} aria-label="계정 메뉴">
+
             <button
               type="button"
               className={`${styles.item} ${styles.dangerItem}`}
@@ -43,3 +44,5 @@ export default function MyPage({ user }) {
     </div>
   );
 }
+
+export default MyPage;
