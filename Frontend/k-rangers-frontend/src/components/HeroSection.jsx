@@ -12,7 +12,7 @@ function HeroSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!region) return;
-    setDistrictCode((typeof region === "string" ? region : region.value) ?? "ALL");
+    setDistrictCode(region ?? "ALL");
   };
 
   return (

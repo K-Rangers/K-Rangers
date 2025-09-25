@@ -13,15 +13,10 @@ function RecommendedList() {
 
   const items = useAttraction(districtCode);
 
-  const regioned =
-    districtCode === "ALL"
-      ? items
-      : items.filter((it) => it.district === districtCode);
-
   const filtered =
     features.size === 0
-      ? regioned
-      : regioned.filter((it) => [...features].every((k) => isOn(it[k])));
+      ? items
+      : items.filter((it) => [...features].every((k) => isOn(it[k])));
 
   const title = "AI 추천 여행지";
   const canSeeAll = filtered.length > 1;
