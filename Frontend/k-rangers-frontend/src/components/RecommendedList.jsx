@@ -25,7 +25,7 @@ function RecommendedList() {
 
   const title = "AI 추천 여행지";
   const canSeeAll = filtered.length > 1;
-  const view = filtered.slice(0, 1);
+  const first = filtered[0];
 
   const handleSeeAll = () => {
     navigate("/all", { state: { items: filtered } });
@@ -50,14 +50,14 @@ function RecommendedList() {
         <div className={styles.empty}>조건에 맞는 관광지가 없어요. 😢</div>
       ) : (
         <div className={styles.grid}>
-          {view.map((it) => (
+          {first && (
             <RecommendedCard
-              key={String(it.id)}
-              item={it}
+              key={String(first.id)}
+              item={first}
               onClick={handleCardClick}
-              reason={it.summary || "요약할 리뷰가 없습니다."}
+              reason={first.summary || "요약할 리뷰가 없습니다."}
             />
-          ))}
+          )}
         </div>
       )}
     </section>

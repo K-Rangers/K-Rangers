@@ -27,8 +27,8 @@ function MapPage() {
       .map((r) => {
         if (!r) return null;
         return {
-          lat: r.lat,
-          lng: r.lng,
+          lat: r.latitude,
+          lng: r.longitude,
           raw: r,
         };
       })

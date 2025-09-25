@@ -2,17 +2,16 @@ import React from "react";
 import styles from "../css/RecommendedCard.module.css";
 import isOn from "../utils/isOn";
 import { CATEGORY_LABELS, CHIPS } from "../data/Options";
-import CalcStars from "../utils/CalcStars"; 
+import CalcStars from "../utils/CalcStars";
 
 function RecommendedCard({ item, onClick, reason }) {
   const chips = CHIPS.filter((chip) => isOn(item[chip.key])).map((chip) => chip.label);
 
   const reviewCount = item.reviews?.length ?? 0;
-  const getCategoryLabel = (cat) =>
-    CATEGORY_LABELS[cat?.toString().trim()] ?? cat ?? "";
+  const categoryLabels = CATEGORY_LABELS[item.category]
 
   const thumb = item.imageUrl || "/assets/no-image.png";
-  const category = getCategoryLabel(item.category);
+  const category = categoryLabels || "";
   const name = item.name || "";
   const address = item.address || "";
   const stars = CalcStars(item.rating);

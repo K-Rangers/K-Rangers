@@ -25,7 +25,6 @@ function HeroSection() {
 
       <form className={styles.searchCard} onSubmit={handleSubmit}>
         <DropdownSelect
-          placeholder="어디로 여행을 떠나고 싶으신가요?"
           options={REGION_OPTIONS}
           value={region}           
           onChange={setRegion}     
