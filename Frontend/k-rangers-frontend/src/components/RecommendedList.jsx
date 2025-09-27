@@ -18,7 +18,6 @@ function RecommendedList() {
       ? items
       : items.filter((it) => [...features].every((k) => isOn(it[k])));
 
-  const title = "AI 추천 여행지";
   const canSeeAll = filtered.length > 1;
   const first = filtered[0];
 
@@ -33,10 +32,10 @@ function RecommendedList() {
   return (
     <section className={styles.wrapper}>
       <div className={styles.headerRow}>
-        <div className={styles.aiGradientText}>{title}</div>
+        <div className={styles.aiGradientText}>AI 추천 여행지</div>
         {canSeeAll && (
           <button type="button" className={styles.moreBtn} onClick={handleSeeAll}>
-            모두 보기
+            더 보기
           </button>
         )}
       </div>
@@ -50,7 +49,7 @@ function RecommendedList() {
               key={String(first.id)}
               item={first}
               onClick={handleCardClick}
-              reason={first.summary || "요약할 리뷰가 없습니다."}
+              reason={first.summary || "AI가 요약할 리뷰가 없습니다."}
             />
           )}
         </div>

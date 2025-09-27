@@ -4,12 +4,30 @@
   overflow: hidden;
   background: #fff;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .thumbWrap {
   position: relative;
   height: 220px;
   background: #f6f7fb;
+  overflow: hidden;
+}
+
+.thumbWrap::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  z-index: 1;
 }
 
 .thumb {
@@ -23,12 +41,12 @@
   position: absolute;
   left: 16px;
   top: 16px;
-  background: #e9f2ff;
+  background: #ffffff;
   color: #0b65d4;
   font-weight: 700;
-  font-size: 13px;
-  padding: 6px 12px;
-  border-radius: 12px;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 10px;
 }
 
 .name {
@@ -36,11 +54,12 @@
   left: 20px;
   bottom: 16px;
   right: 20px;
-  color: #fff;
+  color: #ffffff;
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.5px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  z-index: 2;
 }
 
 .meta {
@@ -140,13 +159,12 @@
   border-radius: 14px;
   background: linear-gradient(135deg, #eef5ff 0%, #f7faff 100%);
   border: 1px solid #e3edff;
-  box-shadow: inset 0 0 0 1px rgba(11,101,212,0.04), 0 4px 10px rgba(11,101,212,0.06);
+  box-shadow: inset 0 0 0 1px rgba(11, 101, 212, 0.04), 0 4px 10px rgba(11, 101, 212, 0.06);
 }
 
 .reasonTitle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   padding: 4px 13px;
   font-size: 11px;
   font-weight: 700;
@@ -154,7 +172,7 @@
   background: rgba(255, 255, 255, 0.65);
   border: 1px solid #e1eaff;
   border-radius: 999px;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .reasonText {
@@ -167,14 +185,4 @@
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   line-clamp: 2;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .reasonBox {
-    transition: box-shadow 180ms ease, transform 180ms ease;
-  }
-  .reasonBox:hover {
-    transform: translateY(-1px);
-    box-shadow: inset 0 0 0 1px rgba(11,101,212,0.06), 0 6px 16px rgba(11,101,212,0.10);
-  }
 }
