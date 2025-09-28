@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "../css/PageCss/MapPage.module.css";
-import Map from "../components/Map";
+import Map from "../components/Map/Map";
 import BottomNav from "../components/BottomNav";
 import BottomSheet from "../components/BottomSheet";
 import DetailPost from "../components/CardOption/DetailPost";
