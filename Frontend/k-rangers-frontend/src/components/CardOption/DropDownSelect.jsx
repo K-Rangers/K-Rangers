@@ -1,4 +1,4 @@
-import styles from "../css/DropDownSelect.module.css";
+import styles from "../../css/CardOption/DropDownSelect.module.css";
 
 function DropDownSelect({options, value, onChange }) {
     return (

@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
 }
 
 .title {
@@ -23,18 +23,29 @@
   cursor: pointer;
 }
 
-.grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: 1fr;
+.scrollContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 16px 0 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.cardList {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0 8px 16px;
+  min-width: max-content;
 }
 
 .aiGradientText {
-  background: linear-gradient(90deg, #6a7cff 0%, #22d1ee 100%);
-  background-size: 200% 100%;
   -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;           
+  background-clip: text;     
   font-weight: 800;             
   letter-spacing: -0.2px;
   font-size: 20px;
