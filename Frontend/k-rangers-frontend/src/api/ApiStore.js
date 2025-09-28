@@ -97,3 +97,34 @@ export const signup = async ({ email, password, name }) => {
     throw err;
   }
 };
+
+export const getAccommodationByDistrict = async (district) => {
+  try {
+    const res = await api.get(`/accommodations/by-district/${district}`);
+    return Array.isArray(res.data) ? res.data : [];
+  } catch (err) {
+    logError('getAccommodationByDistrict', err);
+    throw err;
+  }
+};
+
+
+export const getAccommodationReviews = async (accommodationId) => {
+  try {
+    const res = await api.get(`/reviews/accom/${accommodationId}`);
+    return Array.isArray(res.data) ? res.data : [];
+  } catch (err) {
+    logError('getAccommodationReviews', err);
+    throw err;
+  }
+};
+
+export const getAccommodationRating = async (accommodationId) => {
+  try {
+    const res = await api.get(`/reviews/accom/${accommodationId}/avg`);
+    return res.data;
+  } catch (err) {
+    logError('getAccommodationRatingAvg', err);
+    throw err;
+  }
+};
