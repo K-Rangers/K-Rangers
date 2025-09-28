@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../css/DetailPost.module.css";
-import { CATEGORY_LABELS, CHIPS } from "../data/Options";
-import CalcStars from "../utils/CalcStars"; 
+import styles from "../../css/CardOption/DetailPost.module.css";
+import { CATEGORY_LABELS, CHIPS } from "../../data/Options";
+import CalcStars from "../../utils/CalcStars"; 
 
 function DetailPost({ item }) {
   const navigate = useNavigate();
@@ -53,11 +53,8 @@ function DetailPost({ item }) {
     );
   }
 
-  const thumb =
-    item.thumbnailUrl ||
-    "https://velog.velcdn.com/images/kiw0n/post/d254dfb0-b3b6-43b4-b0b5-2914257a09c7/image.jpeg";
-  const category =
-    CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
+  const thumb = item.thumbnailUrl || item.imageUrl || "";
+  const category = CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
 
   const handleWrite = () => {
     const id = item?.accommodationId || item?.id || item?.attractionId;

@@ -16,7 +16,7 @@ function useAttraction(districtCode) {
           const reviews = await getAttractionReviews(item.id).catch(() => []);
           const summary = await getAttractionReviewSummary(item.id).catch(() => null);
           const rating = await getAttractionRatingAvg(item.id).catch(() => 0)
-          return { ...item, reviews, summary, rating };
+          return { ...item, reviews, summary, rating, type: 'attraction' };
         });
 
         const enhanced = await Promise.all(promises);

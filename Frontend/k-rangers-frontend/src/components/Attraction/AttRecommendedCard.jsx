@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "../css/RecommendedCard.module.css";
-import isOn from "../utils/isOn";
-import { CATEGORY_LABELS, CHIPS } from "../data/Options";
-import CalcStars from "../utils/CalcStars";
+import styles from "../../css/CardOption/RecommendedCard.module.css";
+import isOn from "../../utils/isOn";
+import { CATEGORY_LABELS, CHIPS } from "../../data/Options";
+import CalcStars from "../../utils/CalcStars";
 
-function RecommendedCard({ item, onClick, reason }) {
+function AttRecommendedCard({ item, onClick, reason }) {
   const chips = CHIPS.filter((chip) => isOn(item[chip.key])).map((chip) => chip.label);
 
   const reviewCount = item.reviews?.length ?? 0;
@@ -75,7 +75,6 @@ function RecommendedCard({ item, onClick, reason }) {
         </div>
       </div>
 
-
       <div className={styles.reasonBox}>
         <div className={styles.reasonTitle}>AI가 추천해요!</div>
         <p className={styles.reasonText}>{reason}</p>
@@ -84,4 +83,4 @@ function RecommendedCard({ item, onClick, reason }) {
   );
 }
 
-export default RecommendedCard;
+export default AttRecommendedCard;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import styles from "../css/SignUpPage.module.css";
+import styles from "../css/PageCss/SignUpPage.module.css";
 import BottomNav from "../components/BottomNav";
 import logo from "../assets/Mainlogo.png";
 import { signup } from "../api/ApiStore";

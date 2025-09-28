@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import styles from "../css/HeroSection.module.css";
+import styles from "../../css/CardOption/HeroSection.module.css";
 import DropdownSelect from "./DropDownSelect";
-import useAttractionStore from "../store/AttractionStore"; 
-import { REGION_OPTIONS } from "../data/Options";
+import useAttractionStore from "../../store/AttractionStore"; 
+import { REGION_OPTIONS } from "../../data/Options";
 
 function HeroSection() {
   const [region, setRegion] = useState(REGION_OPTIONS[0].value); 

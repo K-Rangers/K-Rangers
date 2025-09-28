@@ -1,28 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../css/RecommendedList.module.css";
-import RecommendedCard from "./RecommendedCard";
-import useAttractionStore from "../store/AttractionStore";
-import useAttraction from "../hooks/useAttraction";
-import isOn from "../utils/isOn";
+import styles from "../../css/Attraction/AttRecommendedList.module.css";
+import AttRecommendedCard from "./AttRecommendedCard";
+import useAttractionStore from "../../store/AttractionStore";
+import useAttraction from "../../hooks/useAttraction";
+import { filterByFeatures } from "../../utils/FilterByFeatures";
 
-function RecommendedList() {
+function AttRecommendedList() {
   const navigate = useNavigate();
   const districtCode = useAttractionStore((s) => s.districtCode);
   const features = useAttractionStore((s) => s.features);
 
   const items = useAttraction(districtCode);
-
-  const filtered =
-    features.size === 0
-      ? items
-      : items.filter((it) => [...features].every((k) => isOn(it[k])));
+  const filtered = filterByFeatures(items, features, "attraction");
 
   const canSeeAll = filtered.length > 1;
   const first = filtered[0];
 
   const handleSeeAll = () => {
-    navigate("/all", { state: { items: filtered } });
+    navigate("/all", { state: { items: filtered, mode: 'attraction' } });
   };
 
   const handleCardClick = (item) => {
@@ -45,7 +41,7 @@ function RecommendedList() {
       ) : (
         <div className={styles.grid}>
           {first && (
-            <RecommendedCard
+            <AttRecommendedCard
               key={String(first.id)}
               item={first}
               onClick={handleCardClick}
@@ -57,4 +53,4 @@ function RecommendedList() {
     </section>
   );
 }
-export default RecommendedList;
+export default AttRecommendedList;
