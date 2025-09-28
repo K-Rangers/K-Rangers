@@ -1,15 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
-import styles from "../css/MyPage.module.css";
+import styles from "../css/PageCss/MyPage.module.css";
 import brandAvatar from "../assets/chricon.png";
 
-function MyPage({ user }) {
+function MyPage() {
   const navigate = useNavigate();
+
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
   const name = user?.name || "계명레인저";
   const email = user?.email || "krangers@example.com";
 
-  const goLogin = () => navigate("/login");
+  const goLogin = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <div className={styles.app}>
@@ -28,7 +36,6 @@ function MyPage({ user }) {
 
         <main className={styles.content}>
           <nav className={`${styles.list} ${styles.logoutSection}`} aria-label="계정 메뉴">
-
             <button
               type="button"
               className={`${styles.item} ${styles.dangerItem}`}
@@ -38,7 +45,6 @@ function MyPage({ user }) {
             </button>
           </nav>
         </main>
-
         <BottomNav />
       </div>
     </div>
