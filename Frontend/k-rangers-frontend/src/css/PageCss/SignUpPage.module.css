@@ -78,14 +78,26 @@
 
 .errorText {
   display: block;
-  font-size: 13px;
-  color: #e63946;
   margin-left: 20px;
+  font-size: 12px;
+  color: #d92d20; 
+}
+
+.errorBanner {
+  width: 90%;
+  margin: 10px auto; 
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef3f2;
+  border: 1px solid #fee4e2;
+  color: #b42318;
+  font-size: 14px;
+  text-align: center;
 }
 
 .button {
   width: 90%;
-  margin: 15px auto 0;
+  margin: 1px auto 0;
   padding: 15px;
   font-size: 16px;
   font-weight: 600;

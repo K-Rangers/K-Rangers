@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import styles from "../css/SignUpPage.module.css";
+import styles from "../css/PageCss/SignUpPage.module.css";
 import BottomNav from "../components/BottomNav";
 import logo from "../assets/Mainlogo.png";
+import { signup } from "../api/ApiStore";
 
 function SignUpPage({ onDone }) {
   const navigate = useNavigate();
@@ -22,17 +23,27 @@ function SignUpPage({ onDone }) {
   const onSubmit = async (data) => {
     try {
       clearErrors("root");
-      console.log("회원가입 데이터:", data);
+      const { name, email, password } = data;
+      await signup({ name, email, password });
+
       if (onDone) onDone();
-      else navigate("/login");
+      else navigate("/login", { replace: true });
     } catch (e) {
-      setError("root", { message: "회원가입에 실패했어요. 다시 시도해 주세요." });
-    }
+  const status = e.response?.status;
+
+  if (status === 400) {
+    setError("email", { message: "올바른 이메일 형식이 아닙니다." });
+  } else if (status === 409 || status === 403) {
+    setError("email", { message: "이미 가입된 이메일입니다." });
+  } else {
+    setError("root", { message: "회원가입 중 오류가 발생했습니다." });
+  }
+}
   };
 
   return (
-    <div className={styles.app}> 
-      <div className={styles.phone}> 
+    <div className={styles.app}>
+      <div className={styles.phone}>
         <div className={styles.header}>
           <img src={logo} alt="앱 로고" className={styles.logo} />
         </div>
@@ -78,7 +89,10 @@ function SignUpPage({ onDone }) {
             autoComplete="new-password"
             {...register("password", {
               required: "비밀번호를 입력하세요.",
-              pattern: { value: /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/, message: "비밀번호는 특수문자를 포함하고 8자 이상이어야 합니다." }
+              pattern: {
+                value: /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/,
+                message: "비밀번호는 특수문자를 포함하고 8자 이상이어야 합니다."
+              }
             })}
           />
           {errors.password && <span className={styles.errorText}>{errors.password.message}</span>}
@@ -98,6 +112,11 @@ function SignUpPage({ onDone }) {
           {errors.confirmPassword && (
             <span className={styles.errorText}>{errors.confirmPassword.message}</span>
           )}
+          {errors.root && (
+            <div className={styles.errorBanner} role="alert" aria-live="assertive">
+              {errors.root.message}
+            </div>
+          )}
 
           <button className={styles.button} type="submit" disabled={!isValid || isSubmitting}>
             {isSubmitting ? "처리 중..." : "가입하기"}
@@ -113,10 +132,7 @@ function SignUpPage({ onDone }) {
               로그인
             </button>
           </p>
-
-          {errors.root && <span className={styles.errorText}>{errors.root.message}</span>}
         </form>
-
         <BottomNav />
       </div>
     </div>

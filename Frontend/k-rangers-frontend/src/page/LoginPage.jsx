@@ -1,32 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
-import styles from "../css/Login.module.css";
+import styles from "../css/PageCss/Login.module.css";
 import logo from "../assets/Mainlogo.png";
 import { login } from "../api/ApiStore.js";
-
-function getStoredToken() {
-  const keys = ["accessToken"];
-  for (const k of keys) {
-    const v = localStorage.getItem(k) || sessionStorage.getItem(k);
-    if (v) return v;
-  }
-  return null;
-}
-
-function isJwtExpired(token) {
-  try {
-    const [, payload] = token.split(".");
-    if (!payload) return true;
-    const b64 = payload.replace(/-/g, "+").replace(/_/g, "/");
-    const json = JSON.parse(atob(b64));
-    if (!json.exp) return false;
-    const nowSec = Math.floor(Date.now() / 1000);
-    return json.exp <= nowSec;
-  } catch {
-    return true;
-  } 
-}
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -36,17 +13,6 @@ function LoginPage() {
     const sp = new URLSearchParams(location.search);
     return location.state?.redirectTo || sp.get("redirect") || "/mypage";
   })();
-
-  const [booting, setBooting] = useState(true);
-
-  useEffect(() => {
-    const token = getStoredToken();
-    if (token && !isJwtExpired(token)) {
-      navigate(redirectTo, { replace: true });
-      return;
-    }
-    setBooting(false);
-  }, [navigate, redirectTo]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +26,13 @@ function LoginPage() {
     setErrorMsg("");
     setIsSubmitting(true);
     try {
-      await login(email.trim(), password);
+      const data = await login(email, password);
+      if (data?.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+      }
+      if (data?.name && data?.email) {
+        localStorage.setItem("user", JSON.stringify({ name: data.name, email: data.email }));
+      }
       navigate(redirectTo, { replace: true });
     } catch (err) {
       const msg =
@@ -73,57 +45,44 @@ function LoginPage() {
     }
   };
 
-  if (booting) return null;
-
   return (
     <div className={styles.app}>
       <div className={styles.phone}>
         <main className={styles.content}>
-          <p className={styles.slogan}>
+          <div className={styles.slogan}>
             <img src={logo} alt="Travel Aiga 로고" className={styles.logo} />
-            여행의 새로운 시작, Travel Aiga와 함께!
-          </p>
+            <p>여행의 새로운 시작, Travel Aiga와 함께!</p>
+          </div>
 
-          <form className={styles.form} onSubmit={handleSubmit} noValidate>
-            <div className={styles.inputGroup}>
-              <input
-                type="email"
-                className={styles.inputField}
-                placeholder="이메일"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                required
-              />
-            </div>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <input
+              type="email"
+              className={styles.inputField}
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
+            />
+            <input
+              type="password"
+              className={styles.inputField}
+              placeholder="비밀번호"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
 
-            <div className={styles.inputGroup}>
-              <input
-                type="password"
-                className={styles.inputField}
-                placeholder="비밀번호"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-                required
-              />
-            </div>
+            {errorMsg && <p className={styles.error}>{errorMsg}</p>}
 
-            {errorMsg && (
-              <p className={styles.error}>
-                {errorMsg}
-              </p>
-            )}
-
-            <div className={styles.actions}>
-              <button
-                type="submit"
-                className={styles.btnPrimary}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "로그인 중..." : "로그인"}
-              </button>
-            </div>
+            <button
+              type="submit"
+              className={styles.btnPrimary}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "로그인 중..." : "로그인"}
+            </button>
           </form>
 
           <p className={styles.signupText}>

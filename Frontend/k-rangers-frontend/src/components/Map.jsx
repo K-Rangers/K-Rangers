@@ -2,8 +2,8 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import styles from "../css/Map.module.css";
 
 function KakaoMap({
-  center = { lat: 35.8683, lng: 128.5988 },
-  level = 7,
+  center,
+  level,
   markers = [],
   onMarkerClick,
 }) {

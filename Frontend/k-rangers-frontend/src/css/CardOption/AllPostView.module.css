@@ -1,0 +1,58 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  overflow: hidden;
+}
+
+.title {
+  color: #000; 
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  font-size: 20px;
+}
+
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px 10px 10px;
+  gap: 10px;
+  margin: 0;
+  flex-shrink: 0; 
+  background: #fff;
+  z-index: 1000;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.moreBtn {
+  display: flex;              
+  align-items: center;        
+  justify-content: center;
+  width: 32px;                
+  height: 32px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+
+.scrollArea {
+  overflow-y: auto; 
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 20px 16px;
+}
+
+.empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}

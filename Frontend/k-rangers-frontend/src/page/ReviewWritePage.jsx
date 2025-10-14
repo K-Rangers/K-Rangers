@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
-import styles from "../css/ReviewWritePage.module.css";
+import styles from "../css/PageCss/ReviewWritePage.module.css";
 import { createAttractionReview } from "../api/ApiStore";
 
 function StarInput({ value, onChange }) {

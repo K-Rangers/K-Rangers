@@ -76,7 +76,7 @@
   width: 100%;
   display: grid;
   gap: 12px;
-  margin-top: 12px;
+  margin-top: 4px;
 }
 
 .btnPrimary {
@@ -111,4 +111,16 @@
 .signupLink:hover {
   color: #007aff;
   text-decoration: underline;
+}
+
+.errorBanner {
+  width: 100%;
+  margin-bottom: 1px;
+  padding: 12px 12px;
+  border-radius: 8px;
+  background: #fef3f2;
+  border: 1px solid #fee4e2;
+  color: #b42318;
+  font-size: 14px;
+  text-align: center;
 }

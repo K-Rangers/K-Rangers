@@ -1,18 +1,17 @@
 import React from "react";
-import styles from "../css/RecommendedCard.module.css";
-import isOn from "../utils/isOn";
-import { CATEGORY_LABELS, CHIPS } from "../data/Options";
-import CalcStars from "../utils/CalcStars"; 
+import styles from "../../css/CardOption/RecommendedCard.module.css";
+import isOn from "../../utils/isOn";
+import { CATEGORY_LABELS, CHIPS } from "../../data/Options";
+import CalcStars from "../../utils/CalcStars";
 
-function RecommendedCard({ item, onClick, reason }) {
+function AttRecommendedCard({ item, onClick, reason }) {
   const chips = CHIPS.filter((chip) => isOn(item[chip.key])).map((chip) => chip.label);
 
   const reviewCount = item.reviews?.length ?? 0;
-  const getCategoryLabel = (cat) =>
-    CATEGORY_LABELS[cat?.toString().trim()] ?? cat ?? "";
+  const categoryLabels = CATEGORY_LABELS[item.category]
 
   const thumb = item.imageUrl || "/assets/no-image.png";
-  const category = getCategoryLabel(item.category);
+  const category = categoryLabels || "";
   const name = item.name || "";
   const address = item.address || "";
   const stars = CalcStars(item.rating);
@@ -52,35 +51,28 @@ function RecommendedCard({ item, onClick, reason }) {
           ))}
         </div>
       )}
-
       <div className={styles.reviewSummary}>
-        {reviewCount > 0 ? (
-          <div className={styles.starsRow}>
-            <div className={styles.stars}>
-              {stars.map((s) => (
-                <span key={s.id} className={styles.star}>
+        <div className={styles.starsRow}>
+          <div className={styles.stars}>
+            {stars.map((s) => (
+              <span key={s.id} className={styles.star}>
+                ★
+                <span
+                  className={styles.starFill}
+                  style={{ width: `${s.fill}%` }}
+                >
                   ★
-                  <span
-                    className={styles.starFill}
-                    style={{ width: `${s.fill}%` }}
-                  >
-                    ★
-                  </span>
                 </span>
-              ))}
-            </div>
-            <span className={styles.reviewAvgText}>
-              {item.rating.toFixed(1)}
-            </span>
-            <span className={styles.reviewCount}>
-              {reviewCount}개 리뷰
-            </span>
+              </span>
+            ))}
           </div>
-        ) : (
-          <span className={styles.reviewCount}>
-            리뷰가 아직 없어요. 😭
+          <span className={styles.reviewAvgText}>
+            {reviewCount > 0 ? item.rating.toFixed(1) : "0.0"}
           </span>
-        )}
+          <span className={styles.reviewCount}>
+            {reviewCount}개 리뷰
+          </span>
+        </div>
       </div>
 
       <div className={styles.reasonBox}>
@@ -91,4 +83,4 @@ function RecommendedCard({ item, onClick, reason }) {
   );
 }
 
-export default RecommendedCard;
+export default AttRecommendedCard;

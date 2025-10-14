@@ -1,12 +1,13 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://travel.gamja.cloud/v1/main';
+const API_BASE_URL = 'https://travelaiga.cloud/v1/main';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 10000,
 });
+
 
 function logError(ctx, err) {
   const status = err.response?.status;
@@ -80,6 +81,50 @@ export const createAttractionReview = async (attractionId, reviewData) => {
     return res.data;
   } catch (err) {
     logError('createAttractionReview', err);
+    throw err;
+  }
+};
+
+export const signup = async ({ email, password, name }) => {
+  try {
+    const res = await api.post('', { email, password, name });
+
+    return typeof res.data === 'string'
+      ? res.data
+      : res?.data?.message ?? '회원가입이 완료되었습니다.';
+  } catch (err) {
+    logError('signup', err);
+    throw err;
+  }
+};
+
+export const getAccommodationByDistrict = async (district) => {
+  try {
+    const res = await api.get(`/accommodations/by-district/${district}`);
+    return Array.isArray(res.data) ? res.data : [];
+  } catch (err) {
+    logError('getAccommodationByDistrict', err);
+    throw err;
+  }
+};
+
+
+export const getAccommodationReviews = async (accommodationId) => {
+  try {
+    const res = await api.get(`/reviews/accom/${accommodationId}`);
+    return Array.isArray(res.data) ? res.data : [];
+  } catch (err) {
+    logError('getAccommodationReviews', err);
+    throw err;
+  }
+};
+
+export const getAccommodationRating = async (accommodationId) => {
+  try {
+    const res = await api.get(`/reviews/accom/${accommodationId}/avg`);
+    return res.data;
+  } catch (err) {
+    logError('getAccommodationRatingAvg', err);
     throw err;
   }
 };

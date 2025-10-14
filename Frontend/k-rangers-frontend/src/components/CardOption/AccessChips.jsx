@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "../css/AccessChips.module.css";
-import useAttractionStore from "../store/AttractionStore"; 
-import {CHIPS} from "../data/Options";
+import styles from "../../css/CardOption/AccessChips.module.css";
+import useAttractionStore from "../../store/AttractionStore"; 
+import {CHIPS} from "../../data/Options";
 
 function AccessChips() {
   const features = useAttractionStore((s) => s.features);     
