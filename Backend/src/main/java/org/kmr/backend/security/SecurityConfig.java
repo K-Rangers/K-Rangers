@@ -66,7 +66,8 @@ public class SecurityConfig {
                 "https://travel-aiga.netlify.app",
                 "http://localhost:3000",
                 "http://localhost:5173",
-                "http://travelaiga.cloud"
+                "http://travelaiga.cloud",
+                "http://travelaiga.cloud:9000"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
