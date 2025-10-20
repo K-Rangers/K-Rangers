@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate} from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import styles from "../css/PageCss/Login.module.css";
 import logo from "../assets/Mainlogo.png";
@@ -7,12 +7,14 @@ import { login } from "../api/ApiStore.js";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const redirectTo = "/mypage";
 
-  const redirectTo = (() => {
-    const sp = new URLSearchParams(location.search);
-    return location.state?.redirectTo || sp.get("redirect") || "/mypage";
-  })();
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      navigate("/mypage", { replace: true });
+    }
+  }, [navigate]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
