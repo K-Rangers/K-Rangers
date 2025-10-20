@@ -1,5 +1,5 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
-import styles from "../css/Map.module.css";
+import styles from "../../css/Map/Map.module.css";
 
 function KakaoMap({
   center,
@@ -14,9 +14,9 @@ function KakaoMap({
         level={level}
         className={styles.kakaoMap}   
       >
-        {markers.map((m) => (
+        {markers.map((m, index) => (
           <MapMarker
-            key={m.raw?.id}
+            key={`${m.raw?.id || 'marker'}-${index}`}
             position={{ lat: m.lat, lng: m.lng }}
             onClick={() => onMarkerClick?.(m)}
           >
