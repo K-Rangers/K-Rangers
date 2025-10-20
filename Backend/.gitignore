@@ -45,7 +45,6 @@ Thumbs.db
 travel.env
 
 application-dev.yml
-application-prod.yml
 application-local.yml
 
 
