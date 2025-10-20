@@ -64,8 +64,11 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "https://travel.gamja.cloud",
                 "https://travel-aiga.netlify.app",
+                "https://travelaiga.cloud",
                 "http://localhost:3000",
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "http://travelaiga.cloud",
+                "http://travelaiga.cloud:9000"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
