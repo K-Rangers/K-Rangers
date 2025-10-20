@@ -56,24 +56,27 @@ function DetailPost({ item }) {
   const thumb = item.thumbnailUrl || item.imageUrl || "";
   const category = CATEGORY_LABELS[item.category?.toString().trim()] ?? (item.category || "");
 
-  const handleWrite = () => {
-    const id = item?.accommodationId || item?.id || item?.attractionId;
-    if (!id) return;
+const handleWrite = () => {
+  const id = item?.id; 
 
-    const token = localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
-    const target = `/reviews?id=${id}`;
+  const type = item?.category ? "attraction"
+              : item?.accommodation ? "accommodation"
+              : "attraction"; 
 
-    if (!token) {
-      window.alert("로그인이 필요합니다. 로그인 후 리뷰를 작성해주세요!");
-      navigate(`/login?redirect=${encodeURIComponent(target)}`, {
-        state: { redirectTo: target, item },
-        replace: true,
-      });
-      return;
-    }
+  const name = encodeURIComponent(item?.name || "");
+  const token = localStorage.getItem("accessToken");
+  const target = `/reviews?id=${id}&type=${type}&name=${name}`;
 
-    navigate(target, { state: { item } });
-  };
+  if (!token) {
+    alert("로그인이 필요합니다!");
+    navigate(`/login?redirect=${encodeURIComponent(target)}`);
+    return;
+  }
+
+  navigate(target, { state: { item } });
+};
+
+
 
   return (
     <div className={styles.container}>

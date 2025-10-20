@@ -74,9 +74,13 @@ export const login = async (email, password) => {
 
 export const createAttractionReview = async (attractionId, reviewData) => {
   try {
+    const token = localStorage.getItem('accessToken');
     const res = await api.post(
       `/user/reviews/attr/create/${attractionId}`,
-      reviewData
+      reviewData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
     );
     return res.data;
   } catch (err) {
@@ -84,6 +88,24 @@ export const createAttractionReview = async (attractionId, reviewData) => {
     throw err;
   }
 };
+
+export const createAccommodationReview = async (accommodationId, reviewData) => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const res = await api.post(
+      `/user/reviews/accom/create/${accommodationId}`, 
+      reviewData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    logError('createAccommodationReview', err);
+    throw err;
+  }
+};
+
 
 export const signup = async ({ email, password, name }) => {
   try {

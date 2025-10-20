@@ -2,17 +2,14 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import styles from "../css/PageCss/ReviewWritePage.module.css";
-import { createAttractionReview } from "../api/ApiStore";
+import { createAttractionReview, createAccommodationReview } from "../api/ApiStore";
 
 function StarInput({ value, onChange }) {
   const [hover, setHover] = useState(0);
   const shown = hover || value;
 
   return (
-    <div
-      className={styles.stars}
-      onMouseLeave={() => setHover(0)}
-    >
+    <div className={styles.stars} onMouseLeave={() => setHover(0)}>
       {[1, 2, 3, 4, 5].map((i) => (
         <button
           key={i}
@@ -34,22 +31,31 @@ function ReviewWritePage() {
   const [sp] = useSearchParams();
 
   const targetId = useMemo(() => {
-    const fromState =
-      state?.item?.attractionId ?? state?.item?.id ?? state?.item?.accommodationId;
-    const fromQuery = sp.get("id");
-    return fromState ?? (fromQuery ? Number(fromQuery) : null);
+    const idFromState =
+      state?.item?.accommodationId ?? state?.item?.attractionId ?? state?.item?.id;
+    const idFromQuery = sp.get("id");
+    return idFromState ?? (idFromQuery ? Number(idFromQuery) : null);
   }, [state, sp]);
 
-  const placeName = state?.item?.name ?? "리뷰 작성";
+  const reviewType = useMemo(() => {
+    if (state?.item?.accommodationId) return "accommodation";
+    if (state?.item?.attractionId) return "attraction";
+    const typeQuery = sp.get("type");
+    return typeQuery || "attraction"; 
+  }, [state, sp]);
+  useEffect(() => {
+    console.log("넘어온 state:", state);
+    console.log("리뷰 타입:", reviewType);
+    console.log("요청할 ID:", targetId);
+  }, [state, reviewType, targetId]);
+
+  const placeName = state?.item?.name ?? sp.get("name") ?? "리뷰 작성";
 
   const [rating, setRating] = useState(5);
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    if (!targetId) setErrorMsg("대상 ID가 없습니다. 뒤로 가서 다시 시도해주세요.");
-  }, [targetId]);
 
   const canSubmit = useMemo(
     () =>
@@ -69,10 +75,14 @@ function ReviewWritePage() {
     setErrorMsg("");
 
     try {
-      await createAttractionReview(targetId, {
-        rating,
-        content: content.trim(),
-      });
+      if (reviewType === "attraction") {
+        await createAttractionReview(targetId, { rating, content: content.trim() });
+      } else if (reviewType === "accommodation") {
+        await createAccommodationReview(targetId, { rating, content: content.trim() });
+      } else {
+        throw new Error("리뷰 타입이 잘못되었습니다.");
+      }
+
       alert("리뷰가 등록되었습니다! 🙌");
       navigate(-1);
     } catch (err) {
@@ -82,7 +92,7 @@ function ReviewWritePage() {
       } else {
         setErrorMsg(
           err?.response?.data?.message ||
-            "리뷰 저장에 실패했습니다. 잠시 후 다시 시도해주세요."
+          "리뷰 저장에 실패했습니다. 잠시 후 다시 시도해주세요."
         );
       }
     } finally {
@@ -95,10 +105,7 @@ function ReviewWritePage() {
       <div className={styles.phone}>
         <div className={styles.page}>
           <header className={styles.header}>
-            <button
-              className={styles.backBtn}
-              onClick={() => navigate(-1)}
-            >
+            <button className={styles.backBtn} onClick={() => navigate(-1)}>
               <FiChevronLeft size={22} />
             </button>
             <h1 className={styles.title}>{placeName}</h1>
@@ -107,7 +114,9 @@ function ReviewWritePage() {
           <form className={styles.form} onSubmit={handleSubmit}>
             <label className={styles.label}>별점을 남겨주세요!</label>
             <StarInput value={rating} onChange={setRating} />
-            <div className={styles.hint}>악의적인 댓글 혹은 욕설은 예고없이 삭제될 수 있습니다.</div>
+            <div className={styles.hint}>
+              악의적인 댓글 혹은 욕설은 예고없이 삭제될 수 있습니다.
+            </div>
 
             <label className={styles.label} htmlFor="content">
               내용
@@ -123,11 +132,7 @@ function ReviewWritePage() {
 
             {errorMsg && <div className={styles.error}>{errorMsg}</div>}
 
-            <button
-              type="submit"
-              className={styles.submitBtn}
-              disabled={!canSubmit}
-            >
+            <button type="submit" className={styles.submitBtn} disabled={!canSubmit}>
               {submitting ? "작성 중..." : "리뷰 등록"}
             </button>
           </form>
