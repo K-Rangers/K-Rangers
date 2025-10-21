@@ -1,4 +1,4 @@
-name: Java CI with Gradle (Final Attempt)
+name: Java CI with Gradle
 
 on:
   push:
@@ -24,19 +24,10 @@ jobs:
         run: chmod +x ./gradlew
         working-directory: Backend
 
-      # =================================================================
-      # ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 이 부분이 핵심적인 변경 사항입니다 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-      # =================================================================
-      - name: Build executable JAR directly with detailed logging
-        run: ./gradlew bootJar --stacktrace --info
+      # [수정] clean 태스크를 추가하여 이전 빌드 캐시를 삭제하고, bootJar를 직접 실행합니다.
+      - name: Build with Gradle Wrapper (Clean + BootJar)
+        run: ./gradlew clean bootJar --stacktrace
         working-directory: Backend
-      # =================================================================
-      # ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-      # =================================================================
-
-      # 디버깅을 위해 파일 목록을 다시 한번 확인합니다.
-      - name: Check build artifacts
-        run: ls -lR Backend/build
 
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -45,10 +36,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "Backend/build/libs/*.jar"
+          # [수정] 파일 경로를 위에서 고정한 이름으로 명시합니다. 와일드카드(*) 대신 사용합니다.
+          source: "Backend/build/libs/k-rangers-backend.jar"
           target: "/home/ubuntu/app"
-          strip_components: 3
+          strip_components: 3 # 'Backend/build/libs/' 경로 제거는 그대로 유지
 
+      # deploy.sh를 복사하고 실행하는 부분은 이전과 동일합니다.
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -56,7 +49,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          # deploy.sh는 저장소 루트에 있다고 가정합니다.
           source: "deploy.sh"
           target: "/home/ubuntu/app"
 
@@ -71,3 +63,4 @@ jobs:
             cd /home/ubuntu/app
             chmod +x ./deploy.sh
             ./deploy.sh
+
