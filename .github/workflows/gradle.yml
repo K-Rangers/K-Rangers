@@ -31,10 +31,8 @@ jobs:
       - name: Find Executable JAR
         id: find_jar
         run: |
-          # build/libs 폴더에서 '-plain.jar'로 끝나지 않는 JAR 파일의 전체 경로를 찾습니다.
           JAR_PATH=$(find Backend/build/libs -name "*.jar" ! -name "*-plain.jar")
           echo "Found JAR file: $JAR_PATH"
-          # 찾은 경로를 이 단계의 출력(output)으로 설정합니다.
           echo "jar_path=${JAR_PATH}" >> "$GITHUB_OUTPUT"
 
       - name: Copy JAR to EC2
