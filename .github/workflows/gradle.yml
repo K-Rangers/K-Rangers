@@ -2,9 +2,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "main" ] # master 브랜치를 사용하시면 "master"로 변경하세요.
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ] # master 브랜치를 사용하시면 "master"로 변경하세요.
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -20,31 +20,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # (선택) Gradle 캐싱으로 빌드 속도 향상
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      # gradlew 실행 권한 부여
       - name: Grant execute permission for gradlew
+        # [수정] 실제 gradlew 파일 위치로 working-directory 변경
         run: chmod +x ./gradlew
-        working-directory: Backend # working-directory 추가
+        working-directory: K-Rangers/Backend
 
-      # Gradle 빌드
       - name: Build with Gradle Wrapper
+        # [수정] 실제 프로젝트 위치로 working-directory 변경
         run: ./gradlew build -x test
-        working-directory: Backend # working-directory 추가
+        working-directory: K-Rangers/Backend
 
-      - name: Check build artifacts
-        run: ls -R Backend/build
-
-      # 1. 빌드된 JAR 파일을 EC2 서버로 전송
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -52,11 +37,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "Backend/build/libs/*.jar" # 빌드된 JAR 파일 경로
-          target: "/home/ubuntu/app" # EC2 서버에 파일이 저장될 경로
-          strip_components: 3 # 'Backend/build/libs/' 경로 제거하고 파일명만 남김
+          # [수정] 실제 JAR 파일 경로로 source 변경
+          source: "K-Rangers/Backend/build/libs/*.jar"
+          target: "/home/ubuntu/app"
+          # [수정] 'K-Rangers/Backend/build/libs/' (4개) 경로를 제거하고 파일명만 남김
+          strip_components: 4
 
-      # 2. deploy.sh 스크립트를 EC2 서버로 전송
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -64,10 +50,11 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "deploy.sh" # Repository 루트에 있는 deploy.sh
+          # [수정] 실제 deploy.sh 파일 경로로 source 변경
+          # 만약 deploy.sh가 K-Rangers 폴더 밖에 있다면 "deploy.sh"로 유지
+          source: "K-Rangers/deploy.sh"
           target: "/home/ubuntu/app"
 
-      # 3. EC2 서버에서 deploy.sh 스크립트 실행
       - name: Execute deploy script on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
