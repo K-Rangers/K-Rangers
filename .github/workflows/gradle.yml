@@ -41,7 +41,8 @@ jobs:
         run: ./gradlew build -x test
         working-directory: Backend # working-directory 추가
 
-      # ---ここからデプロイメントステップです---
+      - name: Check build artifacts
+        run: ls -R Backend/build
 
       # 1. 빌드된 JAR 파일을 EC2 서버로 전송
       - name: Copy JAR to EC2
