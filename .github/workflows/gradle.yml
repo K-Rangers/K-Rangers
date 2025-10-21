@@ -24,10 +24,18 @@ jobs:
         run: chmod +x ./gradlew
         working-directory: Backend
 
-      # clean으로 이전 빌드 결과를 삭제하고, build를 실행합니다.
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build -x test
         working-directory: Backend
+
+      - name: Find Executable JAR
+        id: find_jar
+        run: |
+          # build/libs 폴더에서 '-plain.jar'로 끝나지 않는 JAR 파일의 전체 경로를 찾습니다.
+          JAR_PATH=$(find Backend/build/libs -name "*.jar" ! -name "*-plain.jar")
+          echo "Found JAR file: $JAR_PATH"
+          # 찾은 경로를 이 단계의 출력(output)으로 설정합니다.
+          echo "jar_path=${JAR_PATH}" >> "$GITHUB_OUTPUT"
 
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -36,10 +44,8 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          # 이제 *.jar가 항상 하나의 파일만 가리키므로 문제가 없습니다.
-          source: "Backend/build/libs/*.jar"
+          source: ${{ steps.find_jar.outputs.jar_path }}
           target: "/home/ubuntu/app"
-          strip_components: 3
 
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
