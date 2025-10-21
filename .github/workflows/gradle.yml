@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Java CI with Gradle (Final Debug)
 
 on:
   push:
@@ -22,13 +22,22 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
-        # Backend 디렉터리 안에서 실행
         working-directory: Backend
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build -x test
-        # Backend 디렉터리 안에서 실행
         working-directory: Backend
+      
+      # =================================================================
+      # ▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 이 부분이 가장 중요합니다 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+      # =================================================================
+      - name: Debug - List all files in workspace
+        run: |
+          echo ">>> Workspace root"
+          ls -lR
+      # =================================================================
+      # ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+      # =================================================================
 
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -37,11 +46,13 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          # K-Rangers/ 없이 Backend 부터 시작하는 것이 올바른 경로입니다.
           source: "Backend/build/libs/*.jar"
           target: "/home/ubuntu/app"
-          # 'Backend/build/libs/' (3개) 경로를 제거합니다.
           strip_components: 3
+          
+      # ... (이하 동일) ...
+
+
 
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
