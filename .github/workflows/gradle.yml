@@ -24,9 +24,9 @@ jobs:
         run: chmod +x ./gradlew
         working-directory: Backend
 
-      # [수정] clean 태스크를 추가하여 이전 빌드 캐시를 삭제하고, bootJar를 직접 실행합니다.
-      - name: Build with Gradle Wrapper (Clean + BootJar)
-        run: ./gradlew clean bootJar --stacktrace
+      # clean으로 이전 빌드 결과를 삭제하고, build를 실행합니다.
+      - name: Build with Gradle Wrapper
+        run: ./gradlew clean build -x test
         working-directory: Backend
 
       - name: Copy JAR to EC2
@@ -36,12 +36,11 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          # [수정] 파일 경로를 위에서 고정한 이름으로 명시합니다. 와일드카드(*) 대신 사용합니다.
-          source: "Backend/build/libs/k-rangers-backend.jar"
+          # 이제 *.jar가 항상 하나의 파일만 가리키므로 문제가 없습니다.
+          source: "Backend/build/libs/*.jar"
           target: "/home/ubuntu/app"
-          strip_components: 3 # 'Backend/build/libs/' 경로 제거는 그대로 유지
+          strip_components: 3
 
-      # deploy.sh를 복사하고 실행하는 부분은 이전과 동일합니다.
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
