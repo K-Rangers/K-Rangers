@@ -44,38 +44,37 @@ jobs:
           echo "Found JAR file: $JAR_PATH"
           echo "jar_path=${JAR_PATH}" >> "$GITHUB_OUTPUT"
 
-      # 6. JAR 파일을 EC2로 복사 (수정된 부분)
+      # 6. JAR 파일을 EC2로 복사 (경로 수정)
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
+          username: ${{ secrets.SERVER_USER }} # [중요] Secret 값을 'ubuntu'로 설정
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          # [수정] 불필요한 따옴표를 제거하여 문법 오류 가능성을 없앱니다.
           source: ${{ steps.find_jar.outputs.jar_path }}
-          target: "/home/ubuntu/app"
+          target: "/home/ubuntu/cicd" # [수정됨]
 
-      # 7. 배포 스크립트 복사
+      # 7. 배포 스크립트 복사 (경로 수정)
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
+          username: ${{ secrets.SERVER_USER }} # [중요] Secret 값을 'ubuntu'로 설정
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "deploy.sh"
-          target: "/home/ubuntu/app"
+          source: "deploy.sh" 
+          target: "/home/ubuntu/cicd" # [수정됨]
 
-      # 8. 배포 스크립트 실행
+      # 8. 배포 스크립트 실행 (경로 수정)
       - name: Execute deploy script on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
+          username: ${{ secrets.SERVER_USER }} # [중요] Secret 값을 'ubuntu'로 설정
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd /home/ubuntu/app
+            cd /home/ubuntu/cicd     # [수정됨]
             chmod +x ./deploy.sh
             ./deploy.sh
