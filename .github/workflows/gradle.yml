@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Build and Deploy Backend
 
 on:
   push:
@@ -11,68 +11,58 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 레포지토리 체크아웃
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      # 2️⃣ JDK 21 설정
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      # 3️⃣ gradlew 실행권한 부여
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        working-directory: Backend
+    - name: Grant execute permission for Gradle Wrapper
+      run: chmod +x ./Backend/gradlew
 
-      # 4️⃣ Gradle 빌드 (테스트 제외)
-      - name: Build with Gradle Wrapper
-        run: ./gradlew clean build -x test
-        working-directory: Backend
+    - name: Build with Gradle
+      working-directory: ./Backend
+      run: ./gradlew clean build -x test
 
-      # 5️⃣ 실행 가능한 JAR 파일 찾기
-      - name: Find Executable JAR
-        id: find_jar
-        run: |
-          JAR_PATH=$(find $GITHUB_WORKSPACE/Backend/build/libs -name "*.jar" ! -name "*-plain.jar" | head -n 1)
-          echo "✅ Found JAR file: $JAR_PATH"
-          # scp-action은 절대경로를 인식하지 못하므로 상대경로로 변환
-          REL_PATH=${JAR_PATH#"$GITHUB_WORKSPACE/"}
-          echo "jar_path=${REL_PATH}" >> "$GITHUB_OUTPUT"
+    # ✅ 빌드 후 실제 생성된 파일 구조 확인용 (중요)
+    - name: Check workspace contents
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "List all files recursively:"
+        ls -R $GITHUB_WORKSPACE
 
-      # 6️⃣ JAR 파일을 EC2로 복사
-      - name: Copy JAR to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }} # 'ubuntu'여야 함
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          source: ${{ steps.find_jar.outputs.jar_path }}
-          target: "/home/ubuntu/cicd"
+    # ✅ JAR 파일 찾기 및 압축하기
+    - name: Compress JAR
+      run: |
+        echo "🔍 Searching for JAR file..."
+        JAR_PATH=$(find $GITHUB_WORKSPACE/Backend/build/libs -name "*.jar" ! -name "*-plain.jar" | head -n 1)
+        echo "✅ Found JAR file: $JAR_PATH"
+        if [ -z "$JAR_PATH" ]; then
+          echo "❌ No JAR file found to compress"
+          exit 1
+        fi
+        TAR_PATH="/tmp/app_${{ github.run_id }}.tar.gz"
+        echo "📦 Compressing JAR into $TAR_PATH"
+        tar -czf "$TAR_PATH" -C "$(dirname "$JAR_PATH")" "$(basename "$JAR_PATH")"
+        echo "✅ Compression completed"
 
-      # 7️⃣ 배포 스크립트 복사
-      - name: Copy deploy script to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          source: "deploy.sh"
-          target: "/home/ubuntu/cicd"
-
-      # 8️⃣ 배포 스크립트 실행
-      - name: Execute deploy script on EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          script: |
-            cd /home/ubuntu/cicd
-            chmod +x ./deploy.sh
-            ./deploy.sh
+    # ✅ (선택) EC2 서버로 배포 단계 예시
+    - name: Deploy to EC2
+      if: success()
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+        HOST: ${{ secrets.EC2_HOST }}
+        USER: ubuntu
+      run: |
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        scp -o StrictHostKeyChecking=no -i private_key.pem /tmp/app_${{ github.run_id }}.tar.gz $USER@$HOST:/home/ubuntu/app.tar.gz
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $USER@$HOST "
+          mkdir -p /home/ubuntu/app &&
+          tar -xzf /home/ubuntu/app.tar.gz -C /home/ubuntu/app &&
+          nohup java -jar /home/ubuntu/app/*.jar > /home/ubuntu/app/log.out 2>&1 &
+        "
+        echo "🚀 Deployment complete!"
