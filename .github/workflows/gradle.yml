@@ -11,70 +11,74 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 레포지토리 체크아웃
+      # 1️⃣ 레포지토리 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. JDK 21 설정
+      # 2️⃣ JDK 21 설정
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
 
-      # 3. gradlew 실행권한 부여
+      # 3️⃣ gradlew 실행권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         working-directory: Backend
 
-      # 4. Gradle 빌드 (테스트 제외)
+      # 4️⃣ Gradle 빌드 (테스트 제외)
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build -x test
         working-directory: Backend
 
-      # 5. 실행 가능한 JAR 파일 찾기
+      # 5️⃣ 실행 가능한 JAR 파일 찾기
       - name: Find Executable JAR
         id: find_jar
         run: |
-          JAR_PATH=$(find Backend/build/libs -name "*.jar" ! -name "*-plain.jar")
+          JAR_PATH=$(find $GITHUB_WORKSPACE/Backend/build/libs -name "*.jar" ! -name "*-plain.jar" | head -n 1)
           if [ -z "$JAR_PATH" ]; then
             echo "::error::Executable JAR file not found!"
             exit 1
           fi
-          echo "Found JAR file: $JAR_PATH"
-          echo "jar_path=${JAR_PATH}" >> "$GITHUB_OUTPUT"
+          echo "✅ Found JAR file: $JAR_PATH"
+          echo "jar_path=$JAR_PATH" >> "$GITHUB_OUTPUT"
 
-      # 6. JAR 파일을 EC2로 복사 (경로 수정)
+      # 6️⃣ JAR 경로 디버깅 (출력 확인용)
+      - name: Debug JAR path
+        run: echo "JAR path:${{ steps.find_jar.outputs.jar_path }}"
+
+      # 7️⃣ JAR 파일을 EC2로 복사
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }} # [중요] Secret 값을 'ubuntu'로 설정
+          username: ${{ secrets.SERVER_USER }}  # ex) ubuntu
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: ${{ steps.find_jar.outputs.jar_path }}
-          target: "/home/ubuntu/cicd" # [수정됨]
+          source: "${{ steps.find_jar.outputs.jar_path }}"
+          target: "/home/ubuntu/cicd"
 
-      # 7. 배포 스크립트 복사 (경로 수정)
+      # 8️⃣ 배포 스크립트 복사
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }} # [중요] Secret 값을 'ubuntu'로 설정
+          username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "deploy.sh" 
-          target: "/home/ubuntu/cicd" # [수정됨]
+          source: "./deploy.sh"
+          target: "/home/ubuntu/cicd"
 
-      # 8. 배포 스크립트 실행 (경로 수정)
+      # 9️⃣ EC2에서 배포 스크립트 실행
       - name: Execute deploy script on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }} # [중요] Secret 값을 'ubuntu'로 설정
+          username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd /home/ubuntu/cicd     # [수정됨]
+            cd /home/ubuntu/cicd
             chmod +x ./deploy.sh
             ./deploy.sh
