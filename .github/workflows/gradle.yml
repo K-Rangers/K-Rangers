@@ -37,29 +37,23 @@ jobs:
         id: find_jar
         run: |
           JAR_PATH=$(find $GITHUB_WORKSPACE/Backend/build/libs -name "*.jar" ! -name "*-plain.jar" | head -n 1)
-          if [ -z "$JAR_PATH" ]; then
-            echo "::error::Executable JAR file not found!"
-            exit 1
-          fi
           echo "✅ Found JAR file: $JAR_PATH"
-          echo "jar_path=$JAR_PATH" >> "$GITHUB_OUTPUT"
+          # scp-action은 절대경로를 인식하지 못하므로 상대경로로 변환
+          REL_PATH=${JAR_PATH#"$GITHUB_WORKSPACE/"}
+          echo "jar_path=${REL_PATH}" >> "$GITHUB_OUTPUT"
 
-      # 6️⃣ JAR 경로 디버깅 (출력 확인용)
-      - name: Debug JAR path
-        run: echo "JAR path:${{ steps.find_jar.outputs.jar_path }}"
-
-      # 7️⃣ JAR 파일을 EC2로 복사
+      # 6️⃣ JAR 파일을 EC2로 복사
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}  # ex) ubuntu
+          username: ${{ secrets.SERVER_USER }} # 'ubuntu'여야 함
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "${{ steps.find_jar.outputs.jar_path }}"
+          source: ${{ steps.find_jar.outputs.jar_path }}
           target: "/home/ubuntu/cicd"
 
-      # 8️⃣ 배포 스크립트 복사
+      # 7️⃣ 배포 스크립트 복사
       - name: Copy deploy script to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -67,10 +61,10 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          source: "./deploy.sh"
+          source: "deploy.sh"
           target: "/home/ubuntu/cicd"
 
-      # 9️⃣ EC2에서 배포 스크립트 실행
+      # 8️⃣ 배포 스크립트 실행
       - name: Execute deploy script on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
