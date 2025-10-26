@@ -1,7 +1,14 @@
 #!/bin/bash
 
-DEPLOY_DIR="/home/ec2-user/cicd"
-APP_NAME="AIGoYa-Backend"
+DEPLOY_DIR="/home/ubuntu/cicd"
+
+if [ -f "$DEPLOY_DIR/.env" ]; then
+    echo "> .env 파일에서 환경 변수를 로드합니다."
+    source $DEPLOY_DIR/.env
+else
+    echo "> [오류] .env 파일을 찾을 수 없습니다."
+    exit 1
+fi
 
 echo "--- 배포 시작: $(date) ---"
 
@@ -14,7 +21,7 @@ else
     echo "> 실행 중인 애플리케이션 발견 (PID: $CURRENT_PID)"
     echo "> 애플리케이션(PID: $CURRENT_PID)을 종료합니다."
     kill -15 $CURRENT_PID
-    sleep 5
+    sleep 5 
 fi
 
 echo "> 새 애플리케이션 JAR 파일 확인"
@@ -27,7 +34,7 @@ fi
 
 echo "> 실행할 JAR 파일: $JAR_PATH"
 
-echo "> 새 애플리케이션을 백그라운드로 실행합니다."
-nohup java -jar $JAR_PATH > $DEPLOY_DIR/nohup.out 2>&1 &
+echo "> 새 애플리케이션을 'prod' 프로필로 백그라운드로 실행합니다."
+nohup java -jar -Dspring.profiles.active=prod $JAR_PATH > $DEPLOY_DIR/nohup.out 2>&1 &
 
 echo "--- 배포 완료 ---"
