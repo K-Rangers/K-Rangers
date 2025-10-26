@@ -62,7 +62,6 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-                "https://travel.gamja.cloud",
                 "https://travel-aiga.netlify.app",
                 "https://travelaiga.cloud",
                 "http://localhost:3000",
