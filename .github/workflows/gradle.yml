@@ -62,6 +62,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           source: ${{ steps.find_jar.outputs.jar_path }}
           target: "/home/ubuntu/cicd"
+          strip_components: 5
 
       # 8️⃣ 배포 스크립트 복사
       - name: Copy deploy script to EC2
