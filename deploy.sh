@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DEPLOY_DIR="/home/ubuntu/cicd" 
+DEPLOY_DIR="/home/ec2-user/cicd"
+APP_NAME="AIGoYa-Backend"
 
 echo "--- 배포 시작: $(date) ---"
 
@@ -13,7 +14,7 @@ else
     echo "> 실행 중인 애플리케이션 발견 (PID: $CURRENT_PID)"
     echo "> 애플리케이션(PID: $CURRENT_PID)을 종료합니다."
     kill -15 $CURRENT_PID
-    sleep 5 
+    sleep 5
 fi
 
 echo "> 새 애플리케이션 JAR 파일 확인"
