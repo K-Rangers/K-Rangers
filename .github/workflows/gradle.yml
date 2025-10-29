@@ -47,7 +47,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           source: ${{ steps.find_jar.outputs.jar_path }}
-          target: "/home/ubuntu/cicd/backend/backend-0.0.1-SNAPSHOT.jar" 
+          target: "/home/ubuntu/cicd/backend/"
 
       # 8️⃣ AI 폴더 전체 복사
       - name: Copy AI folder to EC2
